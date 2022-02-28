@@ -25,10 +25,11 @@ carbon-measurement is available under the [MIT Licence](./LICENCE). It may be me
 
 - [GitHub Actions for Azure](https://docs.microsoft.com/en-us/azure/developer/github/github-actions?WT.mc_id=AI-MVP-5004204)
 - [GitHub Actions for .NET](https://docs.microsoft.com/en-us/dotnet/devops/github-actions-overview?WT.mc_id=AI-MVP-5004204)
--  [Create a VM](https://docs.microsoft.com/en-us/azure/templates/microsoft.compute/virtualmachines?WT.mc_id=AI-MVP-5004204)
--  [Deploy an ARM template](https://docs.microsoft.com/en-us/azure/azure-resource-manager/templates/deploy-portal?WT.mc_id=AI-MVP-5004204)
+- [Create a VM](https://docs.microsoft.com/en-us/azure/templates/microsoft.compute/virtualmachines?WT.mc_id=AI-MVP-5004204)
+- [Deploy an ARM template](https://docs.microsoft.com/en-us/azure/azure-resource-manager/templates/deploy-portal?WT.mc_id=AI-MVP-5004204)
 - [Git Hooks](https://githooks.com/)
 - [Electricitymap API](https://static.electricitymap.org/api/docs/index.html)
+- [Creating a Docker Action](https://docs.github.com/en/actions/creating-actions/creating-a-docker-container-action)
 
 ## Documentation
 Documentation has not yet been created, as this is a work in progress. Documentation will be added to the `docs` folder, along with setup instructions.

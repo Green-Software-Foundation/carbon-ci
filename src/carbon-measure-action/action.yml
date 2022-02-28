@@ -9,8 +9,8 @@ inputs:
     description: 'File location'
     required: true
     default: 'infra.json'
-  grid_code:
-    description: 'A code representing the energy grid to be used to estimate carbon'
+  zone_key:
+    description: 'A code from the list of electricitymap zones representing the energy grid to be used to estimate carbon'
     required: true
     default: 'uk'
 outputs:

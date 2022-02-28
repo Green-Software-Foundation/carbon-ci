@@ -1,0 +1,30 @@
+name: Docker - Build Container
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "src/carbon-measure-action/**"
+  workflow_dispatch:
+
+concurrency:
+  group: main_branch_build
+  cancel-in-progress: true
+
+jobs:
+  build-sql-ledger:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: src/carbon-measure-action
+    steps:
+      - uses: actions/checkout@v2
+      - uses: azure/docker-login@v1
+        with:
+          login-server: ${{ secrets.ACR_REGISTRY }}
+          username: ${{ secrets.ACR_USERNAME }}
+          password: ${{ secrets.ACR_PASSWORD }}
+      - run: |
+          docker build . -t ${{ secrets.ACR_REGISTRY }}/carbon-measure-action:${{ github.sha }} -t ${{ secrets.ACR_REGISTRY }}/carbon-measure-action:latest
+          docker push ${{ secrets.ACR_REGISTRY }}/carbon-measure-action
