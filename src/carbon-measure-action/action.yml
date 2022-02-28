@@ -1,0 +1,25 @@
+name: 'Carbon Measurement'
+description: 'Read in an infrastructure as code template and then estimate the carbon emissions'
+inputs:
+  file_type:
+    description: 'Type of file'
+    required: true
+    default: 'arm'
+  file_name:
+    description: 'File location'
+    required: true
+    default: 'infra.json'
+  grid_code:
+    description: 'A code representing the energy grid to be used to estimate carbon'
+    required: true
+    default: 'uk'
+outputs:
+  grams_carbon_equivalent_per_kwh:
+    description: 'Grams of Carbon Equivalent per kWh for the selected location'
+  grams_over_24h:
+    description: 'Grams of Carbon Equivalents emitted over 24 hours'
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  args:
+    - ${{ inputs.who-to-greet }}
