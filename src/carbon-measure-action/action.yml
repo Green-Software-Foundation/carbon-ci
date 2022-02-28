@@ -12,11 +12,11 @@ inputs:
   zone_key:
     description: 'A code from the list of electricitymap zones representing the energy grid to be used to estimate carbon'
     required: true
-    default: 'uk'
+    default: 'GB'
 outputs:
   grams_carbon_equivalent_per_kwh:
     description: 'Grams of Carbon Equivalent per kWh for the selected location'
-  grams_over_24h:
+  grams_emitted_over_24h:
     description: 'Grams of Carbon Equivalents emitted over 24 hours'
 runs:
   using: 'docker'
