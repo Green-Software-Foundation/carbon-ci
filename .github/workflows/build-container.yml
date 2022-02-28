@@ -1,4 +1,4 @@
-name: Docker - Build Container
+name: Docker - Build and Test GH Action
 
 on:
   push:
@@ -9,7 +9,7 @@ on:
   workflow_dispatch:
 
 concurrency:
-  group: main_branch_build
+  group: ${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
@@ -27,7 +27,7 @@ jobs:
           password: ${{ secrets.ACR_PASSWORD }}
       - run: |
           docker build . -t ${{ secrets.ACR_REGISTRY }}/carbon-measure-action:${{ github.sha }} -t ${{ secrets.ACR_REGISTRY }}/carbon-measure-action:latest
-          docker push ${{ secrets.ACR_REGISTRY }}/carbon-measure-action
+          docker push --all-tags ${{ secrets.ACR_REGISTRY }}/carbon-measure-action
   test:
     needs: build
     runs-on: ubuntu-latest
