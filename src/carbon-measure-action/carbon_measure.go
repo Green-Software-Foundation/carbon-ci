@@ -6,6 +6,7 @@ import (
 )
 
 func main() {
+	// Add an extra commit for an example
 	infraFileType := os.Getenv("file_type")
 	// TODO: For terraform, we might need to accept a list of multiple files
 	infraFileName := os.Getenv("file_location")
