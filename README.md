@@ -19,7 +19,7 @@ Considered approaches include:
 
 
 ## Licensing
-carbon-measurement is available under the [MIT Licence](./LICENCE). It may be merged into the Green Software Foundation at a later date.
+carbon-measurement is available under the [MIT Licence](./LICENCE).
 
 ## Solutions Referenced
 
@@ -32,7 +32,7 @@ carbon-measurement is available under the [MIT Licence](./LICENCE). It may be me
 - [Creating a Docker Action](https://docs.github.com/en/actions/creating-actions/creating-a-docker-container-action)
 
 ## Documentation
-Documentation has not yet been created, as this is a work in progress. Documentation will be added to the `docs` folder, along with setup instructions.
+Limited documentation has been created, as this is a work in progress. Further documentation will be added to the `docs` folder, along with setup instructions.
 ## Contact
 Feel free to [raise an issue on GitHub](https://github.com/ava-innersource/carbon-measurement/issues), or see our [security disclosure](./SECURITY.md) policy.
 
