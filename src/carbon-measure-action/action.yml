@@ -22,4 +22,6 @@ runs:
   using: 'docker'
   image: 'Dockerfile'
   args:
-    - ${{ inputs.who-to-greet }}
+    - ${{ inputs.zone_type }}
+    - ${{ inputs.file_name }}
+    - ${{ inputs.zone_key }}

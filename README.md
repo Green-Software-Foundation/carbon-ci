@@ -19,7 +19,7 @@ Considered approaches include:
 
 
 ## Licensing
-carbon-measurement is available under the [MIT Licence](./LICENCE).
+carbon-measurement is available under the [MIT Licence](./LICENCE). It will be donated to the Green Software Foundation if the [Carbon Pipeline Tooling](https://github.com/Green-Software-Foundation/innovation_wg/issues/18) proposal is accepted.
 
 ## Solutions Referenced
 
