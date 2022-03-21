@@ -8,6 +8,7 @@ import (
 func main() {
 	githubNoticeMessage("Starting carbon measure action.")
 	infraFileType := os.Getenv("file_type")
+	// Example for demo purposes
 	// TODO: For terraform, we might need to accept a list of multiple files
 	infraFileName := os.Getenv("file_location")
 	electricityMapZoneKey := os.Getenv("zone_key")
