@@ -2,6 +2,7 @@ package electricitymap
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io/ioutil"
 	"log"
@@ -218,7 +219,7 @@ func HttpGet(url string, data interface{}, header map[string]string, query map[s
 
 	// Add Headers
 	for k := range header {
-		fmt.Printf("Adding header %v:%v\n", k, header[k])
+		// fmt.Printf("Adding header %v:%v\n", k, header[k])
 		req.Header.Add(k, header[k])
 	}
 
@@ -232,7 +233,7 @@ func HttpGet(url string, data interface{}, header map[string]string, query map[s
 	// Add query string to URL
 	req.URL.RawQuery = q.Encode()
 
-	fmt.Println(req.URL)
+	// fmt.Println(req.URL)
 	response, err := client.Do(req)
 	if hasError(err) {
 		fmt.Println("client.Do error")
@@ -240,15 +241,20 @@ func HttpGet(url string, data interface{}, header map[string]string, query map[s
 		return err
 	}
 
-	responseData, err := ioutil.ReadAll(response.Body)
-	if hasError(err) {
-		fmt.Println("ioutil.ReadAll error")
-		fmt.Println(err.Error())
+	if response.StatusCode == 200 {
+		responseData, err := ioutil.ReadAll(response.Body)
+		if hasError(err) {
+			fmt.Println("ioutil.ReadAll error")
+			fmt.Println(err.Error())
+			return err
+		}
+
+		json.Unmarshal(responseData, &data)
+		return nil //no error
+	} else {
+		err = errors.New(response.Status)
 		return err
 	}
-
-	json.Unmarshal(responseData, &data)
-	return nil //no error
 }
 
 func hasError(err error) bool {
