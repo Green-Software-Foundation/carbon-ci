@@ -1,10 +1,17 @@
 package watttime
 
+// REMARKS : PLEASE LOGIN FIRST BEFORE CALLING THE GRID EMISSIONS INFORMATION
+// Login(<USERNAME>, <PASSWORD>)
+// DetermineGridRegion(42.372, -72.519)
+// ListOfGridRegions(false)
+// RealTimeEmissionsIndex("CAISO_NORTH", 0, 0, "")
+// GridEmissionsData("CAISO_NORTH", 0, 0, "2019-02-20T16:00:00-0800", "2019-02-20T16:15:00-0800", "", "")
+// EmissionsForecast("CAISO_NORTH", "2022-03-17T00:00:00-0400", "2022-03-17T17:00:00-0400", false)
+
 import (
 	"bytes"
 	"encoding/base64"
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"net/http"
 	"strconv"
@@ -24,8 +31,6 @@ func Login(username string, password string) error {
 	header := make(map[string]string)
 
 	header["Authorization"] = "Basic " + base64.StdEncoding.EncodeToString([]byte(username+":"+password))
-	header["Accept"] = "application/json"
-	header["Content-Type"] = "application/json"
 
 	var response LoginResponse
 
@@ -55,8 +60,6 @@ type DetermineGridRegionResp struct {
 func DetermineGridRegion(latitude float32, longitude float32) (*DetermineGridRegionResp, error) {
 	header := make(map[string]string)
 
-	header["Accept"] = "application/json"
-	header["Content-Type"] = "application/json"
 	header["Authorization"] = "Bearer " + token
 
 	query := make(map[string]string)
@@ -91,8 +94,6 @@ type ListOfGridRegionsResp struct {
 func ListOfGridRegions(all bool) (*[]ListOfGridRegionsResp, error) {
 	header := make(map[string]string)
 
-	header["Accept"] = "application/json"
-	header["Content-Type"] = "application/json"
 	header["Authorization"] = "Bearer " + token
 
 	query := make(map[string]string)
@@ -127,8 +128,6 @@ type RealTimeEmissionsIndexResp struct {
 func RealTimeEmissionsIndex(ba string, latitude float32, longitude float32, style string) (*RealTimeEmissionsIndexResp, error) {
 	header := make(map[string]string)
 
-	header["Accept"] = "application/json"
-	header["Content-Type"] = "application/json"
 	header["Authorization"] = "Bearer " + token
 
 	query := make(map[string]string)
@@ -174,8 +173,6 @@ type GridEmissionsDataResp struct {
 func GridEmissionsData(ba string, latitude float32, longitude float32, starttime string, endtime string, style string, moerversion string) (*[]GridEmissionsDataResp, error) {
 	header := make(map[string]string)
 
-	header["Accept"] = "application/json"
-	header["Content-Type"] = "application/json"
 	header["Authorization"] = "Bearer " + token
 
 	query := make(map[string]string)
@@ -238,8 +235,6 @@ type Forecast struct {
 func EmissionsForecast(ba string, starttime string, endtime string, extendedForecast bool) (*[]EmissionForecastResp, error) {
 	header := make(map[string]string)
 
-	header["Accept"] = "application/json"
-	header["Content-Type"] = "application/json"
 	header["Authorization"] = "Bearer " + token
 
 	query := make(map[string]string)
@@ -327,8 +322,6 @@ func httpRequest(headers Headers) error {
 	}
 	req.URL.RawQuery = query.Encode()
 
-	fmt.Println(req.URL.RawQuery)
-
 	// DO REQUEST
 	resp, err := client.Do(req)
 	if err != nil {
@@ -354,13 +347,3 @@ func httpRequest(headers Headers) error {
 }
 
 // </HTTP REQUESST
-
-// func main() {
-// 		REMARKS : PLEASE LOGIN FIRST BEFORE CALLING THE GRID EMISSIONS INFORMATION
-// 		Login("Jerrico", "@WattTime123")
-// 		fmt.Print(DetermineGridRegion(42.372, -72.519))
-// 		fmt.Println(ListOfGridRegions(false))
-// 		fmt.Println(RealTimeEmissionsIndex("CAISO_NORTH", 0, 0, ""))
-// 		fmt.Println(GridEmissionsData("CAISO_NORTH", 0, 0, "2019-02-20T16:00:00-0800", "2019-02-20T16:15:00-0800", "", ""))
-// 		fmt.Println(EmissionsForecast("CAISO_NORTH", "2022-03-17T00:00:00-0400", "2022-03-17T17:00:00-0400", false))
-// }
