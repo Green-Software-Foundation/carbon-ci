@@ -7,14 +7,13 @@ import (
 	"strings"
 )
 
-func ReadJSON(jsonPath string) TypARM { //file []byte
+func ReadJSON(jsonPath string) TypARM {
 	file, _ := ioutil.ReadFile(jsonPath)
 	var arm TypARM
 	err := json.Unmarshal([]byte(file), &arm)
 	if err != nil {
 		fmt.Println(err.Error())
 	}
-	// fmt.Println(arm)
 	return arm
 }
 
@@ -22,7 +21,6 @@ func SummarizeData(data *TypARM) []typSummary {
 	var summary []typSummary
 	for _, resource := range data.Resources {
 		if resource.Type == "Microsoft.Resources/deployments" {
-			// fmt.Println("Deployment type. Check sub Resources.")
 			for _, depResource := range resource.Properties.Template.Resources {
 				processSummary(&summary, &depResource)
 			}
@@ -30,34 +28,25 @@ func SummarizeData(data *TypARM) []typSummary {
 			processSummary(&summary, &resource)
 		}
 	}
-	// fmt.Printf("\n\nSUMMARY: \n%+v\n\n", summary)
 	return summary
 }
 
 func processSummary(summary *[]typSummary, resource *TypResource) {
-	// fmt.Printf("%+v\n", v)
+
 	if len(*summary) == 0 {
-		// fmt.Printf("Summary is empty. Adding resource %v with count 1.\n\n", resource.Type)
 		addResourceToSummary(resource, summary)
 	} else {
 		resourceExists := false
 		for i, s := range *summary {
-			// fmt.Printf("if %v == %v\n", s.resource, resource.Type)
 			if s.resource == resource.Type {
 				locationExists := false
 				for i2, d := range s.details {
-					// fmt.Printf("if %v == %v\n", d.location, resource.Location)
-					// fmt.Printf("Parameter value of %v is %v\n", resource.Location, getParameterValue(resource.Location, data))
 					if d.location == resource.Location { // add count to existing location
-						// fmt.Printf("Location exists. Adding 1 to count %v.\n\n", d.count)
-						// fmt.Println(summary[i])
 						(*summary)[i].details[i2].count++
-						// fmt.Println(summary[i])
 						locationExists = true
 					}
 				}
 				if !locationExists { // add new location
-					// fmt.Printf("Location %v does not exist. Adding with count 1.\n\n", resource.Location)
 					det := typSummaryDetails{location: resource.Location, count: 1}
 					(*summary)[i].details = append((*summary)[i].details, det)
 				}
@@ -65,7 +54,6 @@ func processSummary(summary *[]typSummary, resource *TypResource) {
 			}
 		}
 		if !resourceExists {
-			// fmt.Printf("Resource %v does not exist. Adding with count 1.\n\n", resource.Type)
 			addResourceToSummary(resource, summary)
 		}
 	}
