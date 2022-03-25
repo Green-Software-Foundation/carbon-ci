@@ -10,7 +10,6 @@ func main() {
 	githubNoticeMessage("Starting carbon measure action.")
 	infraFileType := os.Getenv("IACType")
 	infraFileName := os.Getenv("IACFile")
-
 	// TODO: For terraform, we might need to accept a list of multiple files
 
 	if infraFileType == "arm" {
