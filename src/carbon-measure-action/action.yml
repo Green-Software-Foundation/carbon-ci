@@ -5,7 +5,7 @@ inputs:
     description: 'Type of file for Infrastructure as Code'
     required: true
     default: 'arm'
-  IACFile:  # file_name:
+  IACFile:
     description: 'IAC Filename'
     required: true
     default: 'infra.json'
