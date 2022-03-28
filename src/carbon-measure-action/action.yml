@@ -12,10 +12,7 @@ inputs:
   ELECTRICITY_MAP_AUTH_TOKEN:
     description: 'Authentication token to access Electricity Map API'
     required: true
-  # zone_key:
-  #   description: 'A code from the list of electricitymap zones representing the energy grid to be used to estimate carbon'
-  #   required: true
-  #   default: 'GB'
+
 outputs:
   grams_carbon_equivalent_per_kwh:
     description: 'Grams of Carbon Equivalent per kWh for the selected location'
@@ -47,10 +44,3 @@ runs:
 
   - run: go run ${{ github.action_path }}/carbon_measure.go
     shell: bash
-
-  # using: 'docker'
-  # image: 'Dockerfile'
-  # args:
-  #   - ${{ inputs.zone_type }}
-  #   - ${{ inputs.file_name }}
-  #   - ${{ inputs.zone_key }}
