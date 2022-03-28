@@ -1,7 +1,7 @@
 name: 'Carbon Measurement'
 description: 'Read in an infrastructure as code template and then estimate the carbon emissions'
 inputs:
-  IACType: # file_type:
+  IACType:
     description: 'Type of file for Infrastructure as Code'
     required: true
     default: 'arm'
