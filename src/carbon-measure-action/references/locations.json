@@ -1,0 +1,243 @@
+[
+  {
+    "cloud": "azure",
+    "locations": [
+      {
+        "azureRegion": "eastus",
+        "electricitymapZone": "US-MIDA-PJM",
+        "watttime": "PJM_ROANOKE"
+      },
+      {
+        "azureRegion": "eastus2",
+        "electricitymapZone": "US-MIDA-PJM",
+        "watttime": "PJM_DC"
+      },
+      {
+        "azureRegion": "southcentralus",
+        "electricitymapZone": "US-TEX-ERCO",
+        "watttime": "ERCOT_SANANTONIO"
+      },
+      {
+        "azureRegion": "westus2",
+        "electricitymapZone": "US-NW-GCPD",
+        "watttime": "GCPD"
+      },
+      {
+        "azureRegion": "westus3",
+        "electricitymapZone": "US-SW-SRP",
+        "watttime": "AZPS"
+      },
+      {
+        "azureRegion": "australiaeast",
+        "electricitymapZone": "AUS-NSW",
+        "watttime": "NEM_NSW"
+      },
+      {
+        "azureRegion": "southeastasia",
+        "electricitymapZone": "SG",
+        "watttime": null
+      },
+      {
+        "azureRegion": "northeurope",
+        "electricitymapZone": "IE",
+        "watttime": "IE"
+      },
+      {
+        "azureRegion": "swedencentral",
+        "electricitymapZone": "SE",
+        "watttime": "SE"
+      },
+      {
+        "azureRegion": "uksouth",
+        "electricitymapZone": "GB",
+        "watttime": "UK"
+      },
+      {
+        "azureRegion": "westeurope",
+        "electricitymapZone": "NL",
+        "watttime": "NL"
+      },
+      {
+        "azureRegion": "centralus",
+        "electricitymapZone": "US-MIDW-MISO",
+        "watttime": "MISO_MASON_CITY"
+      },
+      {
+        "azureRegion": "northcentralus",
+        "electricitymapZone": "US-MIDA-PJM",
+        "watttime": "PJM_CHICAGO"
+      },
+      {
+        "azureRegion": "westus",
+        "electricitymapZone": "US-CAL-CISO",
+        "watttime": "CAISO_NORTH"
+      },
+      {
+        "azureRegion": "southafricanorth",
+        "electricitymapZone": "ZA",
+        "watttime": null
+      },
+      {
+        "azureRegion": "centralindia",
+        "electricitymapZone": "IN-MH",
+        "watttime": null
+      },
+      {
+        "azureRegion": "eastasia",
+        "electricitymapZone": "HK",
+        "watttime": null
+      },
+      {
+        "azureRegion": "japaneast",
+        "electricitymapZone": "JP-TK",
+        "watttime": null
+      },
+      {
+        "azureRegion": "jioindiawest",
+        "electricitymapZone": "IN-GJ",
+        "watttime": null
+      },
+      {
+        "azureRegion": "koreacentral",
+        "electricitymapZone": "KR",
+        "watttime": null
+      },
+      {
+        "azureRegion": "canadacentral",
+        "electricitymapZone": "CA-ON",
+        "watttime": "IESO_NORTH"
+      },
+      {
+        "azureRegion": "francecentral",
+        "electricitymapZone": "FR",
+        "watttime": "FR"
+      },
+      {
+        "azureRegion": "germanywestcentral",
+        "electricitymapZone": "DE",
+        "watttime": "DE"
+      },
+      {
+        "azureRegion": "norwayeast",
+        "electricitymapZone": "NO-NO1",
+        "watttime": "NO"
+      },
+      {
+        "azureRegion": "switzerlandnorth",
+        "electricitymapZone": "CH",
+        "watttime": null
+      },
+      {
+        "azureRegion": "uaenorth",
+        "electricitymapZone": "AE",
+        "watttime": null
+      },
+      {
+        "azureRegion": "brazilsouth",
+        "electricitymapZone": "BR-CS",
+        "watttime": null
+      },
+      {
+        "azureRegion": "centraluseuap",
+        "electricitymapZone": "US-MIDW-MISO",
+        "watttime": "MISO_MASON_CITY"
+      },
+      {
+        "azureRegion": "eastus2euap",
+        "electricitymapZone": "US-MIDA-PJM",
+        "watttime": "PJM_DC"
+      },
+      {
+        "azureRegion": "westcentralus",
+        "electricitymapZone": "US-NW-PACE",
+        "watttime": "PACE"
+      },
+      {
+        "azureRegion": "southafricawest",
+        "electricitymapZone": "ZA",
+        "watttime": null
+      },
+      {
+        "azureRegion": "australiacentral",
+        "electricitymapZone": "AUS-NSW",
+        "watttime": "NEM_NSW"
+      },
+      {
+        "azureRegion": "australiacentral2",
+        "electricitymapZone": "AUS-NSW",
+        "watttime": "NEM_NSW"
+      },
+      {
+        "azureRegion": "australiasoutheast",
+        "electricitymapZone": "AUS-VIC",
+        "watttime": "NEM_VIC"
+      },
+      {
+        "azureRegion": "japanwest",
+        "electricitymapZone": "JP-KN",
+        "watttime": null
+      },
+      {
+        "azureRegion": "jioindiacentral",
+        "electricitymapZone": "IN-MH",
+        "watttime": null
+      },
+      {
+        "azureRegion": "koreasouth",
+        "electricitymapZone": "KR",
+        "watttime": null
+      },
+      {
+        "azureRegion": "southindia",
+        "electricitymapZone": "IN-TN",
+        "watttime": null
+      },
+      {
+        "azureRegion": "westindia",
+        "electricitymapZone": "IN-MH",
+        "watttime": null
+      },
+      {
+        "azureRegion": "canadaeast",
+        "electricitymapZone": "CA-QC",
+        "watttime": "HQ"
+      },
+      {
+        "azureRegion": "francesouth",
+        "electricitymapZone": "FR",
+        "watttime": "FR"
+      },
+      {
+        "azureRegion": "germanynorth",
+        "electricitymapZone": "DE",
+        "watttime": "DE"
+      },
+      {
+        "azureRegion": "norwaywest",
+        "electricitymapZone": "NO-NO2",
+        "watttime": "NO"
+      },
+      {
+        "azureRegion": "switzerlandwest",
+        "electricitymapZone": "CH",
+        "watttime": null
+      },
+      {
+        "azureRegion": "ukwest",
+        "electricitymapZone": "GB",
+        "watttime": "UK"
+      },
+      {
+        "azureRegion": "uaecentral",
+        "electricitymapZone": "AE",
+        "watttime": null
+      },
+      {
+        "azureRegion": "brazilsoutheast",
+        "electricitymapZone": "BR-CS",
+        "watttime": null
+      }
+    ]
+  },
+  { "cloud": "aws", "locations": [] }
+]
