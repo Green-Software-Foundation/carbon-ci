@@ -29,12 +29,11 @@ func httpQueryBuilder(zoneKey string, params TypAPIParams) (header map[string]st
 
 	header["auth-token"] = zoneKey
 
-	query["zone"] = params.Zone
-
-	if params.Lon != "" {
-		query["lon"] = params.Lon
+	if params.Zone != "" {
+		query["zone"] = params.Zone
 	}
-	if params.Lat != "" {
+	if params.Lon != "" && params.Lat != "" {
+		query["lon"] = params.Lon
 		query["lat"] = params.Lat
 	}
 	if params.Datetime != "" {
@@ -196,7 +195,6 @@ datetime | datetime in ISO format
 
 estimationFallback | (optional) boolean (if estimated data should be included)
 */
-
 func (e electricityMap) PastCarbonIntensity(params TypAPIParams) (typCI, error) {
 	url := fmt.Sprintf("%v/carbon-intensity/past", e.url)
 	var data typCI
