@@ -1,6 +1,6 @@
 package watttime
 
-// HEADERS FOR INIT HTTP REQUEST
+// httpRequestType represents the http request header
 type httpRequestType struct {
 	Url      string
 	Method   string
@@ -10,18 +10,19 @@ type httpRequestType struct {
 	Response interface{}
 }
 
-// WATTTIME - AUTHENTICATION
-type loginResponse struct {
+// loginResp represents the Login function response
+type loginResp struct {
 	Token string `json:"token"`
 }
 
-// WATTTIME -GRID EMISSIONS INFORMATION
+// determineGridRegionResp represents the DetermineGridRegion function response
 type determineGridRegionResp struct {
 	Abbrev string `json:"abbrev"`
 	Id     int    `json:"id"`
 	Name   string `json:"name"`
 }
 
+// listOfGridRegionsResp represents the ListOfGridRegion function response
 type listOfGridRegionsResp struct {
 	BA       string `json:"ba"`
 	Name     string `json:"name"`
@@ -29,6 +30,7 @@ type listOfGridRegionsResp struct {
 	DataType string `json:"datatype"`
 }
 
+// realTimeEmissionIndexResp represents the RealTimeEmissionsIndex function response
 type realTimeEmissionsIndexResp struct {
 	Freq      string `json:"freq"`
 	BA        string `json:"ba"`
@@ -37,6 +39,7 @@ type realTimeEmissionsIndexResp struct {
 	PointTime string `json:"point_time"`
 }
 
+// gridEmissionsDataResp represents the GridEmissionsData function response
 type gridEmissionsDataResp struct {
 	BA        string  `json:"ba"`
 	DataType  string  `json:"datatype"`
@@ -47,6 +50,7 @@ type gridEmissionsDataResp struct {
 	Version   string  `json:"version"`
 }
 
+// emissionForecastResp represents the EmissionForecast function response
 type emissionForecastResp struct {
 	GeneratedAt string     `json:"generated_at"`
 	Forecast    []forecast `json:"forecast"`
