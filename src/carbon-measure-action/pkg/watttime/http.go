@@ -8,7 +8,7 @@ import (
 	"net/http"
 )
 
-//INITIALIZE AND RETURN NEW REQUEST
+// initRequest initialize and return new request
 func initRequest(method string, url string, data map[string]string) (*http.Request, error) {
 	if len(method) == 0 {
 		return http.NewRequest(method, url, nil)
@@ -21,7 +21,7 @@ func initRequest(method string, url string, data map[string]string) (*http.Reque
 	}
 }
 
-// INITIALIZE NEW REQUEST
+// httpRequest initialize new request
 func httpRequest(headers httpRequestType) error {
 	client := &http.Client{}
 
@@ -31,34 +31,34 @@ func httpRequest(headers httpRequestType) error {
 		return err
 	}
 
-	// SET HEADERS/S
+	// Set headers
 	for h := range headers.Header {
 		req.Header.Add(h, headers.Header[h])
 	}
 
-	// SET QUERY STRING
+	// Set query string
 	query := req.URL.Query()
 	for q := range headers.Query {
 		query.Add(q, headers.Query[q])
 	}
 	req.URL.RawQuery = query.Encode()
 
-	// DO REQUEST
+	// Do request
 	resp, err := client.Do(req)
 	if err != nil {
 		return err
 	}
 
-	// EXECUTE AFTER FUNCTION RETURNS
+	// Execute after function returns
 	defer resp.Body.Close()
 
-	// GET RESPONSE DATA
+	// Get response data type byte array
 	bodyBytes, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		return err
 	}
 
-	// CONVERT RESPONSE DATA FROM BYTE ARRAY TO OBJECT
+	// Convert response data from byte array to object or to string if error is not nil.
 	err = json.Unmarshal(bodyBytes, &headers.Response)
 	if err != nil {
 		return errors.New("===== HTTP RESPONSE =====" + "\n" + string(bodyBytes))
