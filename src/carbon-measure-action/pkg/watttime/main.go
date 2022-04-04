@@ -1,3 +1,5 @@
+// Package watttime technology—based on real-time grid data, cutting-edge algorithms, and machine learning—provides first-of-its-kind
+// insight into your local electricity grid’s marginal emissions rate.
 package watttime
 
 import (
@@ -9,13 +11,13 @@ const url string = "https://api2.watttime.org/v2/"
 
 var token string
 
-// LOGIN - RESPONSE object { token }
+// Login obtain an access token, it returns an error if failed.
 func Login(username string, password string) error {
 	header := make(map[string]string)
 
 	header["Authorization"] = "Basic " + base64.StdEncoding.EncodeToString([]byte(username+":"+password))
 
-	var response loginResponse
+	var response loginResp
 
 	request := httpRequestType{
 		Url:      url + "login",
@@ -33,7 +35,7 @@ func Login(username string, password string) error {
 	return nil
 }
 
-// DETERMINE GRID REGION - RESPONSE object { id, abbrev, name }
+// DetermineGridRegion returns the details of the balancing authority (BA) serving that location, if known, or a Coordinates not found error if the point lies outside of known/covered BAs.
 func DetermineGridRegion(latitude float32, longitude float32) (*determineGridRegionResp, error) {
 	header := make(map[string]string)
 
@@ -60,7 +62,7 @@ func DetermineGridRegion(latitude float32, longitude float32) (*determineGridReg
 	return &response, nil
 }
 
-// LIST OF GRID REGIONS - RESPONSE object { ba, name, access, datatype }
+// ListOfGridRegions by default this function delivers a list of regions to which you have access. Optionally, it can return a list of all grid regions where WattTime has data coverage.
 func ListOfGridRegions(all bool) (*[]listOfGridRegionsResp, error) {
 	header := make(map[string]string)
 
@@ -86,7 +88,7 @@ func ListOfGridRegions(all bool) (*[]listOfGridRegionsResp, error) {
 	return &response, nil
 }
 
-// REAL-TIME EMISSIONS INDEX - RESPONSE object { freq, ba, percent, moer, point_time }
+// RealTimeEmissionsIndex provides a real-time signal indicating the marginal carbon intensity for the local grid for the current time (updated every 5 minutes).
 func RealTimeEmissionsIndex(ba string, latitude float32, longitude float32, style string) (*realTimeEmissionsIndexResp, error) {
 	header := make(map[string]string)
 
@@ -121,7 +123,7 @@ func RealTimeEmissionsIndex(ba string, latitude float32, longitude float32, styl
 	return &response, nil
 }
 
-// GRID EMISSIONS DATA - RESPONSE array [object { ba,  datatype, market, point_time, value, version }]
+// GridEmissionsData obtain historical marginal emissions (CO2 MOER in lbs of CO2 per MWh) for a given grid region (balancing authority abbreviated code, ba) or location (latitude & longitude pair).
 func GridEmissionsData(ba string, latitude float32, longitude float32, starttime string, endtime string, style string, moerversion string) (*[]gridEmissionsDataResp, error) {
 	header := make(map[string]string)
 
@@ -167,12 +169,12 @@ func GridEmissionsData(ba string, latitude float32, longitude float32, starttime
 	return &response, nil
 }
 
-// HISTORICAL EMISSIONS - RESPONSE A binary zip file payload containing monthly .csv files with MOERs for the specified balancing authority for the past two years. Save the body to disk and unzip it. : Binary Data Zip File
+// HistoricalEmissions obtain a zip file containing monthly .csv files with the MOER values and timestamps for a given region for (up to) the past two years.
 func HistoricalEmissions(ba string, version string) {
 	// RETURN CSV
 }
 
-//	EMISSIONS FORECAST - RESPONSE object { generated_at, forecast [{ba, point_time, value, version}]}
+// EmissionForecast obtain MOER forecast data for a given region.
 func EmissionsForecast(ba string, starttime string, endtime string, extendedForecast bool) (*[]emissionForecastResp, error) {
 	header := make(map[string]string)
 
@@ -210,7 +212,7 @@ func EmissionsForecast(ba string, starttime string, endtime string, extendedFore
 	return &response, nil
 }
 
-//	GRID REGION MAP GEOMETRY - RESPONSE A geojson response, that is a Feature Collection with properties that describe each BA, and multipolygon geometry made up of coordinates which define the boundary for each BA. The “meta” object contains the date-time that the geojson was last updated.
+// GridRegionMapGeometry provides a geojson of the grid region boundary for all regions that WattTime covers globally.
 func GridRegionMapGeometry() {
 	// RETURN CSV
 }
