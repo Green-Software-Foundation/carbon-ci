@@ -2,8 +2,8 @@ package infraascode
 
 import "fmt"
 
-func GetIACSummary(q TypIACQuery) []typSummary {
-	var summary []typSummary
+func GetIACSummary(q TypIACQuery) []TypSummary {
+	var summary []TypSummary
 	switch q.Filetype {
 	case "arm":
 		// Summarize ARM JSON file to resource and location
@@ -16,7 +16,7 @@ func GetIACSummary(q TypIACQuery) []typSummary {
 
 }
 
-func PrintSummary(summary *[]typSummary) {
+func PrintSummary(summary *[]TypSummary) {
 
 	fmt.Println()
 	fmt.Println()
@@ -51,17 +51,17 @@ type TypIACQuery struct {
 	Filename string
 }
 
-type typSummary struct {
+type TypSummary struct {
 	resource string
-	sizes    []typSizes
+	sizes    []TypSizes
 }
 
-type typSizes struct {
+type TypSizes struct {
 	size    string
-	details []typSummaryDetails
+	details []TypSummaryDetails
 }
 
-type typSummaryDetails struct {
+type TypSummaryDetails struct {
 	location string
 	count    int
 }
