@@ -31,7 +31,7 @@ func PrintSummary(summary *[]TypSummary) {
 	total := 0
 	for _, s := range *summary {
 		count := 0
-		fmt.Println(s.Resource)
+		fmt.Printf("%v - TOTAL: %v\n", s.Resource, s.Count)
 		for _, sz := range s.Sizes {
 			fmt.Printf("- Size/SKU: %v\n", sz.Size)
 			for _, d := range sz.Details {
@@ -54,6 +54,7 @@ type TypIACQuery struct {
 type TypSummary struct {
 	Resource string
 	Sizes    []TypSizes
+	Count    int
 }
 
 type TypSizes struct {
