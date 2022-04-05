@@ -44,20 +44,20 @@ func processArmSummary(summary *[]TypSummary, resource *TypResource) {
 			addArmResToSummary(summary, resource)
 		} else {
 			s := (*summary)[resIndex]
-			sizeExists, sizeIndex := isExistingSize(&s.sizes, getResourceSize(resource))
+			sizeExists, sizeIndex := isExistingSize(&s.Sizes, getResourceSize(resource))
 			if !sizeExists {
 				addArmSizeToRes(summary, resIndex, resource)
 			} else {
-				sz := (&s).sizes[sizeIndex]
-				locExists, locIndex := isExistingLocation(&sz.details, getParameterValue(resource.Location))
+				sz := (&s).Sizes[sizeIndex]
+				locExists, locIndex := isExistingLocation(&sz.Details, getParameterValue(resource.Location))
 				if !locExists {
 					addArmLocToSize(summary, resIndex, sizeIndex, resource)
 				} else {
-					fmt.Println(sz.details)
+					fmt.Println(sz.Details)
 					fmt.Println(locIndex)
-					d := sz.details[locIndex]
-					if d.location == getParameterValue(resource.Location) {
-						(*summary)[resIndex].sizes[sizeIndex].details[locIndex].count++
+					d := sz.Details[locIndex]
+					if d.Location == getParameterValue(resource.Location) {
+						(*summary)[resIndex].Sizes[sizeIndex].Details[locIndex].Count++
 					}
 				}
 			}
@@ -69,7 +69,7 @@ func isExistingResource(summary *[]TypSummary, resource *TypResource) (bool, int
 	exists := false
 	index := 0
 	for n, s := range *summary {
-		if s.resource == resource.Type {
+		if s.Resource == resource.Type {
 			exists = true
 			index = n
 		}
@@ -81,7 +81,7 @@ func isExistingSize(sizes *[]TypSizes, size string) (bool, int) {
 	exists := false
 	index := 0
 	for n, s := range *sizes {
-		if s.size == size {
+		if s.Size == size {
 			exists = true
 			index = n
 		}
@@ -93,7 +93,7 @@ func isExistingLocation(details *[]TypSummaryDetails, location string) (bool, in
 	exists := false
 	index := 0
 	for n, s := range *details {
-		if s.location == location {
+		if s.Location == location {
 			exists = true
 			index = n
 		}
@@ -102,7 +102,7 @@ func isExistingLocation(details *[]TypSummaryDetails, location string) (bool, in
 }
 
 func defDetails(resource *TypResource) (dtl []TypSummaryDetails) {
-	dtl = append(dtl, TypSummaryDetails{location: getParameterValue(resource.Location), count: 1})
+	dtl = append(dtl, TypSummaryDetails{Location: getParameterValue(resource.Location), Count: 1})
 	return
 }
 
@@ -110,20 +110,20 @@ func addArmResToSummary(summary *[]TypSummary, resource *TypResource) {
 	dtl := defDetails(resource)
 	size := getResourceSize(resource)
 	var sizes []TypSizes
-	sizes = append(sizes, TypSizes{size: size, details: dtl})
-	sum := TypSummary{resource: resource.Type, sizes: sizes}
+	sizes = append(sizes, TypSizes{Size: size, Details: dtl})
+	sum := TypSummary{Resource: resource.Type, Sizes: sizes}
 	*summary = append(*summary, sum)
 }
 
 func addArmSizeToRes(summary *[]TypSummary, resIndex int, resource *TypResource) {
 	dtl := defDetails(resource)
-	size := TypSizes{size: getResourceSize(resource), details: dtl}
-	(*summary)[resIndex].sizes = append((*summary)[resIndex].sizes, size)
+	size := TypSizes{Size: getResourceSize(resource), Details: dtl}
+	(*summary)[resIndex].Sizes = append((*summary)[resIndex].Sizes, size)
 }
 
 func addArmLocToSize(summary *[]TypSummary, resIndex int, sizeIndex int, resource *TypResource) {
-	dtl := TypSummaryDetails{location: getParameterValue(resource.Location), count: 1}
-	(*summary)[resIndex].sizes[sizeIndex].details = append((*summary)[resIndex].sizes[sizeIndex].details, dtl)
+	dtl := TypSummaryDetails{Location: getParameterValue(resource.Location), Count: 1}
+	(*summary)[resIndex].Sizes[sizeIndex].Details = append((*summary)[resIndex].Sizes[sizeIndex].Details, dtl)
 }
 
 func getResourceSize(resource *TypResource) string {
