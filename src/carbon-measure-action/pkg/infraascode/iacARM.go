@@ -19,9 +19,9 @@ func readJSON(jsonPath string) TypARM {
 	return arm
 }
 
-func armSummary(filename string) []typSummary {
+func armSummary(filename string) []TypSummary {
 	data = readJSON(filename)
-	var summary []typSummary
+	var summary []TypSummary
 	for _, resource := range data.Resources {
 		if resource.Type == "Microsoft.Resources/deployments" {
 			for _, depResource := range resource.Properties.Template.Resources {
@@ -34,7 +34,7 @@ func armSummary(filename string) []typSummary {
 	return summary
 }
 
-func processArmSummary(summary *[]typSummary, resource *TypResource) {
+func processArmSummary(summary *[]TypSummary, resource *TypResource) {
 
 	if len(*summary) == 0 {
 		addArmResToSummary(summary, resource)
@@ -65,7 +65,7 @@ func processArmSummary(summary *[]typSummary, resource *TypResource) {
 	}
 }
 
-func isExistingResource(summary *[]typSummary, resource *TypResource) (bool, int) {
+func isExistingResource(summary *[]TypSummary, resource *TypResource) (bool, int) {
 	exists := false
 	index := 0
 	for n, s := range *summary {
@@ -77,7 +77,7 @@ func isExistingResource(summary *[]typSummary, resource *TypResource) (bool, int
 	return exists, index
 }
 
-func isExistingSize(sizes *[]typSizes, size string) (bool, int) {
+func isExistingSize(sizes *[]TypSizes, size string) (bool, int) {
 	exists := false
 	index := 0
 	for n, s := range *sizes {
@@ -89,7 +89,7 @@ func isExistingSize(sizes *[]typSizes, size string) (bool, int) {
 	return exists, index
 }
 
-func isExistingLocation(details *[]typSummaryDetails, location string) (bool, int) {
+func isExistingLocation(details *[]TypSummaryDetails, location string) (bool, int) {
 	exists := false
 	index := 0
 	for n, s := range *details {
@@ -101,28 +101,28 @@ func isExistingLocation(details *[]typSummaryDetails, location string) (bool, in
 	return exists, index
 }
 
-func defDetails(resource *TypResource) (dtl []typSummaryDetails) {
-	dtl = append(dtl, typSummaryDetails{location: getParameterValue(resource.Location), count: 1})
+func defDetails(resource *TypResource) (dtl []TypSummaryDetails) {
+	dtl = append(dtl, TypSummaryDetails{location: getParameterValue(resource.Location), count: 1})
 	return
 }
 
-func addArmResToSummary(summary *[]typSummary, resource *TypResource) {
+func addArmResToSummary(summary *[]TypSummary, resource *TypResource) {
 	dtl := defDetails(resource)
 	size := getResourceSize(resource)
-	var sizes []typSizes
-	sizes = append(sizes, typSizes{size: size, details: dtl})
-	sum := typSummary{resource: resource.Type, sizes: sizes}
+	var sizes []TypSizes
+	sizes = append(sizes, TypSizes{size: size, details: dtl})
+	sum := TypSummary{resource: resource.Type, sizes: sizes}
 	*summary = append(*summary, sum)
 }
 
-func addArmSizeToRes(summary *[]typSummary, resIndex int, resource *TypResource) {
+func addArmSizeToRes(summary *[]TypSummary, resIndex int, resource *TypResource) {
 	dtl := defDetails(resource)
-	size := typSizes{size: getResourceSize(resource), details: dtl}
+	size := TypSizes{size: getResourceSize(resource), details: dtl}
 	(*summary)[resIndex].sizes = append((*summary)[resIndex].sizes, size)
 }
 
-func addArmLocToSize(summary *[]typSummary, resIndex int, sizeIndex int, resource *TypResource) {
-	dtl := typSummaryDetails{location: getParameterValue(resource.Location), count: 1}
+func addArmLocToSize(summary *[]TypSummary, resIndex int, sizeIndex int, resource *TypResource) {
+	dtl := TypSummaryDetails{location: getParameterValue(resource.Location), count: 1}
 	(*summary)[resIndex].sizes[sizeIndex].details = append((*summary)[resIndex].sizes[sizeIndex].details, dtl)
 }
 
