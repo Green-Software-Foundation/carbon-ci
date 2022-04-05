@@ -31,13 +31,13 @@ func PrintSummary(summary *[]TypSummary) {
 	total := 0
 	for _, s := range *summary {
 		count := 0
-		fmt.Println(s.resource)
-		for _, sz := range s.sizes {
-			fmt.Printf("- Size/SKU: %v\n", sz.size)
-			for _, d := range sz.details {
-				fmt.Printf("  - %v in %v\n", d.count, d.location)
-				count += d.count
-				total += d.count
+		fmt.Println(s.Resource)
+		for _, sz := range s.Sizes {
+			fmt.Printf("- Size/SKU: %v\n", sz.Size)
+			for _, d := range sz.Details {
+				fmt.Printf("  - %v in %v\n", d.Count, d.Location)
+				count += d.Count
+				total += d.Count
 			}
 		}
 		fmt.Printf("TOTAL: %v\n", count)
@@ -52,16 +52,16 @@ type TypIACQuery struct {
 }
 
 type TypSummary struct {
-	resource string
-	sizes    []TypSizes
+	Resource string
+	Sizes    []TypSizes
 }
 
 type TypSizes struct {
-	size    string
-	details []TypSummaryDetails
+	Size    string
+	Details []TypSummaryDetails
 }
 
 type TypSummaryDetails struct {
-	location string
-	count    int
+	Location string
+	Count    int
 }
