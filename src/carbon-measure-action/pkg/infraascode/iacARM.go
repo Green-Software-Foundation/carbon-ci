@@ -43,6 +43,7 @@ func processArmSummary(summary *[]TypSummary, resource *TypResource) {
 		if !resourceExists {
 			addArmResToSummary(summary, resource)
 		} else {
+			(*summary)[resIndex].Count++
 			s := (*summary)[resIndex]
 			sizeExists, sizeIndex := isExistingSize(&s.Sizes, getResourceSize(resource))
 			if !sizeExists {
@@ -111,7 +112,7 @@ func addArmResToSummary(summary *[]TypSummary, resource *TypResource) {
 	size := getResourceSize(resource)
 	var sizes []TypSizes
 	sizes = append(sizes, TypSizes{Size: size, Details: dtl})
-	sum := TypSummary{Resource: resource.Type, Sizes: sizes}
+	sum := TypSummary{Resource: resource.Type, Sizes: sizes, Count: 1}
 	*summary = append(*summary, sum)
 }
 
