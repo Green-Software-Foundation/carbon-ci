@@ -113,9 +113,9 @@ func getCloudProviderResourceType(pulumiResourceType string, ref *[]typResourceT
 	return pulumiResourceType
 }
 
-func pulumiSummary(stackJson string, previewJson string) []typSummary {
+func pulumiSummary(stackJson string, previewJson string) []TypSummary {
 	var resourceList []typCloudResource
-	var summary []typSummary
+	var summary []TypSummary
 
 	stack, preview := readPulumiJSON(stackJson, previewJson)
 	resourceList = processStackData(stack)
@@ -130,16 +130,16 @@ func pulumiSummary(stackJson string, previewJson string) []typSummary {
 		resource.Type = getCloudProviderResourceType(resource.Type, &resourceTypeRef)
 		resourceExists, resourceIndex := isExistingPulumiResource(&summary, resource.Type)
 		if resourceExists {
-			sizeExists, sizeIndex := isExistingSize(&summary[resourceIndex].sizes, resource.SKU)
+			sizeExists, sizeIndex := isExistingSize(&summary[resourceIndex].Sizes, resource.SKU)
 			if sizeExists {
-				locationExists, locationIndex := isExistingLocation(&summary[resourceIndex].sizes[sizeIndex].details, resource.Location)
+				locationExists, locationIndex := isExistingLocation(&summary[resourceIndex].Sizes[sizeIndex].Details, resource.Location)
 				if locationExists {
-					summary[resourceIndex].sizes[sizeIndex].details[locationIndex].count += 1
+					summary[resourceIndex].Sizes[sizeIndex].Details[locationIndex].Count += 1
 				} else {
-					summary[resourceIndex].sizes[sizeIndex].details = append(summary[resourceIndex].sizes[sizeIndex].details, defineTypSummaryDetails(&resource))
+					summary[resourceIndex].Sizes[sizeIndex].Details = append(summary[resourceIndex].Sizes[sizeIndex].Details, defineTypSummaryDetails(&resource))
 				}
 			} else {
-				summary[resourceIndex].sizes = append(summary[resourceIndex].sizes, defineTypSize(&resource))
+				summary[resourceIndex].Sizes = append(summary[resourceIndex].Sizes, defineTypSize(&resource))
 			}
 		} else {
 			summary = append(summary, defineTypSummary(&resource))
@@ -148,32 +148,32 @@ func pulumiSummary(stackJson string, previewJson string) []typSummary {
 	return summary
 }
 
-func defineTypSummaryDetails(resource *typCloudResource) typSummaryDetails {
-	return typSummaryDetails{
-		location: (*resource).Location,
-		count:    1,
+func defineTypSummaryDetails(resource *typCloudResource) TypSummaryDetails {
+	return TypSummaryDetails{
+		Location: (*resource).Location,
+		Count:    1,
 	}
 }
 
-func defineTypSize(resource *typCloudResource) typSizes {
-	return typSizes{
-		size:    (*resource).SKU,
-		details: []typSummaryDetails{defineTypSummaryDetails(resource)},
+func defineTypSize(resource *typCloudResource) TypSizes {
+	return TypSizes{
+		Size:    (*resource).SKU,
+		Details: []TypSummaryDetails{defineTypSummaryDetails(resource)},
 	}
 }
 
-func defineTypSummary(resource *typCloudResource) typSummary {
-	return typSummary{
-		resource: (*resource).Type,
-		sizes:    []typSizes{defineTypSize(resource)},
+func defineTypSummary(resource *typCloudResource) TypSummary {
+	return TypSummary{
+		Resource: (*resource).Type,
+		Sizes:    []TypSizes{defineTypSize(resource)},
 	}
 }
 
-func isExistingPulumiResource(summary *[]typSummary, resource string) (bool, int) {
+func isExistingPulumiResource(summary *[]TypSummary, resource string) (bool, int) {
 	exists := false
 	index := 0
 	for n, s := range *summary {
-		if s.resource == resource {
+		if s.Resource == resource {
 			exists = true
 			index = n
 		}
