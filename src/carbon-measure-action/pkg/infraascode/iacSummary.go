@@ -2,8 +2,8 @@ package infraascode
 
 import "fmt"
 
-func GetIACSummary(q TypIACQuery) []typSummary {
-	var summary []typSummary
+func GetIACSummary(q TypIACQuery) []TypSummary {
+	var summary []TypSummary
 	switch q.Filetype {
 	case "arm":
 		// Summarize ARM JSON file to resource and location
@@ -20,7 +20,7 @@ func GetIACSummary(q TypIACQuery) []typSummary {
 
 }
 
-func PrintSummary(summary *[]typSummary) {
+func PrintSummary(summary *[]TypSummary) {
 
 	fmt.Println()
 	fmt.Println()
@@ -35,13 +35,13 @@ func PrintSummary(summary *[]typSummary) {
 	total := 0
 	for _, s := range *summary {
 		count := 0
-		fmt.Println(s.resource)
-		for _, sz := range s.sizes {
-			fmt.Printf("- Size/SKU: %v\n", sz.size)
-			for _, d := range sz.details {
-				fmt.Printf("  - %v in %v\n", d.count, d.location)
-				count += d.count
-				total += d.count
+		fmt.Printf("%v - TOTAL: %v\n", s.Resource, s.Count)
+		for _, sz := range s.Sizes {
+			fmt.Printf("- Size/SKU: %v\n", sz.Size)
+			for _, d := range sz.Details {
+				fmt.Printf("  - %v in %v\n", d.Count, d.Location)
+				count += d.Count
+				total += d.Count
 			}
 		}
 		fmt.Printf("TOTAL: %v\n", count)
@@ -56,17 +56,18 @@ type TypIACQuery struct {
 	PreviewFileName string
 }
 
-type typSummary struct {
-	resource string
-	sizes    []typSizes
+type TypSummary struct {
+	Resource string
+	Sizes    []TypSizes
+	Count    int
 }
 
-type typSizes struct {
-	size    string
-	details []typSummaryDetails
+type TypSizes struct {
+	Size    string
+	Details []TypSummaryDetails
 }
 
-type typSummaryDetails struct {
-	location string
-	count    int
+type TypSummaryDetails struct {
+	Location string
+	Count    int
 }
