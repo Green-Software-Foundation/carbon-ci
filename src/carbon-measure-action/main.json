@@ -1,0 +1,196 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "metadata": {
+    "_generator": {
+      "name": "bicep",
+      "version": "0.4.1272.37030",
+      "templateHash": "6479061562184651793"
+    }
+  },
+  "parameters": {
+    "location": {
+      "type": "string",
+      "defaultValue": "southeastasia",
+      "allowedValues": [
+        "southeastasia",
+        "eastasia"
+      ]
+    },
+    "location2": {
+      "type": "string",
+      "defaultValue": "eastasia",
+      "allowedValues": [
+        "southeastasia",
+        "eastasia"
+      ]
+    },
+    "uname": {
+      "type": "string",
+      "defaultValue": "user"
+    },
+    "upass": {
+      "type": "string",
+      "defaultValue": "pass"
+    }
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Storage/storageAccounts",
+      "apiVersion": "2021-02-01",
+      "name": "name",
+      "location": "[parameters('location')]",
+      "kind": "StorageV2",
+      "sku": {
+        "name": "Standard_GRS"
+      }
+    },
+    {
+      "type": "Microsoft.Storage/storageAccounts",
+      "apiVersion": "2021-02-01",
+      "name": "name2",
+      "location": "[parameters('location2')]",
+      "kind": "StorageV2",
+      "sku": {
+        "name": "Standard_LRS"
+      }
+    },
+    {
+      "type": "Microsoft.Web/serverfarms",
+      "apiVersion": "2020-12-01",
+      "name": "asp-go-demo",
+      "location": "[parameters('location')]",
+      "sku": {
+        "name": "F1",
+        "capacity": 1
+      }
+    },
+    {
+      "type": "Microsoft.Compute/virtualMachines",
+      "apiVersion": "2020-12-01",
+      "name": "name1",
+      "location": "[parameters('location')]",
+      "properties": {
+        "hardwareProfile": {
+          "vmSize": "Standard_A2_v2"
+        },
+        "osProfile": {
+          "computerName": "computerName",
+          "adminUsername": "[parameters('uname')]",
+          "adminPassword": "[parameters('upass')]"
+        },
+        "storageProfile": {
+          "imageReference": {
+            "publisher": "MicrosoftWindowsServer",
+            "offer": "WindowsServer",
+            "sku": "2012-R2-Datacenter",
+            "version": "latest"
+          },
+          "osDisk": {
+            "name": "name",
+            "caching": "ReadWrite",
+            "createOption": "FromImage"
+          }
+        },
+        "networkProfile": {
+          "networkInterfaces": [
+            {
+              "id": "id"
+            }
+          ]
+        },
+        "diagnosticsProfile": {
+          "bootDiagnostics": {
+            "enabled": true,
+            "storageUri": "storageUri"
+          }
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Compute/virtualMachines",
+      "apiVersion": "2020-12-01",
+      "name": "name",
+      "location": "[parameters('location')]",
+      "properties": {
+        "hardwareProfile": {
+          "vmSize": "Standard_A2_v2"
+        },
+        "osProfile": {
+          "computerName": "computerName",
+          "adminUsername": "[parameters('uname')]",
+          "adminPassword": "[parameters('upass')]"
+        },
+        "storageProfile": {
+          "imageReference": {
+            "publisher": "MicrosoftWindowsServer",
+            "offer": "WindowsServer",
+            "sku": "2012-R2-Datacenter",
+            "version": "latest"
+          },
+          "osDisk": {
+            "name": "name",
+            "caching": "ReadWrite",
+            "createOption": "FromImage"
+          }
+        },
+        "networkProfile": {
+          "networkInterfaces": [
+            {
+              "id": "id"
+            }
+          ]
+        },
+        "diagnosticsProfile": {
+          "bootDiagnostics": {
+            "enabled": true,
+            "storageUri": "storageUri"
+          }
+        }
+      }
+    }
+    ,
+    {
+      "type": "Microsoft.Compute/virtualMachines",
+      "apiVersion": "2020-12-01",
+      "name": "name2",
+      "location": "[parameters('location')]",
+      "properties": {
+        "hardwareProfile": {
+          "vmSize": "Standard_A2_v1"
+        },
+        "osProfile": {
+          "computerName": "computerName",
+          "adminUsername": "[parameters('uname')]",
+          "adminPassword": "[parameters('upass')]"
+        },
+        "storageProfile": {
+          "imageReference": {
+            "publisher": "MicrosoftWindowsServer",
+            "offer": "WindowsServer",
+            "sku": "2012-R2-Datacenter",
+            "version": "latest"
+          },
+          "osDisk": {
+            "name": "name",
+            "caching": "ReadWrite",
+            "createOption": "FromImage"
+          }
+        },
+        "networkProfile": {
+          "networkInterfaces": [
+            {
+              "id": "id"
+            }
+          ]
+        },
+        "diagnosticsProfile": {
+          "bootDiagnostics": {
+            "enabled": true,
+            "storageUri": "storageUri"
+          }
+        }
+      }
+    }
+  ]
+}

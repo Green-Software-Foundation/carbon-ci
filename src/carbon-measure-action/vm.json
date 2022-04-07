@@ -1,0 +1,65 @@
+{
+    "name": "jerricoWinVM01",
+    "id": "/subscriptions/5179e7a7-9ff6-4062-9087-41315907f8d6/resourceGroups/JerricoVM/providers/Microsoft.Compute/virtualMachines/jerricoWinVM01",
+    "type": "Microsoft.Compute/virtualMachines",
+    "location": "westus",
+    "tags": {
+        "displayName": "jerricoWinVM01"
+    },
+    "properties": {
+        "vmId": "43dc6544-44fd-471f-ba24-56a115e4f1ac",
+        "hardwareProfile": {
+            "vmSize": "Standard_A2_v2"
+        },
+        "storageProfile": {
+            "imageReference": {
+                "publisher": "MicrosoftWindowsServer",
+                "offer": "WindowsServer",
+                "sku": "2012-R2-Datacenter",
+                "version": "latest",
+                "exactVersion": "9600.20303.220303"
+            },
+            "osDisk": {
+                "osType": "Windows",
+                "name": "jerricoWinVM01OSDisk",
+                "createOption": "FromImage",
+                "caching": "ReadWrite",
+                "managedDisk": {
+                    "id": "/subscriptions/5179e7a7-9ff6-4062-9087-41315907f8d6/resourceGroups/JerricoVM/providers/Microsoft.Compute/disks/jerricoWinVM01OSDisk"
+                },
+                "deleteOption": "Detach"
+            },
+            "dataDisks": []
+        },
+        "osProfile": {
+            "computerName": "jerricoWinVM01",
+            "adminUsername": "jerricoUsername",
+            "windowsConfiguration": {
+                "provisionVMAgent": true,
+                "enableAutomaticUpdates": true,
+                "patchSettings": {
+                    "patchMode": "AutomaticByOS",
+                    "assessmentMode": "ImageDefault"
+                }
+            },
+            "secrets": [],
+            "allowExtensionOperations": true,
+            "requireGuestProvisionSignal": true
+        },
+        "networkProfile": {
+            "networkInterfaces": [
+                {
+                    "id": "/subscriptions/5179e7a7-9ff6-4062-9087-41315907f8d6/resourceGroups/JerricoVM/providers/Microsoft.Network/networkInterfaces/jerricoWinVM01-NetworkInterface"
+                }
+            ]
+        },
+        "diagnosticsProfile": {
+            "bootDiagnostics": {
+                "enabled": true,
+                "storageUri": "https://jerricowinvm01storage.blob.core.windows.net/"
+            }
+        },
+        "provisioningState": "Succeeded",
+        "timeCreated": "2022-03-21T06:15:34.3209131+00:00"
+    }
+}
