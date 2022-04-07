@@ -2,21 +2,30 @@ package main
 
 import (
 	"fmt"
-	iac "main/pkg/iacARM"
+	EM "main/pkg/electricitymap"
+	iac "main/pkg/infraascode"
 	"os"
 )
 
 func main() {
+	// TODO: Additional environment variables
+	// cloudProvider := os.Getenv("CloudProvider")
+	// CarbonRateProvider := os.Getenv("CARBON_RATE_PROVIDER") // electricitymap or watttime
+	// wattTimeUser := os.Getenv("WATT_TIME_USER")
+	// wattTimePass := os.Getenv("WATT_TIME_PASS")
+
 	githubNoticeMessage("Starting carbon measure action.")
 	infraFileType := os.Getenv("IACType")
-	infraFileName := os.Getenv("IACFile")
+	infraFileName := os.Getenv("IACTemplateFile")
+	electricityMapZoneKey := os.Getenv("ELECTRICITY_MAP_AUTH_TOKEN")
+
 	// TODO: For terraform, we might need to accept a list of multiple files
 
-	if infraFileType == "arm" {
-		processARMData(infraFileName)
-	}
+	iac.GetIACSummary(iac.TypIACQuery{Filetype: infraFileType, Filename: infraFileName})
 
-	electricityMapZoneKey := os.Getenv("ELECTRICITY_MAP_AUTH_TOKEN")
+	em := EM.New(electricityMapZoneKey)
+	em.LiveCarbonIntensity(EM.TypAPIParams{Zone: "US-CAL-CISCO"})
+
 	totalKwh := iterateOverFile(infraFileName, infraFileType)
 	averageKwh := getCarbonIntensity(electricityMapZoneKey)
 	// this comes from electricity map
@@ -24,17 +33,6 @@ func main() {
 	gitHubOutputVariable("grams_carbon_equivalent_per_kwh", fmt.Sprint(averageKwh))
 	gitHubOutputVariable("grams_emitted_over_24h", fmt.Sprint(carbonIntensity))
 	githubNoticeMessage("Successfully ran carbon measure action.")
-}
-
-func processARMData(file string) {
-	data := iac.ReadJSON(file)
-
-	// Summarize ARM JSON file to resource and location
-	// TODO: Need to retrieve Variables and Parameters values inside resource type "Microsoft.Resources/deployments"
-	summary := iac.SummarizeData(&data)
-
-	// Print out summarized ARM data
-	iac.PrintSummary(&summary, &data)
 }
 
 func getCarbonIntensity(zoneKey string) int {
