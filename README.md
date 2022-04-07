@@ -3,11 +3,9 @@
 > Calculate the carbon emissions of an application via static analysis of the code and any infrastructure as code files in a repository.
 
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
-![GitHub issues](https://img.shields.io/github/issues/ava-innersource/carbon-measurement)
-![GitHub](https://img.shields.io/github/license/ava-innersource/carbon-measurement)
-![GitHub Repo stars](https://img.shields.io/github/stars/ava-innersource/carbon-measurement?style=social)
-[![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg)](https://avanade.github.io/code-of-conduct/)
-[![Incubating InnerSource](https://img.shields.io/badge/Incubating-Ava--Maturity-%23FF5800?labelColor=yellow)](https://avanade.github.io/maturity-model/)
+![GitHub issues](https://img.shields.io/github/issues/Green-Software-Foundation/Carbon_CI_Pipeline_Tooling)
+![GitHub](https://img.shields.io/github/license/Green-Software-Foundation/Carbon_CI_Pipeline_Tooling)
+![GitHub Repo stars](https://img.shields.io/github/stars/Green-Software-Foundation/Carbon_CI_Pipeline_Tooling?style=social)
 
 ## Scope
 
@@ -71,7 +69,7 @@ carbon_ci_pipeline_tooling is available under the [MIT Licence](./LICENCE).
 
 ## Copyright
 
-Innovation WG projects are copyrighted under [Creative Commons Attribution 4.0](https://creativecommons.org/licenses/by/4.0/).
+Open Source Innovation WG projects are copyrighted under [Creative Commons Attribution 4.0](https://creativecommons.org/licenses/by/4.0/).
 
 ## Patent
 
