@@ -33,11 +33,10 @@ KWH[kWh per Resource]
 C --Print out total carbon emissions\nused by the infrastructure--> G
 ARM --Read and summarizes\nARM Template--> IAC
 IAC --Return summarized\nInfrastructure--> C
-EM --> PA
-WT --> PA
-LOC --Returns list of cloud locations\nand API equivalent--> PA
+EM & WT --> PA
+LOC -.JSON list of cloud locations\nand API equivalent.-> PA
 PA --Return queried\ncarbon emission rating--> C
-KWH --Cloud resource and\nequivalent kWh rating--> C
+KWH -.JSON list of cloud resources and\nequivalent kWh rating.-> C
 ```
 
 
