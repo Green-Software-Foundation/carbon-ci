@@ -19,14 +19,24 @@ This repository contains examples to demonstrate how to measure carbon during th
 ## Application Diagram
 
 ```mermaid
-C[Carbon Measurement] --> G[Print to Github]
-ARM[ARM Template] --> iac[IAC Summary Pkg]
-iac --> C
-EM[Electricity Map API] --> PA[Power Adapter]
-WT[Watt Time API] --> PA
-Loc[Azure Location Mapping] --> PA
+flowchart LR
+C[Carbon Measurement]
+G[Print to Github]
+ARM[ARM Template]
+IAC[IAC Summary Pkg]
+EM[Electricity Map API]
+PA[Power Adapter]
+WT[Watt Time API]
+LOC[Azure Location Mapping]
+KWH[kWh per Resource]
+
+C --> G
+ARM --> IAC --> C
+EM --> PA
+WT --> PA
+LOC --> PA
 PA --> C
-KWH[kWh per Resource] --> C
+KWH --> C
 ```
 
 
