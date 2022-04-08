@@ -22,7 +22,7 @@ This repository contains examples to demonstrate how to measure carbon during th
 flowchart LR
 C[Carbon Measurement]
 G[Print to Github]
-ARM[ARM Template]
+ARM[ARM Pkg]
 IAC[IAC Summary Pkg]
 EM[Electricity Map API]
 PA[Power Adapter]
@@ -30,13 +30,14 @@ WT[Watt Time API]
 LOC[Azure Location Mapping]
 KWH[kWh per Resource]
 
-C --> G
-ARM --> IAC --> C
+C --Print out total carbon emissions\nused by the infrastructure--> G
+ARM --Read and summarizes\nARM Template--> IAC
+IAC --Return summarized\nInfrastructure--> C
 EM --> PA
 WT --> PA
-LOC --> PA
-PA --> C
-KWH --> C
+LOC --Returns list of cloud locations\nand API equivalent--> PA
+PA --Return queried\ncarbon emission rating--> C
+KWH --Cloud resource and\nequivalent kWh rating--> C
 ```
 
 
