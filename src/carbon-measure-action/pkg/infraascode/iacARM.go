@@ -139,23 +139,16 @@ func getResourceSize(resource *TypResource) string {
 }
 
 func getValue(inputValue string) string {
-	var returnValue string
-	source := "string"
+
 	if strings.Contains(inputValue, "[parameters(") {
-		source = "parameters"
+		p := strings.Split(inputValue, "'")
+		return data.Parameters[p[1]].DefaultValue
 	} else if strings.Contains(inputValue, "[variables(") {
-		source = "variables"
+		p := strings.Split(inputValue, "'")
+		return data.Variables[p[1]]
 	}
-	p := strings.Split(inputValue, "'")
-	switch source {
-	case "parameters":
-		returnValue = data.Parameters[p[1]].DefaultValue
-	case "variables":
-		returnValue = data.Variables[p[1]]
-	default:
-		returnValue = inputValue
-	}
-	return returnValue
+
+	return inputValue
 }
 
 type TypARM struct {
