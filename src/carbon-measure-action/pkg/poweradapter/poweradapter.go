@@ -70,11 +70,3 @@ func LiveCarbonIntensity() {
 	//Type this in PS
 	//$Env:ELECTRICITY_MAP_AUTH_TOKEN="3bhtgXSayVvgmuwEHry6zYYr"
 }
-
-//RecentCarbonIntensity
-// func RecentCarbonIntensity() {
-// 	electricityMapZoneKey := os.Getenv("ELECTRICITY_MAP_AUTH_TOKEN")
-// 	em := EM.New(electricityMapZoneKey)
-// 	data2, _ := em.RecentCarbonIntensity(EM.TypAPIParams{Zone: "US-CAL-CISO"})
-// 	fmt.Println("Printing --> RecentCarbonIntensity....... ", data2)
-// }
