@@ -7,6 +7,7 @@ import (
 	"strings"
 )
 
+// Open stack and preview json and serialize
 func readPulumiJSON(stackJson string, previewJson string) (typStack, typPreview) {
 	stackFile, _ := ioutil.ReadFile(stackJson)
 	previewFile, _ := ioutil.ReadFile(previewJson)
@@ -26,6 +27,7 @@ func readPulumiJSON(stackJson string, previewJson string) (typStack, typPreview)
 	return stack, preview
 }
 
+// Using the stack data from the json file, generate a list of resources
 func processStackData(stack typStack) []typCloudResource {
 	var resourceList []typCloudResource
 
@@ -43,6 +45,7 @@ func processStackData(stack typStack) []typCloudResource {
 	return resourceList
 }
 
+// Update the generated resource list with the preview data
 func processPreviewData(preview typPreview, resourceList *[]typCloudResource) {
 	for _, step := range preview.Steps {
 		if strings.Split(step.State.Type, ":")[0] != "pulumi" && !strings.Contains(step.State.Type, "resourceGroup") {
@@ -67,6 +70,7 @@ func processPreviewData(preview typPreview, resourceList *[]typCloudResource) {
 	}
 }
 
+// Identify the cloud provider
 func getCloudProvider(stack *typStack, preview *typPreview) string {
 
 	// Check for cloud provider on stack data
@@ -89,7 +93,8 @@ func getCloudProvider(stack *typStack, preview *typPreview) string {
 	return ""
 }
 
-func openResourceTypeRefenrece() []typResourceTypesReference {
+// Open the reference file used to map pulumi resource type to the cloud provider resource type
+func openResourceTypeReference() []typResourceTypesReference {
 	ref, _ := ioutil.ReadFile("./references/resourceTypes.json")
 
 	var resourceTypeRef []typResourceTypesReference
@@ -103,6 +108,7 @@ func openResourceTypeRefenrece() []typResourceTypesReference {
 	return resourceTypeRef
 }
 
+// Returns the corresponding cloud provider resource type
 func getCloudProviderResourceType(pulumiResourceType string, ref *[]typResourceTypesReference) string {
 	for _, resourceType := range *ref {
 		if resourceType.PulumiResourceType == pulumiResourceType {
@@ -113,6 +119,7 @@ func getCloudProviderResourceType(pulumiResourceType string, ref *[]typResourceT
 	return pulumiResourceType
 }
 
+// main function to generate TypSummary from the stack json and preview json
 func pulumiSummary(stackJson string, previewJson string) []TypSummary {
 	var resourceList []typCloudResource
 	var summary []TypSummary
@@ -124,7 +131,7 @@ func pulumiSummary(stackJson string, previewJson string) []TypSummary {
 	cloudProvider := getCloudProvider(&stack, &preview)
 	fmt.Printf("Cloud provider is %v.\n", cloudProvider)
 
-	resourceTypeRef := openResourceTypeRefenrece()
+	resourceTypeRef := openResourceTypeReference()
 
 	for _, resource := range resourceList {
 		resource.Type = getCloudProviderResourceType(resource.Type, &resourceTypeRef)
@@ -135,11 +142,14 @@ func pulumiSummary(stackJson string, previewJson string) []TypSummary {
 				locationExists, locationIndex := isExistingLocation(&summary[resourceIndex].Sizes[sizeIndex].Details, resource.Location)
 				if locationExists {
 					summary[resourceIndex].Sizes[sizeIndex].Details[locationIndex].Count += 1
+					summary[resourceIndex].Count += 1
 				} else {
 					summary[resourceIndex].Sizes[sizeIndex].Details = append(summary[resourceIndex].Sizes[sizeIndex].Details, defineTypSummaryDetails(&resource))
+					summary[resourceIndex].Count += 1
 				}
 			} else {
 				summary[resourceIndex].Sizes = append(summary[resourceIndex].Sizes, defineTypSize(&resource))
+				summary[resourceIndex].Count += 1
 			}
 		} else {
 			summary = append(summary, defineTypSummary(&resource))
@@ -166,12 +176,13 @@ func defineTypSummary(resource *typCloudResource) TypSummary {
 	return TypSummary{
 		Resource: (*resource).Type,
 		Sizes:    []TypSizes{defineTypSize(resource)},
+		Count:    1,
 	}
 }
 
 func isExistingPulumiResource(summary *[]TypSummary, resource string) (bool, int) {
 	exists := false
-	index := 0
+	index := -1
 	for n, s := range *summary {
 		if s.Resource == resource {
 			exists = true

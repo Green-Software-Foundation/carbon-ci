@@ -1,6 +1,9 @@
 package infraascode
 
-import "fmt"
+import (
+	"fmt"
+	"strings"
+)
 
 func GetIACSummary(q TypIACQuery) []TypSummary {
 	var summary []TypSummary
@@ -11,7 +14,8 @@ func GetIACSummary(q TypIACQuery) []TypSummary {
 		summary = armSummary(q.Filename)
 		break
 	case "pulumi":
-		summary = pulumiSummary(q.Filename, q.PreviewFileName)
+		files := strings.Split(q.Filename, ",")
+		summary = pulumiSummary(strings.TrimSpace(files[0]), strings.TrimSpace(files[1]))
 	}
 
 	// Print out summarized ARM data
@@ -51,9 +55,8 @@ func PrintSummary(summary *[]TypSummary) {
 }
 
 type TypIACQuery struct {
-	Filetype        string
-	Filename        string
-	PreviewFileName string
+	Filetype string
+	Filename string
 }
 
 type TypSummary struct {
