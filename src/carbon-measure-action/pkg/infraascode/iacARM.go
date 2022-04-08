@@ -50,14 +50,14 @@ func processArmSummary(summary *[]TypSummary, resource *TypResource) {
 				addArmSizeToRes(summary, resIndex, resource)
 			} else {
 				sz := (&s).Sizes[sizeIndex]
-				locExists, locIndex := isExistingLocation(&sz.Details, getParameterValue(resource.Location))
+				locExists, locIndex := isExistingLocation(&sz.Details, getValue(resource.Location))
 				if !locExists {
 					addArmLocToSize(summary, resIndex, sizeIndex, resource)
 				} else {
 					fmt.Println(sz.Details)
 					fmt.Println(locIndex)
 					d := sz.Details[locIndex]
-					if d.Location == getParameterValue(resource.Location) {
+					if d.Location == getValue(resource.Location) {
 						(*summary)[resIndex].Sizes[sizeIndex].Details[locIndex].Count++
 					}
 				}
@@ -103,7 +103,7 @@ func isExistingLocation(details *[]TypSummaryDetails, location string) (bool, in
 }
 
 func defDetails(resource *TypResource) (dtl []TypSummaryDetails) {
-	dtl = append(dtl, TypSummaryDetails{Location: getParameterValue(resource.Location), Count: 1})
+	dtl = append(dtl, TypSummaryDetails{Location: getValue(resource.Location), Count: 1})
 	return
 }
 
@@ -123,7 +123,7 @@ func addArmSizeToRes(summary *[]TypSummary, resIndex int, resource *TypResource)
 }
 
 func addArmLocToSize(summary *[]TypSummary, resIndex int, sizeIndex int, resource *TypResource) {
-	dtl := TypSummaryDetails{Location: getParameterValue(resource.Location), Count: 1}
+	dtl := TypSummaryDetails{Location: getValue(resource.Location), Count: 1}
 	(*summary)[resIndex].Sizes[sizeIndex].Details = append((*summary)[resIndex].Sizes[sizeIndex].Details, dtl)
 }
 
@@ -131,16 +131,31 @@ func getResourceSize(resource *TypResource) string {
 	var size string
 	switch resource.Type {
 	case "Microsoft.Compute/virtualMachines":
-		size = resource.Properties.HardwareProfile.VmSize
+		size = getValue(resource.Properties.HardwareProfile.VmSize)
 	default:
-		size = resource.SKU.Name
+		size = getValue(resource.SKU.Name)
 	}
 	return size
 }
 
-func getParameterValue(param string) string {
-	p := strings.Split(param, "'")
-	return data.Parameters[p[1]].DefaultValue
+func getValue(inputValue string) string {
+	var returnValue string
+	source := "string"
+	if strings.Contains(inputValue, "[parameters(") {
+		source = "parameters"
+	} else if strings.Contains(inputValue, "[variables(") {
+		source = "variables"
+	}
+	p := strings.Split(inputValue, "'")
+	switch source {
+	case "parameters":
+		returnValue = data.Parameters[p[1]].DefaultValue
+	case "variables":
+		returnValue = data.Variables[p[1]]
+	default:
+		returnValue = inputValue
+	}
+	return returnValue
 }
 
 type TypARM struct {
