@@ -16,7 +16,6 @@ type RecentCIHistory struct {
 	Datetime        string
 }
 
-
 func LiveCarbonIntensity(zoneKey string) CarbonIntensity {
 	electricityMapZoneKey := os.Getenv("ELECTRICITY_MAP_AUTH_TOKEN")
 	em := EM.New(electricityMapZoneKey)
@@ -25,8 +24,8 @@ func LiveCarbonIntensity(zoneKey string) CarbonIntensity {
 	data1, _ := em.LiveCarbonIntensity(EM.TypAPIParams{Zone: zoneKey})
 	ci.liveCarbonIntensity = data1.CarbonIntensity
 
-	data2, _ := em.RecentCarbonIntensity(EM.TypAPIParams{Zone: zoneKey})
 	var historyci []RecentCIHistory
+	data2, _ := em.RecentCarbonIntensity(EM.TypAPIParams{Zone: zoneKey})
 
 	for _, i := range data2.History {
 		historyci = append(historyci, RecentCIHistory{i.CarbonIntensity, i.Datetime})
@@ -34,6 +33,6 @@ func LiveCarbonIntensity(zoneKey string) CarbonIntensity {
 	ci.History = historyci
 
 	return ci
-	
+
 	//$Env:ELECTRICITY_MAP_AUTH_TOKEN="3bhtgXSayVvgmuwEHry6zYYr"
 }
