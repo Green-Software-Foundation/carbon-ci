@@ -4,8 +4,8 @@ import (
 	"fmt"
 	EM "main/pkg/electricitymap"
 	iac "main/pkg/infraascode"
+	pa "main/pkg/poweradapter"
 
-	//elec "main/pkg/electricitymap"
 	"os"
 )
 
@@ -13,21 +13,32 @@ import (
 // wattTimeUser := os.Getenv("WATT_TIME_USER")
 // wattTimePass := os.Getenv("WATT_TIME_PASS")
 func main() {
-	//var grandaverageKwh int
-	//("Starting carbon measure action.")
-	//os.Setenv("IACType", "arm")
-	//os.Setenv("IACTemplateFile", "vm")
-	//os.Setenv("ELECTRICITY_MAP_AUTH_TOKEN", "3bhtgXSayVvgmuwEHry6zYYr")
+
 	infraFileType := os.Getenv("IACType")
 	infraFileName := os.Getenv("IACTemplateFile")
 	electricityMapZoneKey := os.Getenv("ELECTRICITY_MAP_AUTH_TOKEN")
 
 	// TODO: For terraform, we might need to accept a list of multiple files
 
-	//sumary := iac.GetIACSummary(iac.TypIACQuery{Filetype: infraFileType, Filename: infraFileName})
+	sumary := iac.GetIACSummary(iac.TypIACQuery{Filetype: infraFileType, Filename: infraFileName})
 
 	em := EM.New(electricityMapZoneKey)
 	em.LiveCarbonIntensity(EM.TypAPIParams{Zone: "US-CAL-CISCO"})
+
+	for _, ts := range sumary {
+		//	fmt.Println("Resource")
+		//fmt.Println(ts.Resource)
+		Sizes := ts.Sizes
+		if ts.Resource == "Microsoft.Compute/virtualMachines" {
+			for _, S := range Sizes {
+
+				for _, D := range S.Details {
+
+					fmt.Println(D.Location)
+				}
+			}
+		}
+	}
 
 	totalKwh := iterateOverFile(infraFileName, infraFileType)
 	averageKwh := getCarbonIntensity(electricityMapZoneKey)
@@ -44,6 +55,8 @@ func main() {
 
 func getCarbonIntensity(zoneKey string) int {
 
+	x := pa.LiveCarbonIntensity("US-CAL-CISCO")
+	fmt.Println("x", x)
 	//cc := new(electmap.TypAPIParams)
 	//cc.Zone = "US-CAL-CISO"
 	//ccmap, _ := electmap.New(zoneKey).RecentCarbonIntensity(*cc)
@@ -60,10 +73,11 @@ func getCarbonIntensity(zoneKey string) int {
 
 	// }
 	// TODO: Get the carbon intensity over 24 hours rather than just the current intensity
-	return 200
+	return x.LiveCarbonIntensity //200
 }
 
 func getKwhForComponent(componentName string) float64 {
+
 	return 2.6
 }
 
@@ -71,8 +85,7 @@ func iterateOverFile(fileName string, infraFileType string) float64 {
 	// TODO: Get kwh for each component and return a summed float
 	// TODO: Call a different iterator depending on if it is arm, bicep, terraform, pulumi, etc
 	//var summary []TypSummary
-	println(fileName)
-	println(infraFileType)
+
 	var c int
 	summary := iac.GetIACSummary(iac.TypIACQuery{Filetype: infraFileType, Filename: fileName})
 	for _, ts := range summary {

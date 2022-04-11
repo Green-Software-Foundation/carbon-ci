@@ -91,6 +91,7 @@ func (e electricityMap) LiveCarbonIntensity(params TypAPIParams) (typCI, error) 
 
 	fmt.Println("Getting Electricity Map Live Carbon Intensity")
 	err := httpGet(url, &data, header, query)
+	fmt.Println("print", data.CarbonIntensity)
 	return data, err
 
 }

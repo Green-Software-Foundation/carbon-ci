@@ -1,18 +1,19 @@
 package poweradapter
 
 import (
-	"fmt"
 	EM "main/pkg/electricitymap"
 	"os"
 )
 
 //RETURN
-type TypReturn struct {
-	liveCarbonIntensity int
-	history             []struct {
-		carbonIntensity int
-		datetime        string
-	}
+type CarbonIntensity struct {
+	LiveCarbonIntensity int
+	History             []RecentCIHistory
+}
+
+type RecentCIHistory struct {
+	CarbonIntensity int
+	Datetime        string
 }
 
 //GET FROM
@@ -25,7 +26,7 @@ type TypCarbonQueryParams struct {
 	wattTimePass          string
 }
 
-////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////
 type TypAPIParams struct {
 	Zone    string `json:"zone"`
 	History []struct {
@@ -36,22 +37,24 @@ type TypAPIParams struct {
 	}
 }
 
-
-
 ////////////////////////////////////////////////////
-func LiveCarbonIntensity() {
-	///
+
+func LiveCarbonIntensity(zoneKey string) CarbonIntensity {
 	electricityMapZoneKey := os.Getenv("ELECTRICITY_MAP_AUTH_TOKEN")
 	em := EM.New(electricityMapZoneKey)
-	data, _ := em.LiveCarbonIntensity(EM.TypAPIParams{Zone: "US-CAL-CIS"})
-	data2, _ := em.RecentCarbonIntensity(EM.TypAPIParams{Zone: "US-CAL-CIS"})
-	fmt.Println("Printing ZoneKey --> ", electricityMapZoneKey)
-	fmt.Println("Printing --> em....... ", em)
 
-	fmt.Println("Printing --> LiveCarbonIntensity....... ", data)
-	fmt.Println("Printing --> RecentCarbonIntensity....... ", data2)
+	var ci CarbonIntensity
+	data1, _ := em.LiveCarbonIntensity(EM.TypAPIParams{Zone: zoneKey})
+	ci.LiveCarbonIntensity = data1.CarbonIntensity
 
-	//Type this in PS
+	data2, _ := em.RecentCarbonIntensity(EM.TypAPIParams{Zone: zoneKey})
+	var historyci []RecentCIHistory
+
+	for _, i := range data2.History {
+		historyci = append(historyci, RecentCIHistory{i.CarbonIntensity, i.Datetime})
+	}
+	ci.History = historyci
+
+	return ci
 	//$Env:ELECTRICITY_MAP_AUTH_TOKEN="3bhtgXSayVvgmuwEHry6zYYr"
-
 }
