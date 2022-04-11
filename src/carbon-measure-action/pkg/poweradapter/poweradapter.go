@@ -16,28 +16,6 @@ type RecentCIHistory struct {
 	Datetime        string
 }
 
-//GET FROM
-type TypCarbonQueryParams struct {
-	iacProvider           string
-	iacLocation           string
-	carbonRateProvider    string
-	electricityMapZoneKey string
-	wattTimeUser          string
-	wattTimePass          string
-}
-
-////////////////////////////////////////////////////
-type TypAPIParams struct {
-	Zone    string `json:"zone"`
-	History []struct {
-		CarbonIntensity int    `json:"carbonIntensity"`
-		Datetime        string `json:"datetime"`
-		UpdatedAt       string `json:"updatedAt"`
-		CreatedAt       string `json:"createdAt"`
-	}
-}
-
-////////////////////////////////////////////////////
 
 func LiveCarbonIntensity(zoneKey string) CarbonIntensity {
 	electricityMapZoneKey := os.Getenv("ELECTRICITY_MAP_AUTH_TOKEN")
@@ -56,5 +34,6 @@ func LiveCarbonIntensity(zoneKey string) CarbonIntensity {
 	ci.History = historyci
 
 	return ci
+	
 	//$Env:ELECTRICITY_MAP_AUTH_TOKEN="3bhtgXSayVvgmuwEHry6zYYr"
 }

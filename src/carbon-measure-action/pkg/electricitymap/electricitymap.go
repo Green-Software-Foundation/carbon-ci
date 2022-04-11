@@ -57,9 +57,9 @@ This endpoint returns all zones available if no auth-token is provided.
 
 If an auth-token is provided, it returns a list of zones and routes available with this token
 */
-func (e electricityMap) GetZones() (map[string]typZone, error) {
+func (e electricityMap) GetZones() (map[string]TypZone, error) {
 	url := fmt.Sprintf("%v/zones", e.url)
-	data := make(map[string]typZone)
+	data := make(map[string]TypZone)
 	header := make(map[string]string)
 	query := make(map[string]string)
 
@@ -83,9 +83,9 @@ lon | Longitude (if querying with a geolocation)
 
 lat | Latitude (if querying with a geolocation)
 */
-func (e electricityMap) LiveCarbonIntensity(params TypAPIParams) (typCI, error) {
+func (e electricityMap) LiveCarbonIntensity(params TypAPIParams) (TypCI, error) {
 	url := fmt.Sprintf("%v/carbon-intensity/latest", e.url)
-	var data typCI
+	var data TypCI
 
 	header, query := httpQueryBuilder(e.zoneKey, params)
 
@@ -116,9 +116,9 @@ lon | Longitude (if querying with a geolocation)
 
 lat | Latitude (if querying with a geolocation)
 */
-func (e electricityMap) LivePowerBreakdown(params TypAPIParams) (typPB, error) {
+func (e electricityMap) LivePowerBreakdown(params TypAPIParams) (TypPB, error) {
 	url := fmt.Sprintf("%v/power-breakdown/latest", e.url)
-	var data typPB
+	var data TypPB
 
 	header, query := httpQueryBuilder(e.zoneKey, params)
 
@@ -141,9 +141,9 @@ lon | Longitude (if querying with a geolocation)
 
 lat | Latitude (if querying with a geolocation)
 */
-func (e electricityMap) RecentCarbonIntensity(params TypAPIParams) (typRecentCI, error) {
+func (e electricityMap) RecentCarbonIntensity(params TypAPIParams) (TypRecentCI, error) {
 	url := fmt.Sprintf("%v/carbon-intensity/history", e.url)
-	var data typRecentCI
+	var data TypRecentCI
 
 	header, query := httpQueryBuilder(e.zoneKey, params)
 
@@ -166,9 +166,9 @@ lon | Longitude (if querying with a geolocation)
 
 lat | Latitude (if querying with a geolocation)
 */
-func (e electricityMap) RecentPowerBreakdown(params TypAPIParams) (typRecentPB, error) {
+func (e electricityMap) RecentPowerBreakdown(params TypAPIParams) (TypRecentPB, error) {
 	url := fmt.Sprintf("%v/power-consumption-breakdown/history", e.url)
-	var data typRecentPB
+	var data TypRecentPB
 
 	header, query := httpQueryBuilder(e.zoneKey, params)
 
@@ -195,9 +195,9 @@ datetime | datetime in ISO format
 
 estimationFallback | (optional) boolean (if estimated data should be included)
 */
-func (e electricityMap) PastCarbonIntensity(params TypAPIParams) (typCI, error) {
+func (e electricityMap) PastCarbonIntensity(params TypAPIParams) (TypCI, error) {
 	url := fmt.Sprintf("%v/carbon-intensity/past", e.url)
-	var data typCI
+	var data TypCI
 
 	header, query := httpQueryBuilder(e.zoneKey, params)
 
@@ -226,9 +226,9 @@ end | datetime in ISO format (excluded)
 
 estimationFallback | (optional) boolean (if estimated data should be included)
 */
-func (e electricityMap) PastCarbonIntensityRange(params TypAPIParams) (map[string][]typCI, error) {
+func (e electricityMap) PastCarbonIntensityRange(params TypAPIParams) (map[string][]TypCI, error) {
 	url := fmt.Sprintf("%v/carbon-intensity/past-range", e.url)
-	var data = make(map[string][]typCI)
+	var data = make(map[string][]TypCI)
 
 	header, query := httpQueryBuilder(e.zoneKey, params)
 
@@ -255,9 +255,9 @@ datetime | datetime in ISO format
 
 estimationFallback | (optional) boolean (if estimated data should be included)
 */
-func (e electricityMap) PastPowerBreakdown(params TypAPIParams) (typPB, error) {
+func (e electricityMap) PastPowerBreakdown(params TypAPIParams) (TypPB, error) {
 	url := fmt.Sprintf("%v/power-breakdown/past", e.url)
-	var data typPB
+	var data TypPB
 
 	header, query := httpQueryBuilder(e.zoneKey, params)
 
@@ -286,9 +286,9 @@ end | datetime in ISO format (excluded)
 
 estimationFallback | (optional) boolean (if estimated data should be included)
 */
-func (e electricityMap) PastPowerBreakdownRange(params TypAPIParams) (map[string][]typPB, error) {
+func (e electricityMap) PastPowerBreakdownRange(params TypAPIParams) (map[string][]TypPB, error) {
 	url := fmt.Sprintf("%v/power-breakdown/past-range", e.url)
-	var data = make(map[string][]typPB)
+	var data = make(map[string][]TypPB)
 
 	header, query := httpQueryBuilder(e.zoneKey, params)
 
@@ -365,7 +365,7 @@ type TypAPIParams struct {
 	EstimationFallback bool
 }
 
-type typCI struct {
+type TypCI struct {
 	Zone            string `json:"zone"`
 	CarbonIntensity int    `json:"carbonIntensity"`
 	Datetime        string `json:"datetime"`
@@ -373,16 +373,16 @@ type typCI struct {
 	CreatedAt       string `json:"createdAt"`
 }
 
-type typPB struct {
+type TypPB struct {
 	Zone                      string                       `json:"zone"`
 	Datetime                  string                       `json:"datetime"`
-	PowerProductionBreakdown  typPowerProductionBreakdown  `json:"powerProductionBreakdown"`
+	PowerProductionBreakdown  TypPowerProductionBreakdown  `json:"powerProductionBreakdown"`
 	PowerProductionTotal      int                          `json:"powerProductionTotal"`
-	PowerConsumptionBreakdown typPowerConsumptionBreakdown `json:"powerConsumptionBreakdown"`
+	PowerConsumptionBreakdown TypPowerConsumptionBreakdown `json:"powerConsumptionBreakdown"`
 	PowerConsumptionTotal     int                          `json:"powerConsumptionTotal"`
-	PowerImportBreakdown      typPowerImpExpBreakdown      `json:"powerImportBreakdown"`
+	PowerImportBreakdown      TypPowerImpExpBreakdown      `json:"powerImportBreakdown"`
 	PowerImportTotal          int                          `json:"powerImportTotal"`
-	PowerExportBreakdown      typPowerImpExpBreakdown      `json:"powerExportBreakdown"`
+	PowerExportBreakdown      TypPowerImpExpBreakdown      `json:"powerExportBreakdown"`
 	PowerExportTotal          int                          `json:"powerExportTotal"`
 	FossilFreePercentage      int                          `json:"fossilFreePercentage"`
 	RenewablePercentage       int                          `json:"renewablePercentage"`
@@ -390,7 +390,7 @@ type typPB struct {
 	CreatedAt                 string                       `json:"createdAt"`
 }
 
-type typPowerConsumptionBreakdown struct {
+type TypPowerConsumptionBreakdown struct {
 	BatteryDischarge string // battery discharge `json:"batteryDischarge"`
 	Biomass          int    `json:"biomass"`
 	Coal             int    `json:"coal"`
@@ -405,13 +405,13 @@ type typPowerConsumptionBreakdown struct {
 	Wind             int    `json:"wind"`
 }
 
-type typPowerImpExpBreakdown struct {
+type TypPowerImpExpBreakdown struct {
 	DE     int `json:"DE"`
 	DK_DK1 int //DK-DK1 `json:"DK_DK1"`
 	SE     int `json:"SE"`
 }
 
-type typPowerProductionBreakdown struct {
+type TypPowerProductionBreakdown struct {
 	Biomass    int `json:"biomass"`
 	Coal       int `json:"coal"`
 	Gas        int `json:"gas"`
@@ -424,13 +424,13 @@ type typPowerProductionBreakdown struct {
 	Wind       int `json:"wind"`
 }
 
-type typZone struct {
+type TypZone struct {
 	CountryName string   `json:"countryName"`
 	ZoneName    string   `json:"zoneName"`
 	Access      []string `json:"access"`
 }
 
-type typRecentCI struct {
+type TypRecentCI struct {
 	Zone    string `json:"zone"`
 	History []struct {
 		CarbonIntensity int    `json:"carbonIntensity"`
@@ -440,18 +440,18 @@ type typRecentCI struct {
 	} `json:"history"`
 }
 
-type typRecentPB struct {
+type TypRecentPB struct {
 	Zone    string `json:"zone"`
 	History []struct {
 		Datetime                  string                       `json:"datetime"`
 		FossilFreePercentage      string                       `json:"fossilFreePercentage"`
-		PowerConsumptionBreakdown typPowerConsumptionBreakdown `json:"powerConsumptionBreakdown"`
+		PowerConsumptionBreakdown TypPowerConsumptionBreakdown `json:"powerConsumptionBreakdown"`
 		PowerConsumptionTotal     int                          `json:"powerConsumptionTotal"`
-		PowerImportBreakdown      typPowerImpExpBreakdown      `json:"powerImportBreakdown"`
+		PowerImportBreakdown      TypPowerImpExpBreakdown      `json:"powerImportBreakdown"`
 		PowerImportTotal          int                          `json:"powerImportTotal"`
-		PowerExportBreakdown      typPowerImpExpBreakdown      `json:"powerExportBreakdown"`
+		PowerExportBreakdown      TypPowerImpExpBreakdown      `json:"powerExportBreakdown"`
 		PowerExportTotal          int                          `json:"powerExportTotal"`
-		PowerProductionBreakdown  typPowerProductionBreakdown  `json:"powerProductionBreakdown"`
+		PowerProductionBreakdown  TypPowerProductionBreakdown  `json:"powerProductionBreakdown"`
 		PowerProductionTotal      int                          `json:"powerProductionTotal"`
 		RenewablePercentage       int                          `json:"renewablePercentage"`
 	} `json:"history"`
