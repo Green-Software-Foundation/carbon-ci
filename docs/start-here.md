@@ -75,9 +75,9 @@ What must happen for the GitHub Issue to be marked as complete.
 |IACType|Type of the infrastructure as code. <br/>Must be any of the following:<br/>**arm**, **bicep**, **pulumi***.<br/><br/>*See additional information below.|true|arm|
 |CloudProvider|Cloud provider. Currently, only **azure** is supported.|true|azure|
 |CARBON_RATE_PROVIDER|Your resource for CO2 data.<br/>If you are using Electricity Map, type **electricitymap**.<br/>If you are using Watt Time, type **watttime**.|true||
-|ELECTRICITY_MAP_AUTH_TOKEN|If you are using Electricity Map, supply the **Authentication Token** or **Zone Key** to use. This uses GitHub Secret named **ELECTRICITY_MAP_AUTH_TOKEN**|false||
-|WATT_TIME_USER|If you are using Watt Time, supply the username. This uses GitHub secret named **WATT_TIME_USER**|true||
-|WATT_TIME_PASS|If you are using Watt Time, supply the password. This uses GitHub secret named **WATT_TIME_PASS**|true||
+|ELECTRICITY_MAP_AUTH_TOKEN|If you are using Electricity Map, supply the **Authentication Token** or **Zone Key** to use.<br/>The usage example above uses GitHub Secret named **ELECTRICITY_MAP_AUTH_TOKEN**|false||
+|WATT_TIME_USER|If you are using Watt Time, supply the username.<br/>The usage example above uses GitHub secret named **WATT_TIME_USER**|false||
+|WATT_TIME_PASS|If you are using Watt Time, supply the password.<br/>The usage example above uses GitHub secret named **WATT_TIME_PASS**|false||
 
 
 

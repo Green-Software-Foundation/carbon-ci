@@ -9,9 +9,21 @@ inputs:
     description: 'IAC Filename'
     required: true
     default: 'infra.json'
+  CloudProvider:
+    description: 'Cloud provider for your infrastructure.'
+    required: true
+  CARBON_RATE_PROVIDER:
+    description: 'Your resource for CO2 data. Must be either "electricitymap" or "watttime".'
+    required: true
   ELECTRICITY_MAP_AUTH_TOKEN:
     description: 'Authentication token to access Electricity Map API'
-    required: true
+    required: false
+  WATT_TIME_USER:
+    description: 'Username to use to access Watt Time API'
+    required: false
+  WATT_TIME_PASS:
+    description: 'Password to use to access Watt Time API'
+    required: false
 
 outputs:
   grams_carbon_equivalent_per_kwh:
@@ -38,8 +50,24 @@ runs:
       bicepFilePath: ${{ inputs.IACFile }}
       outputFilePath: ${{ env.ARMTemplateFilename }}
       
+  - name: Set CloudProvider env variable
+    run: echo "CloudProvider=${{inputs.CloudProvider}}" >> $GITHUB_ENV
+    shell: bash
+    
+  - name: Set CARBON_RATE_PROVIDER env variable
+    run: echo "CARBON_RATE_PROVIDER=${{inputs.CARBON_RATE_PROVIDER}}" >> $GITHUB_ENV
+    shell: bash
+    
   - name: Set ELECTRICITY_MAP_AUTH_TOKEN env variable
     run: echo "ELECTRICITY_MAP_AUTH_TOKEN=${{inputs.ELECTRICITY_MAP_AUTH_TOKEN}}" >> $GITHUB_ENV
+    shell: bash
+    
+  - name: Set WATT_TIME_USER env variable
+    run: echo "WATT_TIME_USER=${{inputs.WATT_TIME_USER}}" >> $GITHUB_ENV
+    shell: bash
+    
+  - name: Set WATT_TIME_PASS env variable
+    run: echo "WATT_TIME_PASS=${{inputs.WATT_TIME_PASS}}" >> $GITHUB_ENV
     shell: bash
 
   - run: go run ${{ github.action_path }}/carbon_measure.go
