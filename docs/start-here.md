@@ -60,11 +60,11 @@ What must happen for the GitHub Issue to be marked as complete.
   with:
     IACFile: arm.json
     IACType: arm
-	CloudProvider: azure
-	CARBON_RATE_PROVIDER: electricitymap
+    CloudProvider: azure
+    CARBON_RATE_PROVIDER: electricitymap
     ELECTRICITY_MAP_AUTH_TOKEN: ${{ secrets.ELECTRICITY_MAP_AUTH_TOKEN }}
-	WATT_TIME_USER: ${{ secrets.WATT_TIME_USER }}
-	WATT_TIME_PASS: ${{ secrets.WATT_TIME_PASS }}
+    WATT_TIME_USER: ${{ secrets.WATT_TIME_USER }}
+    WATT_TIME_PASS: ${{ secrets.WATT_TIME_PASS }}
 ```
 
 ### Inputs
