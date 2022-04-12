@@ -53,6 +53,34 @@ What must happen for the GitHub Issue to be marked as complete.
 
 ## How to Use the GitHub Action
 
+### Usage Example
+```yaml
+- name: Calculate Carbon
+  uses: Green-Software-Foundation/Carbon_CI_Pipeline_Tooling@main
+  with:
+    IACFile: arm.json
+    IACType: arm
+	CloudProvider: azure
+	CARBON_RATE_PROVIDER: electricitymap
+    ELECTRICITY_MAP_AUTH_TOKEN: ${{ secrets.ELECTRICITY_MAP_AUTH_TOKEN }}
+	WATT_TIME_USER: ${{ secrets.WATT_TIME_USER }}
+	WATT_TIME_PASS: ${{ secrets.WATT_TIME_PASS }}
+```
+
+### Inputs
+
+|Name|Description|Required|Default Value|
+|--|--|--|--|
+|IACFile|File name of the infrastructure code. Location is relative to the root folder.|true|infra.json|
+|IACType|Type of the infrastructure as code. <br/>Must be any of the following:<br/>**arm**, **bicep**, **pulumi***.<br/><br/>*See additional information below.|true|arm|
+|CloudProvider|Cloud provider. Currently, only **azure** is supported.|true|azure|
+|CARBON_RATE_PROVIDER|Your resource for CO2 data.<br/>If you are using Electricity Map, type **electricitymap**.<br/>If you are using Watt Time, type **watttime**.|true||
+|ELECTRICITY_MAP_AUTH_TOKEN|If you are using Electricity Map, supply the **Authentication Token** or **Zone Key** to use. This uses GitHub Secret named **ELECTRICITY_MAP_AUTH_TOKEN**|false||
+|WATT_TIME_USER|If you are using Watt Time, supply the username. This uses GitHub secret named **WATT_TIME_USER**|true||
+|WATT_TIME_PASS|If you are using Watt Time, supply the password. This uses GitHub secret named **WATT_TIME_PASS**|true||
+
+
+
 ### Pulumi
 
 If you are using Pulumi for your IaC, you'll have to generate 2 JSON files:
