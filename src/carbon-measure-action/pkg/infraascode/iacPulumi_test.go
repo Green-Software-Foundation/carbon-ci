@@ -2,9 +2,11 @@ package infraascode
 
 import (
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
-func TestReturnResourceListFromStackData(t *testing.T) {
+func Test_ReturnResourceListFromStackData(t *testing.T) {
 	resource := typResource{
 		Type: "VM",
 		Inputs: typInputs{
@@ -29,18 +31,13 @@ func TestReturnResourceListFromStackData(t *testing.T) {
 
 	result := processStackData(stackData)
 
-	if result[0].Location != stackData.Deployment.Resources[0].Inputs.Location {
-		t.Errorf("LOCATION: Output %q not equal to expected %q", result[0].Location, stackData.Deployment.Resources[0].Inputs.Location)
-	} else if result[0].Name != stackData.Deployment.Resources[0].Inputs.Name {
-		t.Errorf("NAME: Output %q not equal to expected %q", result[0].Name, stackData.Deployment.Resources[0].Inputs.Name)
-	} else if result[0].SKU != stackData.Deployment.Resources[0].Inputs.SKU {
-		t.Errorf("SKU: Output %q not equal to expected %q", result[0].SKU, stackData.Deployment.Resources[0].Inputs.SKU)
-	} else if result[0].Type != stackData.Deployment.Resources[0].Type {
-		t.Errorf("TYPE: Output %q not equal to expected %q", result[0].Type, stackData.Deployment.Resources[0].Type)
-	}
+	assert.Equal(t, result[0].Location, stackData.Deployment.Resources[0].Inputs.Location)
+	assert.Equal(t, result[0].Name, stackData.Deployment.Resources[0].Inputs.Name)
+	assert.Equal(t, result[0].SKU, stackData.Deployment.Resources[0].Inputs.SKU)
+	assert.Equal(t, result[0].Type, stackData.Deployment.Resources[0].Type)
 }
 
-func TestAddResourceToResourceListFromPreviewData(t *testing.T) {
+func Test_AddResourceToResourceListFromPreviewData(t *testing.T) {
 	resource := typCloudResource{
 		Name:     "vm1",
 		Type:     "VM",
@@ -71,12 +68,10 @@ func TestAddResourceToResourceListFromPreviewData(t *testing.T) {
 
 	processPreviewData(previewData, &resourceList)
 
-	if len(resourceList) != 2 {
-		t.Errorf("Length %v not equal to expected length which is 2", len(resourceList))
-	}
+	assert.Equal(t, len(resourceList), 2)
 }
 
-func TestUpdateResourceWithDataFromPreview(t *testing.T) {
+func Test_UpdateResourceWithDataFromPreview(t *testing.T) {
 	resource := typCloudResource{
 		Name:     "vm1",
 		Type:     "VM",
@@ -107,14 +102,11 @@ func TestUpdateResourceWithDataFromPreview(t *testing.T) {
 
 	processPreviewData(previewData, &resourceList)
 
-	if len(resourceList) != 1 {
-		t.Errorf("Length %v not equal to expected length which is 1", len(resourceList))
-	} else if resourceList[0].SKU != previewData.Steps[0].State.Inputs.SKU {
-		t.Errorf("Output %v not equal to expected %v", resourceList[0].SKU, previewData.Steps[0].State.Inputs.SKU)
-	}
+	assert.Equal(t, len(resourceList), 1)
+	assert.Equal(t, resourceList[0].SKU, previewData.Steps[0].State.Inputs.SKU)
 }
 
-func TestGetCloudProviderFromStackData(t *testing.T) {
+func Test_GetCloudProviderFromStackData(t *testing.T) {
 	stackData := typStack{
 		Deployment: struct {
 			Resources []typResource "json:\"resources\""
@@ -131,12 +123,10 @@ func TestGetCloudProviderFromStackData(t *testing.T) {
 
 	result := getCloudProvider(&stackData, &previewData)
 
-	if result != "azure" {
-		t.Errorf("Output %v is not equal to expected value which is azure", result)
-	}
+	assert.Equal(t, result, "azure")
 }
 
-func TestGetCloudProviderFromPreviewData(t *testing.T) {
+func Test_GetCloudProviderFromPreviewData(t *testing.T) {
 	stackData := typStack{}
 
 	previewData := typPreview{
@@ -154,24 +144,19 @@ func TestGetCloudProviderFromPreviewData(t *testing.T) {
 
 	result := getCloudProvider(&stackData, &previewData)
 
-	if result != "azure" {
-		t.Errorf("Output %v is not equal to expected value which is azure", result)
-	}
+	assert.Equal(t, result, "azure")
 }
 
-func TestCloudProviderNotFoundOnStackAndPreviewData(t *testing.T) {
+func Test_CloudProviderNotFoundOnStackAndPreviewData(t *testing.T) {
 	stackData := typStack{}
 	previewData := typPreview{}
 
 	result := getCloudProvider(&stackData, &previewData)
 
-	if result != "" {
-		t.Errorf("Output %v is not equal to expected value", result)
-	}
-
+	assert.Equal(t, result, "")
 }
 
-func TestReturnResourceType(t *testing.T) {
+func Test_ReturnResourceType(t *testing.T) {
 	resourceTypes := []typResourceTypesReference{
 		{
 			CloudResourceType:  "cloudresourcetype",
@@ -181,12 +166,10 @@ func TestReturnResourceType(t *testing.T) {
 
 	result := getCloudProviderResourceType("pulumiresourcetype", &resourceTypes)
 
-	if result != resourceTypes[0].CloudResourceType {
-		t.Errorf("Output %v is not equal to excpected value which is %v", result, resourceTypes[0].CloudResourceType)
-	}
+	assert.Equal(t, result, resourceTypes[0].CloudResourceType)
 }
 
-func TestReturnProperTypSummaryDetails(t *testing.T) {
+func Test_ReturnProperTypSummaryDetails(t *testing.T) {
 	resource := typCloudResource{
 		Name:     "resourcename",
 		Type:     "VM",
@@ -196,12 +179,11 @@ func TestReturnProperTypSummaryDetails(t *testing.T) {
 
 	result := defineTypSummaryDetails(&resource)
 
-	if result.Location != resource.Location || result.Count != 1 {
-		t.Errorf("Output %v is not equal to what is expected.", result)
-	}
+	assert.Equal(t, result.Location, resource.Location)
+	assert.Equal(t, result.Count, 1)
 }
 
-func TestReturnProperTypSize(t *testing.T) {
+func Test_ReturnProperTypSize(t *testing.T) {
 	resource := typCloudResource{
 		Name:     "resourcename",
 		Type:     "VM",
@@ -216,7 +198,7 @@ func TestReturnProperTypSize(t *testing.T) {
 	}
 }
 
-func TestReturnProperTypSummary(t *testing.T) {
+func Test_ReturnProperTypSummary(t *testing.T) {
 	resource := typCloudResource{
 		Name:     "resourcename",
 		Type:     "VM",
@@ -226,12 +208,11 @@ func TestReturnProperTypSummary(t *testing.T) {
 
 	result := defineTypSummary(&resource)
 
-	if result.Resource != resource.Type && result.Count != 1 {
-		t.Errorf("Output %v is not equal to what is expected.", result)
-	}
+	assert.Equal(t, result.Resource, resource.Type)
+	assert.Equal(t, result.Count, 1)
 }
 
-func TestExistingPulumiResourceReturnsTrue(t *testing.T) {
+func Test_ExistingPulumiResourceReturnsTrue(t *testing.T) {
 	summary := []TypSummary{
 		{
 			Resource: "VM",
@@ -240,12 +221,11 @@ func TestExistingPulumiResourceReturnsTrue(t *testing.T) {
 
 	exists, index := isExistingPulumiResource(&summary, "VM")
 
-	if !exists || index != 0 {
-		t.Errorf("Output %v, %v is not equal to what is expected.", exists, index)
-	}
+	assert.True(t, exists)
+	assert.Equal(t, index, 0)
 }
 
-func TestExistingPulumiResourceReturnsFalse(t *testing.T) {
+func Test_ExistingPulumiResourceReturnsFalse(t *testing.T) {
 	summary := []TypSummary{
 		{
 			Resource: "VM",
@@ -254,7 +234,6 @@ func TestExistingPulumiResourceReturnsFalse(t *testing.T) {
 
 	exists, index := isExistingPulumiResource(&summary, "Storage")
 
-	if exists || index != -1 {
-		t.Errorf("Output %v, %v is not equal to what is expected.", exists, index)
-	}
+	assert.False(t, exists)
+	assert.Equal(t, index, -1)
 }
