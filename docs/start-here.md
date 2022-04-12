@@ -23,22 +23,25 @@ flowchart LR
 C[Carbon Measurement]
 G[Print to Github]
 ARM[ARM Pkg]
+PLM[Pulumi Pkg]
 IAC[IAC Summary Pkg]
 EM[Electricity Map API]
 PA[Power Adapter]
 WT[Watt Time API]
 LOC[Azure Location Mapping]
+RSCT[Resource Type Mapping]
 KWH[kWh per Resource]
 
 C --Print out total carbon emissions\nused by the infrastructure--> G
 ARM --Read and summarizes\nARM Template--> IAC
+PLM --Read and summarizes stack data\nfrom Pulumi project--> IAC
+RSCT -.JSON list of Pulumi resource types and\ncloud provider resource type equivalent.-> PLM
 IAC --Return summarized\nInfrastructure--> C
 EM & WT --> PA
 LOC -.JSON list of cloud locations\nand API equivalent.-> PA
 PA --Return queried\ncarbon emission rating--> C
 KWH -.JSON list of cloud resources and\nequivalent kWh rating.-> C
 ```
-
 
 ## Definition of Done
 
@@ -47,3 +50,35 @@ What must happen for the GitHub Issue to be marked as complete.
 1. Documentation added to a markdown file.
 2. Unit test cases written.
 3. The code has been peer reviewed.
+
+## How to Use the GitHub Action
+
+### Pulumi
+
+If you are using Pulumi for your IaC, you'll have to generate 2 JSON files:
+
+1. list of deployed resources on selected stack (`pulumi stack`)
+2. preview of updates to do to the selected stack (`pulumi preview`)
+
+To execute those Pulumi commands successfully, there are some steps you need to add to your workflow. Following is the list of steps to successfully generate those files.
+
+1. Log in to your cloud provider's CLI. Depending on your cloud provider, you can either use an official action from the marketplace (if available) or manually execute the login command of your cloud provider's CLI.
+
+2. Install dependencies of your Pulumi project. This will vary according the language you use on your project.
+
+3. Optional: Select a stack.
+
+4. Generate the list of resources on selected stack and save it as a JSON file by executing `pulumi stack export --file stack.json`. This will save the data on the current directory as stack.json, you can choose any filename you want.
+
+5. Generate the preview of updates to do by executing `pulumi preview`. If you are using Linux on your runner, execute `pulumi preview -j | tee preview.json`. If you are using Windows, execute `pulumi preview -j > preview.json`. This will save the data on the current diretory as preview.json, you can choose any filename you want.
+
+6. Use this Gitub action and point it to the 2 JSON files the were generated.
+
+```yaml
+- name: Calculate Carbon
+  uses: Green-Software-Foundation/Carbon_CI_Pipeline_Tooling@main
+  with:
+    IACFile: "stack.json,preview.json"
+    IACType: pulumi
+    ELECTRICITY_MAP_AUTH_TOKEN: ${{ secrets.ELECTRICITY_MAP_AUTH_TOKEN }}
+```
