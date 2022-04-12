@@ -9,7 +9,7 @@ import (
 
 //RETURN
 type CarbonIntensity struct {
-	liveCarbonIntensity int
+	LiveCarbonIntensity int
 	History             []RecentCIHistory
 }
 
@@ -29,7 +29,6 @@ type TypCarbonQueryParams struct {
 }
 
 func LiveCarbonIntensity(params TypCarbonQueryParams) (ci CarbonIntensity) {
-
 	zone := GetLocation(TypCloudLocationQuery{
 		Provider:      params.IacProvider,
 		Location:      params.IacLocation,
@@ -42,7 +41,7 @@ func LiveCarbonIntensity(params TypCarbonQueryParams) (ci CarbonIntensity) {
 		em := EM.New(params.ElectricityMapZoneKey)
 
 		data1, _ := em.LiveCarbonIntensity(EM.TypAPIParams{Zone: zone})
-		ci.liveCarbonIntensity = data1.CarbonIntensity
+		ci.LiveCarbonIntensity = data1.CarbonIntensity
 
 		data2, _ := em.RecentCarbonIntensity(EM.TypAPIParams{Zone: zone})
 		var historyci []RecentCIHistory
