@@ -1,8 +1,10 @@
 package poweradapter
 
 import (
+	"fmt"
 	EM "main/pkg/electricitymap"
-	"os"
+	WT "main/pkg/watttime"
+	"strings"
 )
 
 //RETURN
@@ -16,23 +18,56 @@ type RecentCIHistory struct {
 	Datetime        string
 }
 
-func LiveCarbonIntensity(zoneKey string) CarbonIntensity {
-	electricityMapZoneKey := os.Getenv("ELECTRICITY_MAP_AUTH_TOKEN")
-	em := EM.New(electricityMapZoneKey)
+//GET FROM
+type TypCarbonQueryParams struct {
+	IacProvider           string
+	IacLocation           string
+	CarbonRateProvider    string
+	ElectricityMapZoneKey string
+	WattTimeUser          string
+	WattTimePass          string
+}
 
-	var ci CarbonIntensity
-	data1, _ := em.LiveCarbonIntensity(EM.TypAPIParams{Zone: zoneKey})
-	ci.LiveCarbonIntensity = data1.CarbonIntensity
+func LiveCarbonIntensity(params TypCarbonQueryParams) (ci CarbonIntensity) {
 
-	var historyci []RecentCIHistory
-	data2, _ := em.RecentCarbonIntensity(EM.TypAPIParams{Zone: zoneKey})
+	zone := GetLocation(TypCloudLocationQuery{
+		Provider:      params.IacProvider,
+		Location:      params.IacLocation,
+		Powerprovider: params.CarbonRateProvider,
+	})
+	fmt.Println("-- Printing Zone >>> ", zone)
 
-	for _, i := range data2.History {
-		historyci = append(historyci, RecentCIHistory{i.CarbonIntensity, i.Datetime})
+	if strings.ToLower(params.CarbonRateProvider) == "electricitymap" {
+
+		em := EM.New(params.ElectricityMapZoneKey)
+
+		data1, _ := em.LiveCarbonIntensity(EM.TypAPIParams{Zone: zone})
+		ci.liveCarbonIntensity = data1.CarbonIntensity
+
+		data2, _ := em.RecentCarbonIntensity(EM.TypAPIParams{Zone: zone})
+		var historyci []RecentCIHistory
+
+		for _, i := range data2.History {
+			historyci = append(historyci, RecentCIHistory{i.CarbonIntensity, i.Datetime})
+		}
+		ci.History = historyci
+
+		return
 	}
-	ci.History = historyci
 
-	return ci
+	if strings.ToLower(params.CarbonRateProvider) == "watttime" {
+		Watttime(params.WattTimeUser, params.WattTimePass, params.IacLocation)
+	}
 
-	//$Env:ELECTRICITY_MAP_AUTH_TOKEN="3bhtgXSayVvgmuwEHry6zYYr"
+	return
+}
+
+func Watttime(userName string, passWord string, Region string) {
+
+	wtlog := WT.Login(userName, passWord)
+	fmt.Println(">>> Logging in WattTime Account", wtlog)
+
+	liveEmissions, _ := WT.RealTimeEmissionsIndex(Region, 0, 0, "")
+	fmt.Println("-- Getting Real Time Emissions Index >>>", liveEmissions)
+
 }

@@ -1,12 +1,15 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	EM "main/pkg/electricitymap"
 	iac "main/pkg/infraascode"
 	pa "main/pkg/poweradapter"
-
 	"os"
+	"strconv"
+	"strings"
 )
 
 //SgithubNoticeMessage("Starting carbon measure action.")
@@ -77,8 +80,12 @@ func getCarbonIntensity(zoneKey string) int {
 }
 
 func getKwhForComponent(componentName string) float64 {
-
-	return 2.6
+	var qry TypCloudResourceQuery
+	qry.SizeName = "Standard_A2_V2"
+	qry.Type = "Microsoft.Compute/virtualMachines"
+	qry.Provider = "azure"
+	//qry.SizeName
+	return GetWattage(qry) //2.6
 }
 
 func iterateOverFile(fileName string, infraFileType string) float64 {
@@ -93,6 +100,37 @@ func iterateOverFile(fileName string, infraFileType string) float64 {
 	}
 
 	return getKwhForComponent("component1") * float64(c)
+}
+
+func readJSON(jsonPath string) []TypCloudResources {
+	file, _ := ioutil.ReadFile(jsonPath)
+	var cloudLoc []TypCloudResources
+	err := json.Unmarshal([]byte(file), &cloudLoc)
+	if err != nil {
+		fmt.Println(err.Error())
+	}
+	return cloudLoc
+}
+
+func GetWattage(qry TypCloudResourceQuery) (watt float64) {
+	cloudLoc := readJSON("references/resources.json")
+	for _, c := range cloudLoc {
+		if strings.ToLower(c.Cloud) == strings.ToLower(qry.Provider) {
+
+			for _, l := range c.Resouce {
+				if strings.ToLower(l.Type) == strings.ToLower(qry.Type) {
+
+					for _, s := range l.Sizes {
+						if strings.ToLower(s.Name) == strings.ToLower(qry.SizeName) {
+							watt, _ = strconv.ParseFloat(s.Wattage, 64) //watt, _ = strconv.Atoi(s.wattage) //strconv.ParseFloat( s.wattage)
+
+						}
+					}
+				}
+			}
+		}
+	}
+	return
 }
 
 type TypARM struct {
@@ -162,4 +200,24 @@ type TypSizes struct {
 type TypSummaryDetails struct {
 	location string
 	count    int
+}
+
+type TypCloudResourceQuery struct {
+	Provider string
+	Location string
+	SizeName string
+	Type     string
+}
+type TypCloudResources struct {
+	Cloud   string       `json:"cloud"`
+	Resouce []TypResouce `json:"resources"`
+}
+
+type TypResouce struct {
+	Type  string    `json:"type"`
+	Sizes []TypSize `json:"sizes"`
+}
+type TypSize struct {
+	Name    string `json:"Name"`
+	Wattage string `json:"wattage"`
 }
