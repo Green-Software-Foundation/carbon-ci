@@ -1,12 +1,10 @@
 package electricitymap
 
 import (
-	"encoding/json"
-	"errors"
 	"fmt"
-	"io/ioutil"
-	"log"
-	"net/http"
+
+	"main/pkg/http"
+
 	"strconv"
 )
 
@@ -66,7 +64,16 @@ func (e electricityMap) GetZones() (map[string]typZone, error) {
 	header["auth-token"] = e.zoneKey
 
 	fmt.Println("Getting Electricity Map Zones")
-	err := httpGet(url, &data, header, query)
+
+	request := http.Request{
+		Url:      url,
+		Method:   "GET",
+		Header:   header,
+		Query:    query,
+		Response: &data,
+	}
+
+	err := request.Send()
 	return data, err
 }
 
@@ -90,9 +97,16 @@ func (e electricityMap) LiveCarbonIntensity(params TypAPIParams) (typCI, error) 
 	header, query := httpQueryBuilder(e.zoneKey, params)
 
 	fmt.Println("Getting Electricity Map Live Carbon Intensity")
-	err := httpGet(url, &data, header, query)
-	return data, err
+	request := http.Request{
+		Url:      url,
+		Method:   "GET",
+		Header:   header,
+		Query:    query,
+		Response: &data,
+	}
 
+	err := request.Send()
+	return data, err
 }
 
 /*
@@ -123,24 +137,31 @@ func (e electricityMap) LivePowerBreakdown(params TypAPIParams) (typPB, error) {
 	header, query := httpQueryBuilder(e.zoneKey, params)
 
 	fmt.Println("Getting Electricity Map Live Power Breakdown")
-	err := httpGet(url, &data, header, query)
-	return data, err
+	request := http.Request{
+		Url:      url,
+		Method:   "GET",
+		Header:   header,
+		Query:    query,
+		Response: &data,
+	}
 
+	err := request.Send()
+	return data, err
 }
 
-/*
-This endpoint retrieves the last 24h of carbon intensity (in gCO2eq/kWh) of an area. It can either be queried by zone identifier or by geolocation. The resolution is 60 minutes.
+// /*
+// This endpoint retrieves the last 24h of carbon intensity (in gCO2eq/kWh) of an area. It can either be queried by zone identifier or by geolocation. The resolution is 60 minutes.
 
-QUERY PARAMETERS
+// QUERY PARAMETERS
 
-Parameter | Description
+// Parameter | Description
 
-zone | A string representing the zone identifier
+// zone | A string representing the zone identifier
 
-lon | Longitude (if querying with a geolocation)
+// lon | Longitude (if querying with a geolocation)
 
-lat | Latitude (if querying with a geolocation)
-*/
+// lat | Latitude (if querying with a geolocation)
+// */
 func (e electricityMap) RecentCarbonIntensity(params TypAPIParams) (typRecentCI, error) {
 	url := fmt.Sprintf("%v/carbon-intensity/history", e.url)
 	var data typRecentCI
@@ -148,24 +169,31 @@ func (e electricityMap) RecentCarbonIntensity(params TypAPIParams) (typRecentCI,
 	header, query := httpQueryBuilder(e.zoneKey, params)
 
 	fmt.Println("Getting Electricity Map Recent Carbon Intensity")
-	err := httpGet(url, &data, header, query)
-	return data, err
+	request := http.Request{
+		Url:      url,
+		Method:   "GET",
+		Header:   header,
+		Query:    query,
+		Response: &data,
+	}
 
+	err := request.Send()
+	return data, err
 }
 
-/*
-This endpoint retrieves the last 24h of power consumption and production breakdown of an area, which represents the physical origin of electricity broken down by production type. It can either be queried by zone identifier or by geolocation. The resolution is 60 minutes.
+// /*
+// This endpoint retrieves the last 24h of power consumption and production breakdown of an area, which represents the physical origin of electricity broken down by production type. It can either be queried by zone identifier or by geolocation. The resolution is 60 minutes.
 
-QUERY PARAMETERS
+// QUERY PARAMETERS
 
-Parameter | Description
+// Parameter | Description
 
-zone | A string representing the zone identifier
+// zone | A string representing the zone identifier
 
-lon | Longitude (if querying with a geolocation)
+// lon | Longitude (if querying with a geolocation)
 
-lat | Latitude (if querying with a geolocation)
-*/
+// lat | Latitude (if querying with a geolocation)
+// */
 func (e electricityMap) RecentPowerBreakdown(params TypAPIParams) (typRecentPB, error) {
 	url := fmt.Sprintf("%v/power-consumption-breakdown/history", e.url)
 	var data typRecentPB
@@ -173,28 +201,35 @@ func (e electricityMap) RecentPowerBreakdown(params TypAPIParams) (typRecentPB, 
 	header, query := httpQueryBuilder(e.zoneKey, params)
 
 	fmt.Println("Getting Electricity Map Recent Power Breakdown")
-	err := httpGet(url, &data, header, query)
-	return data, err
+	request := http.Request{
+		Url:      url,
+		Method:   "GET",
+		Header:   header,
+		Query:    query,
+		Response: &data,
+	}
 
+	err := request.Send()
+	return data, err
 }
 
-/*
-This endpoint retrieves a past carbon intensity (in gCO2eq/kWh) of an area. It can either be queried by zone identifier or by geolocation. The resolution is 60 minutes.
+// /*
+// This endpoint retrieves a past carbon intensity (in gCO2eq/kWh) of an area. It can either be queried by zone identifier or by geolocation. The resolution is 60 minutes.
 
-QUERY PARAMETERS
+// QUERY PARAMETERS
 
-Parameter | Description
+// Parameter | Description
 
-zone | A string representing the zone identifier
+// zone | A string representing the zone identifier
 
-lon | Longitude (if querying with a geolocation)
+// lon | Longitude (if querying with a geolocation)
 
-lat | Latitude (if querying with a geolocation)
+// lat | Latitude (if querying with a geolocation)
 
-datetime | datetime in ISO format
+// datetime | datetime in ISO format
 
-estimationFallback | (optional) boolean (if estimated data should be included)
-*/
+// estimationFallback | (optional) boolean (if estimated data should be included)
+// */
 func (e electricityMap) PastCarbonIntensity(params TypAPIParams) (typCI, error) {
 	url := fmt.Sprintf("%v/carbon-intensity/past", e.url)
 	var data typCI
@@ -202,30 +237,37 @@ func (e electricityMap) PastCarbonIntensity(params TypAPIParams) (typCI, error) 
 	header, query := httpQueryBuilder(e.zoneKey, params)
 
 	fmt.Println("Getting Electricity Map Past Carbon Intensity")
-	err := httpGet(url, &data, header, query)
-	return data, err
+	request := http.Request{
+		Url:      url,
+		Method:   "GET",
+		Header:   header,
+		Query:    query,
+		Response: &data,
+	}
 
+	err := request.Send()
+	return data, err
 }
 
-/*
-This endpoint retrieves a past carbon intensity (in gCO2eq/kWh) of an area within a given date range. It can either be queried by zone identifier or by geolocation. The resolution is 60 minutes. The time range is limited to 10 days.
+// /*
+// This endpoint retrieves a past carbon intensity (in gCO2eq/kWh) of an area within a given date range. It can either be queried by zone identifier or by geolocation. The resolution is 60 minutes. The time range is limited to 10 days.
 
-QUERY PARAMETERS
+// QUERY PARAMETERS
 
-Parameter | Description
+// Parameter | Description
 
-zone | A string representing the zone identifier
+// zone | A string representing the zone identifier
 
-lon | Longitude (if querying with a geolocation)
+// lon | Longitude (if querying with a geolocation)
 
-lat | Latitude (if querying with a geolocation)
+// lat | Latitude (if querying with a geolocation)
 
-start | datetime in ISO format
+// start | datetime in ISO format
 
-end | datetime in ISO format (excluded)
+// end | datetime in ISO format (excluded)
 
-estimationFallback | (optional) boolean (if estimated data should be included)
-*/
+// estimationFallback | (optional) boolean (if estimated data should be included)
+// */
 func (e electricityMap) PastCarbonIntensityRange(params TypAPIParams) (map[string][]typCI, error) {
 	url := fmt.Sprintf("%v/carbon-intensity/past-range", e.url)
 	var data = make(map[string][]typCI)
@@ -233,28 +275,35 @@ func (e electricityMap) PastCarbonIntensityRange(params TypAPIParams) (map[strin
 	header, query := httpQueryBuilder(e.zoneKey, params)
 
 	fmt.Println("Getting Electricity Map Past Carbon Intensity Range")
-	err := httpGet(url, &data, header, query)
-	return data, err
+	request := http.Request{
+		Url:      url,
+		Method:   "GET",
+		Header:   header,
+		Query:    query,
+		Response: &data,
+	}
 
+	err := request.Send()
+	return data, err
 }
 
-/*
-This endpoint retrieves a past power breakdown of an area. It can either be queried by zone identifier or by geolocation. The resolution is 60 minutes.
+// /*
+// This endpoint retrieves a past power breakdown of an area. It can either be queried by zone identifier or by geolocation. The resolution is 60 minutes.
 
-QUERY PARAMETERS
+// QUERY PARAMETERS
 
-Parameter | Description
+// Parameter | Description
 
-zone | A string representing the zone identifier
+// zone | A string representing the zone identifier
 
-lon | Longitude (if querying with a geolocation)
+// lon | Longitude (if querying with a geolocation)
 
-lat | Latitude (if querying with a geolocation)
+// lat | Latitude (if querying with a geolocation)
 
-datetime | datetime in ISO format
+// datetime | datetime in ISO format
 
-estimationFallback | (optional) boolean (if estimated data should be included)
-*/
+// estimationFallback | (optional) boolean (if estimated data should be included)
+// */
 func (e electricityMap) PastPowerBreakdown(params TypAPIParams) (typPB, error) {
 	url := fmt.Sprintf("%v/power-breakdown/past", e.url)
 	var data typPB
@@ -262,30 +311,37 @@ func (e electricityMap) PastPowerBreakdown(params TypAPIParams) (typPB, error) {
 	header, query := httpQueryBuilder(e.zoneKey, params)
 
 	fmt.Println("Getting Electricity Map Past Power Breakdown")
-	err := httpGet(url, &data, header, query)
-	return data, err
+	request := http.Request{
+		Url:      url,
+		Method:   "GET",
+		Header:   header,
+		Query:    query,
+		Response: &data,
+	}
 
+	err := request.Send()
+	return data, err
 }
 
-/*
-This endpoint retrieves a past power breakdown of an area within a given date range. It can either be queried by zone identifier or by geolocation. The resolution is 60 minutes. The time range is limited to 10 days.
+// /*
+// This endpoint retrieves a past power breakdown of an area within a given date range. It can either be queried by zone identifier or by geolocation. The resolution is 60 minutes. The time range is limited to 10 days.
 
-QUERY PARAMETERS
+// QUERY PARAMETERS
 
-Parameter | Description
+// Parameter | Description
 
-zone | A string representing the zone identifier
+// zone | A string representing the zone identifier
 
-lon | Longitude (if querying with a geolocation)
+// lon | Longitude (if querying with a geolocation)
 
-lat | Latitude (if querying with a geolocation)
+// lat | Latitude (if querying with a geolocation)
 
-start | datetime in ISO format
+// start | datetime in ISO format
 
-end | datetime in ISO format (excluded)
+// end | datetime in ISO format (excluded)
 
-estimationFallback | (optional) boolean (if estimated data should be included)
-*/
+// estimationFallback | (optional) boolean (if estimated data should be included)
+// */
 func (e electricityMap) PastPowerBreakdownRange(params TypAPIParams) (map[string][]typPB, error) {
 	url := fmt.Sprintf("%v/power-breakdown/past-range", e.url)
 	var data = make(map[string][]typPB)
@@ -293,66 +349,16 @@ func (e electricityMap) PastPowerBreakdownRange(params TypAPIParams) (map[string
 	header, query := httpQueryBuilder(e.zoneKey, params)
 
 	fmt.Println("Getting Electricity Map Past Power Breakdown Range")
-	err := httpGet(url, &data, header, query)
+	request := http.Request{
+		Url:      url,
+		Method:   "GET",
+		Header:   header,
+		Query:    query,
+		Response: &data,
+	}
+
+	err := request.Send()
 	return data, err
-
-}
-
-func httpGet(url string, data interface{}, header map[string]string, query map[string]string) error {
-	client := &http.Client{}
-	req, err := http.NewRequest("GET", url, nil)
-	if hasError(err) {
-		fmt.Println("http.NewRequest error")
-		fmt.Println(err.Error())
-		return err
-	}
-
-	// Add Headers
-	for k := range header {
-		// fmt.Printf("Adding header %v:%v\n", k, header[k])
-		req.Header.Add(k, header[k])
-	}
-
-	// Get URL Query String
-	q := req.URL.Query()
-
-	for k := range query {
-		q.Add(k, query[k])
-	}
-
-	// Add query string to URL
-	req.URL.RawQuery = q.Encode()
-
-	// fmt.Println(req.URL)
-	response, err := client.Do(req)
-	if hasError(err) {
-		fmt.Println("client.Do error")
-		fmt.Println(err.Error())
-		return err
-	}
-
-	if response.StatusCode == 200 {
-		responseData, err := ioutil.ReadAll(response.Body)
-		if hasError(err) {
-			fmt.Println("ioutil.ReadAll error")
-			fmt.Println(err.Error())
-			return err
-		}
-
-		json.Unmarshal(responseData, &data)
-		return nil //no error
-	} else {
-		err = errors.New(response.Status)
-		return err
-	}
-}
-
-func hasError(err error) bool {
-	if err != nil {
-		log.Fatal(err)
-		return true
-	}
-	return false
 }
 
 type TypAPIParams struct {

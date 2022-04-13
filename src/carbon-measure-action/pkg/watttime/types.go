@@ -1,13 +1,9 @@
 package watttime
 
-// httpRequestType represents the http request header
-type httpRequestType struct {
-	Url      string
-	Method   string
-	Data     map[string]string
-	Header   map[string]string
-	Query    map[string]string
-	Response interface{}
+// Coordinates contains the property longitude and latitude
+type Coordinates struct {
+	Longitude float32
+	Latitude  float32
 }
 
 // loginResp represents the Login function response
