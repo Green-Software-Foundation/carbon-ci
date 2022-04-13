@@ -92,7 +92,7 @@ func ListOfGridRegions(all bool) (*[]listOfGridRegionsResp, error) {
 }
 
 // RealTimeEmissionsIndex provides a real-time signal indicating the marginal carbon intensity for the local grid for the current time (updated every 5 minutes).
-func RealTimeEmissionsIndex(ba string, latitude float32, longitude float32, style string) (*realTimeEmissionsIndexResp, error) {
+func RealTimeEmissionsIndex(ba string, latitude float32, longitude float32, style string) (*RealTimeEmissionsIndexResp, error) {
 	header := make(map[string]string)
 
 	header["Authorization"] = "Bearer " + token
@@ -109,7 +109,7 @@ func RealTimeEmissionsIndex(ba string, latitude float32, longitude float32, styl
 		query["style"] = style
 	}
 
-	var response realTimeEmissionsIndexResp
+	var response RealTimeEmissionsIndexResp
 
 	request := http.Request{
 		Url:      url + "index",
@@ -128,7 +128,7 @@ func RealTimeEmissionsIndex(ba string, latitude float32, longitude float32, styl
 }
 
 // GridEmissionsData obtain historical marginal emissions (CO2 MOER in lbs of CO2 per MWh) for a given grid region (balancing authority abbreviated code, ba) or location (latitude & longitude pair).
-func GridEmissionsData(ba string, latitude float32, longitude float32, starttime string, endtime string, style string, moerversion string) (*[]gridEmissionsDataResp, error) {
+func GridEmissionsData(ba string, latitude float32, longitude float32, starttime string, endtime string, style string, moerversion string) (*[]GridEmissionsDataResp, error) {
 	header := make(map[string]string)
 
 	header["Authorization"] = "Bearer " + token
@@ -157,7 +157,7 @@ func GridEmissionsData(ba string, latitude float32, longitude float32, starttime
 		query["moerversion"] = moerversion
 	}
 
-	var response []gridEmissionsDataResp
+	var response []GridEmissionsDataResp
 
 	request := http.Request{
 		Url:      url + "data",

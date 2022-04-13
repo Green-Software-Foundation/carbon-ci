@@ -27,7 +27,7 @@ type listOfGridRegionsResp struct {
 }
 
 // realTimeEmissionIndexResp represents the RealTimeEmissionsIndex function response
-type realTimeEmissionsIndexResp struct {
+type RealTimeEmissionsIndexResp struct {
 	Freq      string `json:"freq"`
 	BA        string `json:"ba"`
 	Percent   string `json:"percent"`
@@ -35,8 +35,8 @@ type realTimeEmissionsIndexResp struct {
 	PointTime string `json:"point_time"`
 }
 
-// gridEmissionsDataResp represents the GridEmissionsData function response
-type gridEmissionsDataResp struct {
+// GridEmissionsDataResp represents the GridEmissionsData function response
+type GridEmissionsDataResp struct {
 	BA        string  `json:"ba"`
 	DataType  string  `json:"datatype"`
 	Frequency int     `json:"frequency"`
