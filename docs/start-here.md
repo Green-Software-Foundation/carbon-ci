@@ -84,8 +84,8 @@ This GitHub action uses data from third-party providers to compute for the estim
 |Name|Description|Required|Default Value|
 |--|--|--|--|
 |ELECTRICITY_MAP_AUTH_TOKEN|If you are using Electricity Map, supply the **Authentication Token** or **Zone Key** to use. This uses GitHub Secret named **ELECTRICITY_MAP_AUTH_TOKEN**|false||
-|WATT_TIME_USER|If you are using Watt Time, supply the username. This uses GitHub secret named **WATT_TIME_USER**|true||
-|WATT_TIME_PASS|If you are using Watt Time, supply the password. This uses GitHub secret named **WATT_TIME_PASS**|true||
+|WATT_TIME_USER|If you are using Watt Time, supply the username. This uses GitHub secret named **WATT_TIME_USER**|false||
+|WATT_TIME_PASS|If you are using Watt Time, supply the password. This uses GitHub secret named **WATT_TIME_PASS**|false||
 
 
 
