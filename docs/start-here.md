@@ -62,6 +62,10 @@ What must happen for the GitHub Issue to be marked as complete.
     IACType: arm
     CloudProvider: azure
     CARBON_RATE_PROVIDER: electricitymap
+  env:
+    ELECTRICITY_MAP_AUTH_TOKEN: ${{ secrets.ELECTRICITY_MAP_AUTH_TOKEN }}
+    WATT_TIME_USER: ${{ secrets.WATT_TIME_USER }}
+    WATT_TIME_PASS: ${{ secrets.WATT_TIME_PASS }}
 ```
 
 ### Inputs
@@ -74,14 +78,14 @@ What must happen for the GitHub Issue to be marked as complete.
 |CARBON_RATE_PROVIDER|Your resource for CO2 data.<br/>If you are using Electricity Map, type **electricitymap**.<br/>If you are using Watt Time, type **watttime**.|true||
 
 
-### GitHub Secrets
+### Environment Variables
 
-This GitHub action uses data from third-party providers to compute for the estimated power consumption and carbon emmission of the infrastructure of your application. You'd need to provide credentials to these third-party providers to be able to use their data by saving these as secrets. Make sure to save the secrets using the **exact names** on the table below.
-|Name|Value|
-|--|--|
-|ELECTRICITY_MAP_AUTH_TOKEN|If you are using Electricity Map, the value is the **Authentication Token** or **Zone Key** to use.|
-|WATT_TIME_USER|If you are using Watt Time, the value is the username.|
-|WATT_TIME_PASS|If you are using Watt Time, the value is the password.|
+This GitHub action uses data from third-party providers to compute for the estimated power consumption and carbon emmission of the infrastructure of your application. You'd need to provide credentials to these third-party providers to be able to use their data by passing the values under the **env** section.
+|Name|Description|Required|Default Value|
+|--|--|--|--|
+|ELECTRICITY_MAP_AUTH_TOKEN|If you are using Electricity Map, supply the **Authentication Token** or **Zone Key** to use. This uses GitHub Secret named **ELECTRICITY_MAP_AUTH_TOKEN**|false||
+|WATT_TIME_USER|If you are using Watt Time, supply the username. This uses GitHub secret named **WATT_TIME_USER**|true||
+|WATT_TIME_PASS|If you are using Watt Time, supply the password. This uses GitHub secret named **WATT_TIME_PASS**|true||
 
 
 
@@ -112,5 +116,10 @@ To execute those Pulumi commands successfully, there are some steps you need to 
   with:
     IACFile: "stack.json,preview.json"
     IACType: pulumi
+    CloudProvider: azure
+    CARBON_RATE_PROVIDER: electricitymap
+  env:
     ELECTRICITY_MAP_AUTH_TOKEN: ${{ secrets.ELECTRICITY_MAP_AUTH_TOKEN }}
+    WATT_TIME_USER: ${{ secrets.WATT_TIME_USER }}
+    WATT_TIME_PASS: ${{ secrets.WATT_TIME_PASS }}
 ```
