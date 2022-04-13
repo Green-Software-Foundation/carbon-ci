@@ -34,10 +34,10 @@ func LiveCarbonIntensity(params TypCarbonQueryParams) (ci CarbonIntensity) {
 		Location:      params.IacLocation,
 		Powerprovider: params.CarbonRateProvider,
 	})
-	fmt.Println("-- Printing Zone >>> ", zone)
-	fmt.Println(zone)
 	if strings.ToLower(params.CarbonRateProvider) == "electricitymap" {
-
+		fmt.Println("_______________________________________________")
+		fmt.Println("*** CarbonRateProvider---> [electricitymap] ***")
+		fmt.Println("-----------------------------------------------")
 		em := EM.New(params.ElectricityMapZoneKey)
 
 		data1, _ := em.LiveCarbonIntensity(EM.TypAPIParams{Zone: zone})
@@ -52,21 +52,22 @@ func LiveCarbonIntensity(params TypCarbonQueryParams) (ci CarbonIntensity) {
 		ci.History = historyci
 
 		return
-	}
 
-	if strings.ToLower(params.CarbonRateProvider) == "watttime" {
+	} else if strings.ToLower(params.CarbonRateProvider) == "watttime" {
+		fmt.Println("_________________________________________")
+		fmt.Println("*** CarbonRateProvider---> [watttime] ***")
+		fmt.Println("-----------------------------------------")
 		Watttime(params.WattTimeUser, params.WattTimePass, params.IacLocation)
 	}
-
 	return
 }
 
 func Watttime(userName string, passWord string, Region string) {
 
 	wtlog := WT.Login(userName, passWord)
-	fmt.Println(">>> Logging in WattTime Account", wtlog)
+	fmt.Println(">>> [Logging in WattTime Account]", wtlog)
 
 	liveEmissions, _ := WT.RealTimeEmissionsIndex(Region, 0, 0, "")
-	fmt.Println("-- Getting Real Time Emissions Index >>>", liveEmissions)
+	fmt.Println(">>> [Getting Real Time Emissions Index] >>>", liveEmissions)
 
 }
