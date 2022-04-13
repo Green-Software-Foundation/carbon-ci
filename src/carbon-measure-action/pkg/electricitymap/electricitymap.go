@@ -149,19 +149,19 @@ func (e electricityMap) LivePowerBreakdown(params TypAPIParams) (typPB, error) {
 	return data, err
 }
 
-// /*
-// This endpoint retrieves the last 24h of carbon intensity (in gCO2eq/kWh) of an area. It can either be queried by zone identifier or by geolocation. The resolution is 60 minutes.
+/*
+This endpoint retrieves the last 24h of carbon intensity (in gCO2eq/kWh) of an area. It can either be queried by zone identifier or by geolocation. The resolution is 60 minutes.
 
-// QUERY PARAMETERS
+QUERY PARAMETERS
 
-// Parameter | Description
+Parameter | Description
 
-// zone | A string representing the zone identifier
+zone | A string representing the zone identifier
 
-// lon | Longitude (if querying with a geolocation)
+lon | Longitude (if querying with a geolocation)
 
-// lat | Latitude (if querying with a geolocation)
-// */
+lat | Latitude (if querying with a geolocation)
+*/
 func (e electricityMap) RecentCarbonIntensity(params TypAPIParams) (typRecentCI, error) {
 	url := fmt.Sprintf("%v/carbon-intensity/history", e.url)
 	var data typRecentCI
@@ -181,19 +181,19 @@ func (e electricityMap) RecentCarbonIntensity(params TypAPIParams) (typRecentCI,
 	return data, err
 }
 
-// /*
-// This endpoint retrieves the last 24h of power consumption and production breakdown of an area, which represents the physical origin of electricity broken down by production type. It can either be queried by zone identifier or by geolocation. The resolution is 60 minutes.
+/*
+This endpoint retrieves the last 24h of power consumption and production breakdown of an area, which represents the physical origin of electricity broken down by production type. It can either be queried by zone identifier or by geolocation. The resolution is 60 minutes.
 
-// QUERY PARAMETERS
+QUERY PARAMETERS
 
-// Parameter | Description
+Parameter | Description
 
-// zone | A string representing the zone identifier
+zone | A string representing the zone identifier
 
-// lon | Longitude (if querying with a geolocation)
+lon | Longitude (if querying with a geolocation)
 
-// lat | Latitude (if querying with a geolocation)
-// */
+lat | Latitude (if querying with a geolocation)
+*/
 func (e electricityMap) RecentPowerBreakdown(params TypAPIParams) (typRecentPB, error) {
 	url := fmt.Sprintf("%v/power-consumption-breakdown/history", e.url)
 	var data typRecentPB
@@ -213,23 +213,23 @@ func (e electricityMap) RecentPowerBreakdown(params TypAPIParams) (typRecentPB, 
 	return data, err
 }
 
-// /*
-// This endpoint retrieves a past carbon intensity (in gCO2eq/kWh) of an area. It can either be queried by zone identifier or by geolocation. The resolution is 60 minutes.
+/*
+This endpoint retrieves a past carbon intensity (in gCO2eq/kWh) of an area. It can either be queried by zone identifier or by geolocation. The resolution is 60 minutes.
 
-// QUERY PARAMETERS
+QUERY PARAMETERS
 
-// Parameter | Description
+Parameter | Description
 
-// zone | A string representing the zone identifier
+zone | A string representing the zone identifier
 
-// lon | Longitude (if querying with a geolocation)
+lon | Longitude (if querying with a geolocation)
 
-// lat | Latitude (if querying with a geolocation)
+lat | Latitude (if querying with a geolocation)
 
-// datetime | datetime in ISO format
+datetime | datetime in ISO format
 
-// estimationFallback | (optional) boolean (if estimated data should be included)
-// */
+estimationFallback | (optional) boolean (if estimated data should be included)
+*/
 func (e electricityMap) PastCarbonIntensity(params TypAPIParams) (typCI, error) {
 	url := fmt.Sprintf("%v/carbon-intensity/past", e.url)
 	var data typCI
@@ -249,25 +249,25 @@ func (e electricityMap) PastCarbonIntensity(params TypAPIParams) (typCI, error) 
 	return data, err
 }
 
-// /*
-// This endpoint retrieves a past carbon intensity (in gCO2eq/kWh) of an area within a given date range. It can either be queried by zone identifier or by geolocation. The resolution is 60 minutes. The time range is limited to 10 days.
+/*
+This endpoint retrieves a past carbon intensity (in gCO2eq/kWh) of an area within a given date range. It can either be queried by zone identifier or by geolocation. The resolution is 60 minutes. The time range is limited to 10 days.
 
-// QUERY PARAMETERS
+QUERY PARAMETERS
 
-// Parameter | Description
+Parameter | Description
 
-// zone | A string representing the zone identifier
+zone | A string representing the zone identifier
 
-// lon | Longitude (if querying with a geolocation)
+lon | Longitude (if querying with a geolocation)
 
-// lat | Latitude (if querying with a geolocation)
+lat | Latitude (if querying with a geolocation)
 
-// start | datetime in ISO format
+start | datetime in ISO format
 
-// end | datetime in ISO format (excluded)
+end | datetime in ISO format (excluded)
 
-// estimationFallback | (optional) boolean (if estimated data should be included)
-// */
+estimationFallback | (optional) boolean (if estimated data should be included)
+*/
 func (e electricityMap) PastCarbonIntensityRange(params TypAPIParams) (map[string][]typCI, error) {
 	url := fmt.Sprintf("%v/carbon-intensity/past-range", e.url)
 	var data = make(map[string][]typCI)
@@ -287,23 +287,23 @@ func (e electricityMap) PastCarbonIntensityRange(params TypAPIParams) (map[strin
 	return data, err
 }
 
-// /*
-// This endpoint retrieves a past power breakdown of an area. It can either be queried by zone identifier or by geolocation. The resolution is 60 minutes.
+/*
+This endpoint retrieves a past power breakdown of an area. It can either be queried by zone identifier or by geolocation. The resolution is 60 minutes.
 
-// QUERY PARAMETERS
+QUERY PARAMETERS
 
-// Parameter | Description
+Parameter | Description
 
-// zone | A string representing the zone identifier
+zone | A string representing the zone identifier
 
-// lon | Longitude (if querying with a geolocation)
+lon | Longitude (if querying with a geolocation)
 
-// lat | Latitude (if querying with a geolocation)
+lat | Latitude (if querying with a geolocation)
 
-// datetime | datetime in ISO format
+datetime | datetime in ISO format
 
-// estimationFallback | (optional) boolean (if estimated data should be included)
-// */
+estimationFallback | (optional) boolean (if estimated data should be included)
+*/
 func (e electricityMap) PastPowerBreakdown(params TypAPIParams) (typPB, error) {
 	url := fmt.Sprintf("%v/power-breakdown/past", e.url)
 	var data typPB
@@ -323,25 +323,25 @@ func (e electricityMap) PastPowerBreakdown(params TypAPIParams) (typPB, error) {
 	return data, err
 }
 
-// /*
-// This endpoint retrieves a past power breakdown of an area within a given date range. It can either be queried by zone identifier or by geolocation. The resolution is 60 minutes. The time range is limited to 10 days.
+/*
+This endpoint retrieves a past power breakdown of an area within a given date range. It can either be queried by zone identifier or by geolocation. The resolution is 60 minutes. The time range is limited to 10 days.
 
-// QUERY PARAMETERS
+QUERY PARAMETERS
 
-// Parameter | Description
+Parameter | Description
 
-// zone | A string representing the zone identifier
+zone | A string representing the zone identifier
 
-// lon | Longitude (if querying with a geolocation)
+lon | Longitude (if querying with a geolocation)
 
-// lat | Latitude (if querying with a geolocation)
+lat | Latitude (if querying with a geolocation)
 
-// start | datetime in ISO format
+start | datetime in ISO format
 
-// end | datetime in ISO format (excluded)
+end | datetime in ISO format (excluded)
 
-// estimationFallback | (optional) boolean (if estimated data should be included)
-// */
+estimationFallback | (optional) boolean (if estimated data should be included)
+*/
 func (e electricityMap) PastPowerBreakdownRange(params TypAPIParams) (map[string][]typPB, error) {
 	url := fmt.Sprintf("%v/power-breakdown/past-range", e.url)
 	var data = make(map[string][]typPB)
