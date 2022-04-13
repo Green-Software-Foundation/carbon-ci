@@ -6,12 +6,13 @@ import (
 	"io/ioutil"
 	iac "main/pkg/infraascode"
 	pa "main/pkg/poweradapter"
+	EM "main/pkg/electricitymap"
+	iac "main/pkg/infraascode"
 	"os"
 	"strings"
 )
 
 func main() {
-
 	infraFileType := os.Getenv("IACType")
 	infraFileName := os.Getenv("IACTemplateFile")
 	electricityMapZoneKey := os.Getenv("ELECTRICITY_MAP_AUTH_TOKEN")
@@ -23,6 +24,9 @@ func main() {
 	var Totalco2perkwh int
 	var count int
 	var qry TypCloudResourceQuery
+
+	githubNoticeMessage("Starting carbon measure action.")
+
 	// TODO: For terraform, we might need to accept a list of multiple files
 	var param pa.TypCarbonQueryParams
 	param.IacProvider = cloudProvider
@@ -62,6 +66,7 @@ func main() {
 	githubNoticeMessage("Successfully ran carbon measure action.")
 }
 
+
 func getCarbonIntensity(param pa.TypCarbonQueryParams) int {
 
 	x := pa.LiveCarbonIntensity(param)
@@ -100,6 +105,7 @@ func GetWattage(qry TypCloudResourceQuery) (watt int) {
 		}
 	}
 	return
+
 }
 
 type TypCloudResourceQuery struct {
