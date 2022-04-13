@@ -1,10 +1,10 @@
 package poweradapter
 
 import (
-	"fmt"
 	EM "main/pkg/electricitymap"
 	WT "main/pkg/watttime"
 	"strings"
+	time "time"
 )
 
 //RETURN
@@ -35,18 +35,14 @@ func LiveCarbonIntensity(params TypCarbonQueryParams) (ci CarbonIntensity) {
 		Powerprovider: params.CarbonRateProvider,
 	})
 	if strings.ToLower(params.CarbonRateProvider) == "electricitymap" {
-		fmt.Println("_______________________________________________")
-		fmt.Println("*** CarbonRateProvider---> [electricitymap] ***")
-		fmt.Println("-----------------------------------------------")
+
 		em := EM.New(params.ElectricityMapZoneKey)
 
-		data1, _ := em.LiveCarbonIntensity(EM.TypAPIParams{Zone: zone})
-		ci.LiveCarbonIntensity = data1.CarbonIntensity
-
-		data2, _ := em.RecentCarbonIntensity(EM.TypAPIParams{Zone: zone})
+		live, _ := em.LiveCarbonIntensity(EM.TypAPIParams{Zone: zone})
+		ci.LiveCarbonIntensity = live.CarbonIntensity
+		recent, _ := em.RecentCarbonIntensity(EM.TypAPIParams{Zone: zone})
 		var historyci []RecentCIHistory
-
-		for _, i := range data2.History {
+		for _, i := range recent.History {
 			historyci = append(historyci, RecentCIHistory{i.CarbonIntensity, i.Datetime})
 		}
 		ci.History = historyci
@@ -54,20 +50,32 @@ func LiveCarbonIntensity(params TypCarbonQueryParams) (ci CarbonIntensity) {
 		return
 
 	} else if strings.ToLower(params.CarbonRateProvider) == "watttime" {
-		fmt.Println("_________________________________________")
-		fmt.Println("*** CarbonRateProvider---> [watttime] ***")
-		fmt.Println("-----------------------------------------")
-		Watttime(params.WattTimeUser, params.WattTimePass, params.IacLocation)
+		Watttime(TypCarbonQueryParams{WattTimeUser: params.WattTimeUser, WattTimePass: params.WattTimePass}, "CAISO_NORTH")
 	}
+
 	return
 }
 
-func Watttime(userName string, passWord string, Region string) {
+func GetTimeRange() (starttime, endtime string) {
+	t := time.Now()
+	st := time.Date(t.Year(), t.Month(), t.Day(), t.Hour(), 0, 0, 0, t.Location())
+	et := st.Add((time.Hour * 23) * -1)
+	starttime = st.Format(time.RFC3339)
+	endtime = et.Format(time.RFC3339)
+	return
+}
 
-	wtlog := WT.Login(userName, passWord)
-	fmt.Println(">>> [Logging in WattTime Account]", wtlog)
+// type WTCarbonIntensity struct{
+// 	live string
+// 	live string
+// }
 
-	liveEmissions, _ := WT.RealTimeEmissionsIndex(Region, 0, 0, "")
-	fmt.Println(">>> [Getting Real Time Emissions Index] >>>", liveEmissions)
+func Watttime(params TypCarbonQueryParams, BA string) (string, string) {
 
+	starttime, endtime := GetTimeRange()
+	//wtlogin := WT.Login(params.WattTimeUser, params.WattTimePass)
+	live, _ := WT.RealTimeEmissionsIndex(BA, 0, 0, "")
+	recent, _ := WT.GridEmissionsData(BA, 0, 0, endtime, starttime, "", "")
+
+	return
 }
