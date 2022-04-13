@@ -11,14 +11,14 @@
 
                     "name":"Standard_A2_V2",
 
-                    "wattage":"165"
+                    "wattage":165
 
                 },
                 {
 
                     "name":"Standard_NC6s_v3",
 
-                    "wattage":"250"
+                    "wattage":250
 
                 }]
         }
