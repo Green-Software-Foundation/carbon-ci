@@ -1,74 +1,78 @@
-name: 'Carbon Measurement'
-description: 'Read in an infrastructure as code template and then estimate the carbon emissions'
+name: "Carbon Measurement"
+description: "Read in an infrastructure as code template and then estimate the carbon emissions"
 inputs:
   IACType:
-    description: 'Type of file for Infrastructure as Code'
+    description: "Type of file for Infrastructure as Code"
     required: true
-    default: 'arm'
+    default: "arm"
   IACFile:
-    description: 'IAC Filename'
+    description: "IAC Filename"
     required: true
-    default: 'infra.json'
+    default: "infra.json"
   CloudProvider:
-    description: 'Cloud provider for your infrastructure.'
+    description: "Cloud provider for your infrastructure."
     required: true
   CARBON_RATE_PROVIDER:
     description: 'Your resource for CO2 data. Must be either "electricitymap" or "watttime".'
     required: true
   ELECTRICITY_MAP_AUTH_TOKEN:
-    description: 'Authentication token to access Electricity Map API'
+    description: "Authentication token to access Electricity Map API"
     required: false
   WATT_TIME_USER:
-    description: 'Username to use to access Watt Time API'
+    description: "Username to use to access Watt Time API"
     required: false
   WATT_TIME_PASS:
-    description: 'Password to use to access Watt Time API'
+    description: "Password to use to access Watt Time API"
     required: false
 
 outputs:
   grams_carbon_equivalent_per_kwh:
-    description: 'Grams of Carbon Equivalent per kWh for the selected location'
+    description: "Grams of Carbon Equivalent per kWh for the selected location"
   grams_emitted_over_24h:
-    description: 'Grams of Carbon Equivalents emitted over 24 hours'
+    description: "Grams of Carbon Equivalents emitted over 24 hours"
 runs:
   using: composite
   steps:
-  - name: if IACFileType is already ARM template
-    if: inputs.IACType == 'arm'
-    run: echo "ARMTemplateFilename=${{inputs.IACFile}}" >> $GITHUB_ENV
-    shell: bash
+    - name: Set default value for IACTemplateFile - ARM/Pulumi
+      if: inputs.IACType == 'arm' || inputs.IACType == 'pulumi'
+      run: echo "IACTemplateFile=${{inputs.IACFile}}" >> $GITHUB_ENV
+      shell: bash
 
-  - name: Set default value for ARMTemplateFilename
-    if: inputs.IACType == 'bicep'
-    run: echo "ARMTemplateFilename=${GITHUB_RUN_ID}_ARM.json" >> $GITHUB_ENV
-    shell: bash    
+    - name: Set default value for IACTemplateFile - Bicep
+      if: inputs.IACType == 'bicep'
+      run: echo "IACTemplateFile=${GITHUB_RUN_ID}_ARM.json" >> $GITHUB_ENV
+      shell: bash
 
-  - name: Build bicep file
-    if: inputs.IACType == 'bicep'
-    uses: azure/bicep-build-action@v1.0.0
-    with:
-      bicepFilePath: ${{ inputs.IACFile }}
-      outputFilePath: ${{ env.ARMTemplateFilename }}
-      
-  - name: Set CloudProvider env variable
-    run: echo "CloudProvider=${{inputs.CloudProvider}}" >> $GITHUB_ENV
-    shell: bash
-    
-  - name: Set CARBON_RATE_PROVIDER env variable
-    run: echo "CARBON_RATE_PROVIDER=${{inputs.CARBON_RATE_PROVIDER}}" >> $GITHUB_ENV
-    shell: bash
-    
-  - name: Set ELECTRICITY_MAP_AUTH_TOKEN env variable
-    run: echo "ELECTRICITY_MAP_AUTH_TOKEN=${{inputs.ELECTRICITY_MAP_AUTH_TOKEN}}" >> $GITHUB_ENV
-    shell: bash
-    
-  - name: Set WATT_TIME_USER env variable
-    run: echo "WATT_TIME_USER=${{inputs.WATT_TIME_USER}}" >> $GITHUB_ENV
-    shell: bash
-    
-  - name: Set WATT_TIME_PASS env variable
-    run: echo "WATT_TIME_PASS=${{inputs.WATT_TIME_PASS}}" >> $GITHUB_ENV
-    shell: bash
+    - name: Build bicep file
+      if: inputs.IACType == 'bicep'
+      uses: azure/bicep-build-action@v1.0.0
+      with:
+        bicepFilePath: ${{ inputs.IACFile }}
+        outputFilePath: ${{ env.ARMTemplateFilename }}
 
-  - run: go run ${{ github.action_path }}/carbon_measure.go
-    shell: bash
+    - name: Set IACType env variable
+      run: echo "IACType=${{inputs.IACType}}" >> $GITHUB_ENV
+      shell: bash
+
+    - name: Set CloudProvider env variable
+      run: echo "CloudProvider=${{inputs.CloudProvider}}" >> $GITHUB_ENV
+      shell: bash
+
+    - name: Set CARBON_RATE_PROVIDER env variable
+      run: echo "CARBON_RATE_PROVIDER=${{inputs.CARBON_RATE_PROVIDER}}" >> $GITHUB_ENV
+      shell: bash
+
+    - name: Set ELECTRICITY_MAP_AUTH_TOKEN env variable
+      run: echo "ELECTRICITY_MAP_AUTH_TOKEN=${{inputs.ELECTRICITY_MAP_AUTH_TOKEN}}" >> $GITHUB_ENV
+      shell: bash
+
+    - name: Set WATT_TIME_USER env variable
+      run: echo "WATT_TIME_USER=${{inputs.WATT_TIME_USER}}" >> $GITHUB_ENV
+      shell: bash
+
+    - name: Set WATT_TIME_PASS env variable
+      run: echo "WATT_TIME_PASS=${{inputs.WATT_TIME_PASS}}" >> $GITHUB_ENV
+      shell: bash
+
+    - run: go run ${{ github.action_path }}/carbon_measure.go
+      shell: bash
