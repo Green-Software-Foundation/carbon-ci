@@ -53,5 +53,5 @@ runs:
       run: echo "CARBON_RATE_PROVIDER=${{inputs.CARBON_RATE_PROVIDER}}" >> $GITHUB_ENV
       shell: bash
 
-    - run: go run ${{ github.action_path }}/carbon_measure.go
+    - run: go run ${{ github.action_path }}/src/carbon-measure-action/carbon_measure.go
       shell: bash
