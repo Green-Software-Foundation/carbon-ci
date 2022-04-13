@@ -13,6 +13,13 @@
 
                     "wattage":"165"
 
+                },
+                {
+
+                    "name":"Standard_NC6s_v3",
+
+                    "wattage":"250"
+
                 }]
         }
     ]

@@ -35,7 +35,7 @@ func LiveCarbonIntensity(params TypCarbonQueryParams) (ci CarbonIntensity) {
 		Powerprovider: params.CarbonRateProvider,
 	})
 	fmt.Println("-- Printing Zone >>> ", zone)
-
+	fmt.Println(zone)
 	if strings.ToLower(params.CarbonRateProvider) == "electricitymap" {
 
 		em := EM.New(params.ElectricityMapZoneKey)

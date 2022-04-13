@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
-	EM "main/pkg/electricitymap"
 	iac "main/pkg/infraascode"
 	pa "main/pkg/poweradapter"
 	"os"
@@ -12,40 +11,43 @@ import (
 	"strings"
 )
 
-//SgithubNoticeMessage("Starting carbon measure action.")
-// wattTimeUser := os.Getenv("WATT_TIME_USER")
-// wattTimePass := os.Getenv("WATT_TIME_PASS")
 func main() {
 
 	infraFileType := os.Getenv("IACType")
 	infraFileName := os.Getenv("IACTemplateFile")
 	electricityMapZoneKey := os.Getenv("ELECTRICITY_MAP_AUTH_TOKEN")
-
+	var averageKwh int
+	var count int
 	// TODO: For terraform, we might need to accept a list of multiple files
+	var param pa.TypCarbonQueryParams
+	param.IacLocation = "eastus" // "US-CAL-CISCO"
+	param.IacProvider = "azure"
+	param.CarbonRateProvider = "electricitymap"
+	param.ElectricityMapZoneKey = electricityMapZoneKey
+	param.WattTimeUser = "dtejares"
+	param.WattTimePass = "u8Go!T1BOQU+"
 
 	sumary := iac.GetIACSummary(iac.TypIACQuery{Filetype: infraFileType, Filename: infraFileName})
 
-	em := EM.New(electricityMapZoneKey)
-	em.LiveCarbonIntensity(EM.TypAPIParams{Zone: "US-CAL-CISCO"})
-
 	for _, ts := range sumary {
-		//	fmt.Println("Resource")
-		//fmt.Println(ts.Resource)
+		count = ts.Count
 		Sizes := ts.Sizes
 		if ts.Resource == "Microsoft.Compute/virtualMachines" {
 			for _, S := range Sizes {
-
 				for _, D := range S.Details {
-
 					fmt.Println(D.Location)
+					param.IacLocation = D.Location
+					averageKwh = averageKwh + getCarbonIntensity(param)
 				}
 			}
 		}
 	}
-
+	averageKwh = averageKwh / count
 	totalKwh := iterateOverFile(infraFileName, infraFileType)
-	averageKwh := getCarbonIntensity(electricityMapZoneKey)
-	// this comes from electricity map
+
+	fmt.Println("averageKwh")
+	fmt.Println(averageKwh)
+
 	carbonIntensity := float64(averageKwh) * totalKwh
 	fmt.Println("grams_carbon_equivalent_per_kwh", averageKwh)
 	fmt.Println("grams_emitted_over_24h", carbonIntensity)
@@ -56,50 +58,52 @@ func main() {
 	//githubNoticeMessage("Successfully ran carbon measure action.")
 }
 
-func getCarbonIntensity(zoneKey string) int {
+func getCarbonIntensity(param pa.TypCarbonQueryParams) int {
 
-	x := pa.LiveCarbonIntensity("US-CAL-CISCO")
-	fmt.Println("x", x)
-	//cc := new(electmap.TypAPIParams)
-	//cc.Zone = "US-CAL-CISO"
-	//ccmap, _ := electmap.New(zoneKey).RecentCarbonIntensity(*cc)
-	//return ccmap.History[len(ccmap.History)-1].CarbonIntensity //200
-	// var x []TypResource
-	// for s := range x {
+	x := pa.LiveCarbonIntensity(param)
+	if x.LiveCarbonIntensity < 1 {
+		x.LiveCarbonIntensity = 200 //  dummy
+	}
 
-	// 	for resourcedetail := range x[s].Location {
-
-	// 		//	carbontotal = carbontotal + 1
-	// 		//	totalwatt = totalwatt + 1
-	// 		//	procesorcount = procesorcount + 1
-	// 	}
-
-	// }
-	// TODO: Get the carbon intensity over 24 hours rather than just the current intensity
 	return x.LiveCarbonIntensity //200
 }
 
-func getKwhForComponent(componentName string) float64 {
-	var qry TypCloudResourceQuery
+func getKwhForComponent(qry TypCloudResourceQuery) float64 {
+
 	qry.SizeName = "Standard_A2_V2"
 	qry.Type = "Microsoft.Compute/virtualMachines"
 	qry.Provider = "azure"
-	//qry.SizeName
+
 	return GetWattage(qry) //2.6
 }
 
 func iterateOverFile(fileName string, infraFileType string) float64 {
 	// TODO: Get kwh for each component and return a summed float
 	// TODO: Call a different iterator depending on if it is arm, bicep, terraform, pulumi, etc
-	//var summary []TypSummary
-
-	var c int
+	var qry TypCloudResourceQuery
+	var TotalKwh float64
 	summary := iac.GetIACSummary(iac.TypIACQuery{Filetype: infraFileType, Filename: fileName})
+
 	for _, ts := range summary {
-		c = ts.Count
+		//dummy
+		qry.SizeName = "Standard_A2_V2"
+		qry.Type = "Microsoft.Compute/virtualMachines"
+		qry.Provider = "azure"
+		Sizes := ts.Sizes
+		if ts.Resource == "Microsoft.Compute/virtualMachines" {
+			for _, S := range Sizes {
+				qry.SizeName = S.Size
+				for _, D := range S.Details {
+
+					qry.SizeName = D.Location
+					TotalKwh = TotalKwh + getKwhForComponent(qry)
+				}
+
+			}
+		}
 	}
 
-	return getKwhForComponent("component1") * float64(c)
+	return TotalKwh // getKwhForComponent(qry) * float64(c)
 }
 
 func readJSON(jsonPath string) []TypCloudResources {
