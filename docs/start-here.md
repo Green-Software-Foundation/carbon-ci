@@ -75,9 +75,16 @@ What must happen for the GitHub Issue to be marked as complete.
 |IACType|Type of the infrastructure as code. <br/>Must be any of the following:<br/>**arm**, **bicep**, **pulumi***.<br/><br/>*See additional information below.|true|arm|
 |CloudProvider|Cloud provider. Currently, only **azure** is supported.|true|azure|
 |CARBON_RATE_PROVIDER|Your resource for CO2 data.<br/>If you are using Electricity Map, type **electricitymap**.<br/>If you are using Watt Time, type **watttime**.|true||
-|ELECTRICITY_MAP_AUTH_TOKEN|If you are using Electricity Map, supply the **Authentication Token** or **Zone Key** to use.<br/>The usage example above uses GitHub Secret named **ELECTRICITY_MAP_AUTH_TOKEN**|false||
-|WATT_TIME_USER|If you are using Watt Time, supply the username.<br/>The usage example above uses GitHub secret named **WATT_TIME_USER**|false||
-|WATT_TIME_PASS|If you are using Watt Time, supply the password.<br/>The usage example above uses GitHub secret named **WATT_TIME_PASS**|false||
+
+
+### GitHub Secrets
+
+This GitHub action uses data from third-party providers to compute for the estimated power consumption and carbon emmission of the infrastructure of your application. You'd need to provide credentials to these third-party providers to be able to use their data by saving these as secrets. Make sure to save the secrets using the **exact names** on the table below.
+|Name|Value|
+|--|--|
+|ELECTRICITY_MAP_AUTH_TOKEN|If you are using Electricity Map, the value is the **Authentication Token** or **Zone Key** to use.|
+|WATT_TIME_USER|If you are using Watt Time, the value is the username.|
+|WATT_TIME_PASS|If you are using Watt Time, the value is the password.|
 
 
 
