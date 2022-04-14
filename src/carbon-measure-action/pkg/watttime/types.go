@@ -1,13 +1,9 @@
 package watttime
 
-// httpRequestType represents the http request header
-type httpRequestType struct {
-	Url      string
-	Method   string
-	Data     map[string]string
-	Header   map[string]string
-	Query    map[string]string
-	Response interface{}
+// Coordinates contains the property longitude and latitude
+type Coordinates struct {
+	Longitude float32
+	Latitude  float32
 }
 
 // loginResp represents the Login function response
@@ -31,7 +27,7 @@ type listOfGridRegionsResp struct {
 }
 
 // realTimeEmissionIndexResp represents the RealTimeEmissionsIndex function response
-type realTimeEmissionsIndexResp struct {
+type RealTimeEmissionsIndexResp struct {
 	Freq      string `json:"freq"`
 	BA        string `json:"ba"`
 	Percent   string `json:"percent"`
@@ -39,8 +35,8 @@ type realTimeEmissionsIndexResp struct {
 	PointTime string `json:"point_time"`
 }
 
-// gridEmissionsDataResp represents the GridEmissionsData function response
-type gridEmissionsDataResp struct {
+// GridEmissionsDataResp represents the GridEmissionsData function response
+type GridEmissionsDataResp struct {
 	BA        string  `json:"ba"`
 	DataType  string  `json:"datatype"`
 	Frequency int     `json:"frequency"`
