@@ -1,25 +1,27 @@
-# carbon-measurement
-> A repository to demonstrate ways to measure carbon as part of a CI/CD pipeline.
+# carbon_ci_pipeline_tooling
+
+> Calculate the carbon emissions of an application via static analysis of the code and any infrastructure as code files in a repository.
 
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
-![GitHub issues](https://img.shields.io/github/issues/ava-innersource/carbon-measurement)
-![GitHub](https://img.shields.io/github/license/ava-innersource/carbon-measurement)
-![GitHub Repo stars](https://img.shields.io/github/stars/ava-innersource/carbon-measurement?style=social)
-[![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg)](https://avanade.github.io/code-of-conduct/)
-[![Incubating InnerSource](https://img.shields.io/badge/Incubating-Ava--Maturity-%23FF5800?labelColor=yellow)](https://avanade.github.io/maturity-model/)
+![GitHub issues](https://img.shields.io/github/issues/Green-Software-Foundation/Carbon_CI_Pipeline_Tooling)
+![GitHub](https://img.shields.io/github/license/Green-Software-Foundation/Carbon_CI_Pipeline_Tooling)
+![GitHub Repo stars](https://img.shields.io/github/stars/Green-Software-Foundation/Carbon_CI_Pipeline_Tooling?style=social)
 
+## Scope
 
-## Overview
-This repository contains examples to demonstrate how to measure carbon during the development process.
+This project aims to build the capability to calculate the carbon emissions of an application via static analysis of the code and any infrastructure as code files in a repository.
+
+This tooling covers the pipeline from a git commit, up to deployment, in a typical continuous integration/continuous deployment process.
 
 Considered approaches include:
+
 1. A GitHub Action to run during deployment
 2. A GitHub Action to run on a pull request
 3. A Pre-commit application to run every time a commit is made
 
+## Appointments
 
-## Licensing
-carbon-measurement is available under the [MIT Licence](./LICENCE). It will be donated to the Green Software Foundation if the [Carbon Pipeline Tooling](https://github.com/Green-Software-Foundation/innovation_wg/issues/18) proposal is accepted.
+- Fergus Kidd (Avanade)
 
 ## Solutions Referenced
 
@@ -32,15 +34,51 @@ carbon-measurement is available under the [MIT Licence](./LICENCE). It will be d
 - [Creating a Docker Action](https://docs.github.com/en/actions/creating-actions/creating-a-docker-container-action)
 
 ## Documentation
-Limited documentation has been created, as this is a work in progress. Further documentation will be added to the `docs` folder, along with setup instructions.
-## Contact
-Feel free to [raise an issue on GitHub](https://github.com/ava-innersource/carbon-measurement/issues), or see our [security disclosure](./SECURITY.md) policy.
 
-## Contributing
-Contributions are welcome. See information on [contributing](./CONTRIBUTING.md), as well as our [code of conduct](https://avanade.github.io/code-of-conduct/).
+Limited documentation has been created, as this is not yet an approved GSF deliverable. Further documentation will be added to the `docs` folder, along with setup instructions.
+
+## Working with the project
+
+Contributions are welcome. See information on [contributing](./CONTRIBUTING.md).
 
 If you're happy to follow these guidelines, then check out the [getting started](./docs/start-here.md) guide.
 
-## Who is Avanade?
+This project is part of the Green Software Foundation. It is open to any member of the Foundation, for more details regarding the foundation and the application form to join please go to https://greensoftware.foundation.
 
-[Avanade](https://www.avanade.com) is the leading provider of innovative digital, cloud and advisory services, industry solutions and design-led experiences across the Microsoft ecosystem.
+### Contributing and our ways of working
+
+1. Create a [new Issue](https://github.com/Green-Software-Foundation/carbon_ci_pipeline_tooling/issues/new)
+2. Discuss Issue with group --> Create PR if required
+3. PR to be submitted against the **DEV feature branch**
+4. PR discussed with the group. If agreed, the chair and maintainer will merge into **DEV Feature branch**
+
+<figure>
+	<img src="images/single-trunk-branch.svg" alt="GSF Single-Trunk Based Branch Flow">
+	<figcaption></figcaption>
+</figure>
+
+5. See [The Way we Work](https://github.com/Green-Software-Foundation/standards_wg/blob/main/the_way_we_work.md) for futher details.
+
+## Resources
+
+- [Slack Channel](https://greensoftwarefdn.slack.com/archives/C038YRLD2NN) (Members Only)
+
+## Licensing
+
+carbon_ci_pipeline_tooling is available under the [MIT Licence](./LICENCE).
+
+## Copyright
+
+Open Source Innovation WG projects are copyrighted under [Creative Commons Attribution 4.0](https://creativecommons.org/licenses/by/4.0/).
+
+## Patent
+
+No Patent License. No patent licenses are granted for the Draft Deliverables or Approved Deliverables developed by this Working Group.
+
+## Dataset
+
+CDLA-Permissive-1.0
+
+## Help
+
+helpdesk@greensoftware.io
