@@ -4,6 +4,7 @@ package watttime
 
 import (
 	"encoding/base64"
+	"main/pkg/http"
 	"strconv"
 )
 
@@ -19,14 +20,14 @@ func Login(username string, password string) error {
 
 	var response loginResp
 
-	request := httpRequestType{
+	request := http.Request{
 		Url:      url + "login",
 		Method:   "GET",
 		Header:   header,
 		Response: &response,
 	}
 
-	err := httpRequest(request)
+	err := request.Send()
 	if err != nil {
 		return err
 	}
@@ -47,14 +48,15 @@ func DetermineGridRegion(latitude float32, longitude float32) (*determineGridReg
 
 	var response determineGridRegionResp
 
-	err := httpRequest(httpRequestType{
+	request := http.Request{
 		Url:      url + "ba-from-loc",
 		Method:   "GET",
 		Header:   header,
 		Query:    query,
 		Response: &response,
-	})
+	}
 
+	err := request.Send()
 	if err != nil {
 		return nil, err
 	}
@@ -73,14 +75,15 @@ func ListOfGridRegions(all bool) (*[]listOfGridRegionsResp, error) {
 
 	var response []listOfGridRegionsResp
 
-	err := httpRequest(httpRequestType{
+	request := http.Request{
 		Url:      url + "ba-access",
 		Method:   "GET",
 		Header:   header,
 		Query:    query,
 		Response: &response,
-	})
+	}
 
+	err := request.Send()
 	if err != nil {
 		return nil, err
 	}
@@ -89,7 +92,7 @@ func ListOfGridRegions(all bool) (*[]listOfGridRegionsResp, error) {
 }
 
 // RealTimeEmissionsIndex provides a real-time signal indicating the marginal carbon intensity for the local grid for the current time (updated every 5 minutes).
-func RealTimeEmissionsIndex(ba string, latitude float32, longitude float32, style string) (*realTimeEmissionsIndexResp, error) {
+func RealTimeEmissionsIndex(ba string, latitude float32, longitude float32, style string) (*RealTimeEmissionsIndexResp, error) {
 	header := make(map[string]string)
 
 	header["Authorization"] = "Bearer " + token
@@ -106,16 +109,17 @@ func RealTimeEmissionsIndex(ba string, latitude float32, longitude float32, styl
 		query["style"] = style
 	}
 
-	var response realTimeEmissionsIndexResp
+	var response RealTimeEmissionsIndexResp
 
-	err := httpRequest(httpRequestType{
+	request := http.Request{
 		Url:      url + "index",
 		Method:   "GET",
 		Header:   header,
 		Query:    query,
 		Response: &response,
-	})
+	}
 
+	err := request.Send()
 	if err != nil {
 		return nil, err
 	}
@@ -124,7 +128,7 @@ func RealTimeEmissionsIndex(ba string, latitude float32, longitude float32, styl
 }
 
 // GridEmissionsData obtain historical marginal emissions (CO2 MOER in lbs of CO2 per MWh) for a given grid region (balancing authority abbreviated code, ba) or location (latitude & longitude pair).
-func GridEmissionsData(ba string, latitude float32, longitude float32, starttime string, endtime string, style string, moerversion string) (*[]gridEmissionsDataResp, error) {
+func GridEmissionsData(ba string, latitude float32, longitude float32, starttime string, endtime string, style string, moerversion string) (*[]GridEmissionsDataResp, error) {
 	header := make(map[string]string)
 
 	header["Authorization"] = "Bearer " + token
@@ -153,19 +157,21 @@ func GridEmissionsData(ba string, latitude float32, longitude float32, starttime
 		query["moerversion"] = moerversion
 	}
 
-	var response []gridEmissionsDataResp
+	var response []GridEmissionsDataResp
 
-	err := httpRequest(httpRequestType{
+	request := http.Request{
 		Url:      url + "data",
 		Method:   "GET",
 		Header:   header,
 		Query:    query,
 		Response: &response,
-	})
+	}
 
+	err := request.Send()
 	if err != nil {
 		return nil, err
 	}
+
 	return &response, nil
 }
 
@@ -197,14 +203,15 @@ func EmissionsForecast(ba string, starttime string, endtime string, extendedFore
 
 	var response []emissionForecastResp
 
-	err := httpRequest(httpRequestType{
+	request := http.Request{
 		Url:      url + "forecast",
 		Method:   "GET",
 		Header:   header,
 		Query:    query,
 		Response: &response,
-	})
+	}
 
+	err := request.Send()
 	if err != nil {
 		return nil, err
 	}

@@ -1,12 +1,10 @@
 package electricitymap
 
 import (
-	"encoding/json"
-	"errors"
 	"fmt"
-	"io/ioutil"
-	"log"
-	"net/http"
+
+	"main/pkg/http"
+
 	"strconv"
 )
 
@@ -66,7 +64,16 @@ func (e electricityMap) GetZones() (map[string]TypZone, error) {
 	header["auth-token"] = e.zoneKey
 
 	fmt.Println("Getting Electricity Map Zones")
-	err := httpGet(url, &data, header, query)
+
+	request := http.Request{
+		Url:      url,
+		Method:   "GET",
+		Header:   header,
+		Query:    query,
+		Response: &data,
+	}
+
+	err := request.Send()
 	return data, err
 }
 
@@ -90,10 +97,18 @@ func (e electricityMap) LiveCarbonIntensity(params TypAPIParams) (TypCI, error) 
 	header, query := httpQueryBuilder(e.zoneKey, params)
 
 	fmt.Println("Getting Electricity Map Live Carbon Intensity")
-	err := httpGet(url, &data, header, query)
-	fmt.Println("print", data.CarbonIntensity)
-	return data, err
 
+	request := http.Request{
+		Url:      url,
+		Method:   "GET",
+		Header:   header,
+		Query:    query,
+		Response: &data,
+	}
+
+
+	err := request.Send()
+	return data, err
 }
 
 /*
@@ -124,9 +139,16 @@ func (e electricityMap) LivePowerBreakdown(params TypAPIParams) (TypPB, error) {
 	header, query := httpQueryBuilder(e.zoneKey, params)
 
 	fmt.Println("Getting Electricity Map Live Power Breakdown")
-	err := httpGet(url, &data, header, query)
-	return data, err
+	request := http.Request{
+		Url:      url,
+		Method:   "GET",
+		Header:   header,
+		Query:    query,
+		Response: &data,
+	}
 
+	err := request.Send()
+	return data, err
 }
 
 /*
@@ -149,9 +171,16 @@ func (e electricityMap) RecentCarbonIntensity(params TypAPIParams) (TypRecentCI,
 	header, query := httpQueryBuilder(e.zoneKey, params)
 
 	fmt.Println("Getting Electricity Map Recent Carbon Intensity")
-	err := httpGet(url, &data, header, query)
-	return data, err
+	request := http.Request{
+		Url:      url,
+		Method:   "GET",
+		Header:   header,
+		Query:    query,
+		Response: &data,
+	}
 
+	err := request.Send()
+	return data, err
 }
 
 /*
@@ -174,9 +203,16 @@ func (e electricityMap) RecentPowerBreakdown(params TypAPIParams) (TypRecentPB, 
 	header, query := httpQueryBuilder(e.zoneKey, params)
 
 	fmt.Println("Getting Electricity Map Recent Power Breakdown")
-	err := httpGet(url, &data, header, query)
-	return data, err
+	request := http.Request{
+		Url:      url,
+		Method:   "GET",
+		Header:   header,
+		Query:    query,
+		Response: &data,
+	}
 
+	err := request.Send()
+	return data, err
 }
 
 /*
@@ -203,9 +239,16 @@ func (e electricityMap) PastCarbonIntensity(params TypAPIParams) (TypCI, error) 
 	header, query := httpQueryBuilder(e.zoneKey, params)
 
 	fmt.Println("Getting Electricity Map Past Carbon Intensity")
-	err := httpGet(url, &data, header, query)
-	return data, err
+	request := http.Request{
+		Url:      url,
+		Method:   "GET",
+		Header:   header,
+		Query:    query,
+		Response: &data,
+	}
 
+	err := request.Send()
+	return data, err
 }
 
 /*
@@ -234,9 +277,16 @@ func (e electricityMap) PastCarbonIntensityRange(params TypAPIParams) (map[strin
 	header, query := httpQueryBuilder(e.zoneKey, params)
 
 	fmt.Println("Getting Electricity Map Past Carbon Intensity Range")
-	err := httpGet(url, &data, header, query)
-	return data, err
+	request := http.Request{
+		Url:      url,
+		Method:   "GET",
+		Header:   header,
+		Query:    query,
+		Response: &data,
+	}
 
+	err := request.Send()
+	return data, err
 }
 
 /*
@@ -263,9 +313,16 @@ func (e electricityMap) PastPowerBreakdown(params TypAPIParams) (TypPB, error) {
 	header, query := httpQueryBuilder(e.zoneKey, params)
 
 	fmt.Println("Getting Electricity Map Past Power Breakdown")
-	err := httpGet(url, &data, header, query)
-	return data, err
+	request := http.Request{
+		Url:      url,
+		Method:   "GET",
+		Header:   header,
+		Query:    query,
+		Response: &data,
+	}
 
+	err := request.Send()
+	return data, err
 }
 
 /*
@@ -294,66 +351,16 @@ func (e electricityMap) PastPowerBreakdownRange(params TypAPIParams) (map[string
 	header, query := httpQueryBuilder(e.zoneKey, params)
 
 	fmt.Println("Getting Electricity Map Past Power Breakdown Range")
-	err := httpGet(url, &data, header, query)
+	request := http.Request{
+		Url:      url,
+		Method:   "GET",
+		Header:   header,
+		Query:    query,
+		Response: &data,
+	}
+
+	err := request.Send()
 	return data, err
-
-}
-
-func httpGet(url string, data interface{}, header map[string]string, query map[string]string) error {
-	client := &http.Client{}
-	req, err := http.NewRequest("GET", url, nil)
-	if hasError(err) {
-		fmt.Println("http.NewRequest error")
-		fmt.Println(err.Error())
-		return err
-	}
-
-	// Add Headers
-	for k := range header {
-		// fmt.Printf("Adding header %v:%v\n", k, header[k])
-		req.Header.Add(k, header[k])
-	}
-
-	// Get URL Query String
-	q := req.URL.Query()
-
-	for k := range query {
-		q.Add(k, query[k])
-	}
-
-	// Add query string to URL
-	req.URL.RawQuery = q.Encode()
-
-	// fmt.Println(req.URL)
-	response, err := client.Do(req)
-	if hasError(err) {
-		fmt.Println("client.Do error")
-		fmt.Println(err.Error())
-		return err
-	}
-
-	if response.StatusCode == 200 {
-		responseData, err := ioutil.ReadAll(response.Body)
-		if hasError(err) {
-			fmt.Println("ioutil.ReadAll error")
-			fmt.Println(err.Error())
-			return err
-		}
-
-		json.Unmarshal(responseData, &data)
-		return nil //no error
-	} else {
-		err = errors.New(response.Status)
-		return err
-	}
-}
-
-func hasError(err error) bool {
-	if err != nil {
-		log.Fatal(err)
-		return true
-	}
-	return false
 }
 
 type TypAPIParams struct {
