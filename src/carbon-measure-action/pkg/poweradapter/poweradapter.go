@@ -1,7 +1,7 @@
 package poweradapter
 
 import (
-	"fmt"
+	//"fmt"
 	EM "main/pkg/electricitymap"
 	WT "main/pkg/watttime"
 	"strconv"
@@ -61,12 +61,10 @@ func LiveCarbonIntensity(params TypCarbonQueryParams) (ci CarbonIntensity) {
 			var historyci []RecentCIHistory
 
 			for _, i := range *recent {
-				value, _ := strconv.ParseFloat(i.Value, 64)
-				historyci = append(historyci, RecentCIHistory{value, i.PointTime})
+				historyci = append(historyci, RecentCIHistory{float64(i.Value), i.PointTime})
 			}
 			ci.History = historyci
 		}
-		fmt.Print("..................", recent)
 
 	}
 
@@ -82,22 +80,13 @@ func GetTimeRange() (starttime, endtime string) {
 	return
 }
 
-type RealTimeEmission struct {
-	Freq      string
-	BA        string
-	Percent   string
-	Moer      string
-	PointTime string
-}
-
 func Watttime(params TypCarbonQueryParams, BA string) (*WT.RealTimeEmissionsIndexResp, *[]WT.GridEmissionsDataResp) {
 
-	loginwattt := WT.Login(params.WattTimeUser, params.WattTimePass)
-	fmt.Println("login", loginwattt)
-	live, _ := WT.RealTimeEmissionsIndex(BA, 0, 0, "")
+	WT.Login(params.WattTimeUser, params.WattTimePass)
 	starttime, endtime := GetTimeRange()
+
+	live, _ := WT.RealTimeEmissionsIndex(BA, 0, 0, "")
 	recent, _ := WT.GridEmissionsData("CAISO_NORTH", 0, 0, endtime, starttime, "", "")
 
-	fmt.Println("RECENT-----------", recent)
 	return live, recent
 }
