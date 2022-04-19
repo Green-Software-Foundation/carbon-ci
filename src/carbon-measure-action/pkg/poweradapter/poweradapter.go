@@ -1,20 +1,22 @@
 package poweradapter
 
 import (
+	"fmt"
 	EM "main/pkg/electricitymap"
 	WT "main/pkg/watttime"
+	"strconv"
 	"strings"
 	time "time"
 )
 
 //RETURN
 type CarbonIntensity struct {
-	LiveCarbonIntensity int
+	LiveCarbonIntensity float64
 	History             []RecentCIHistory
 }
 
 type RecentCIHistory struct {
-	CarbonIntensity int
+	CarbonIntensity float64
 	Datetime        string
 }
 
@@ -39,18 +41,33 @@ func LiveCarbonIntensity(params TypCarbonQueryParams) (ci CarbonIntensity) {
 		em := EM.New(params.ElectricityMapZoneKey)
 
 		live, _ := em.LiveCarbonIntensity(EM.TypAPIParams{Zone: zone})
-		ci.LiveCarbonIntensity = live.CarbonIntensity
+		ci.LiveCarbonIntensity = float64(live.CarbonIntensity)
 		recent, _ := em.RecentCarbonIntensity(EM.TypAPIParams{Zone: zone})
 		var historyci []RecentCIHistory
 		for _, i := range recent.History {
-			historyci = append(historyci, RecentCIHistory{i.CarbonIntensity, i.Datetime})
+			value := float64(i.CarbonIntensity)
+			historyci = append(historyci, RecentCIHistory{value, i.Datetime})
 		}
 		ci.History = historyci
 
 		return
 
 	} else if strings.ToLower(params.CarbonRateProvider) == "watttime" {
-		Watttime(TypCarbonQueryParams{WattTimeUser: params.WattTimeUser, WattTimePass: params.WattTimePass}, "CAISO_NORTH")
+
+		live, recent := Watttime(TypCarbonQueryParams{WattTimeUser: params.WattTimeUser, WattTimePass: params.WattTimePass}, "CAISO_NORTH")
+
+		ci.LiveCarbonIntensity, _ = strconv.ParseFloat(live.Moer, 64)
+		if recent != nil {
+			var historyci []RecentCIHistory
+
+			for _, i := range *recent {
+				value, _ := strconv.ParseFloat(i.Value, 64)
+				historyci = append(historyci, RecentCIHistory{value, i.PointTime})
+			}
+			ci.History = historyci
+		}
+		fmt.Print("..................", recent)
+
 	}
 
 	return
@@ -65,17 +82,22 @@ func GetTimeRange() (starttime, endtime string) {
 	return
 }
 
-// type WTCarbonIntensity struct{
-// 	live string
-// 	live string
-// }
+type RealTimeEmission struct {
+	Freq      string
+	BA        string
+	Percent   string
+	Moer      string
+	PointTime string
+}
 
-func Watttime(params TypCarbonQueryParams, BA string) (string, string) {
+func Watttime(params TypCarbonQueryParams, BA string) (*WT.RealTimeEmissionsIndexResp, *[]WT.GridEmissionsDataResp) {
 
-	starttime, endtime := GetTimeRange()
-	//wtlogin := WT.Login(params.WattTimeUser, params.WattTimePass)
+	loginwattt := WT.Login(params.WattTimeUser, params.WattTimePass)
+	fmt.Println("login", loginwattt)
 	live, _ := WT.RealTimeEmissionsIndex(BA, 0, 0, "")
-	recent, _ := WT.GridEmissionsData(BA, 0, 0, endtime, starttime, "", "")
+	starttime, endtime := GetTimeRange()
+	recent, _ := WT.GridEmissionsData("CAISO_NORTH", 0, 0, endtime, starttime, "", "")
 
-	return
+	fmt.Println("RECENT-----------", recent)
+	return live, recent
 }
