@@ -73,8 +73,8 @@ func LiveCarbonIntensity(params TypCarbonQueryParams) (ci CarbonIntensity) {
 
 func GetTimeRange() (starttime, endtime string) {
 	t := time.Now()
-	st := time.Date(t.Year(), t.Month(), t.Day(), t.Hour(), 0, 0, 0, t.Location())
-	et := st.Add((time.Hour * 23) * -1)
+	et := time.Date(t.Year(), t.Month(), t.Day(), t.Hour(), 0, 0, 0, t.Location())
+	st := et.Add((time.Hour * 23) * -1)
 	starttime = st.Format(time.RFC3339)
 	endtime = et.Format(time.RFC3339)
 	return
@@ -86,7 +86,7 @@ func Watttime(params TypCarbonQueryParams, BA string) (*WT.RealTimeEmissionsInde
 	starttime, endtime := GetTimeRange()
 
 	live, _ := WT.RealTimeEmissionsIndex(BA, 0, 0, "")
-	recent, _ := WT.GridEmissionsData("CAISO_NORTH", 0, 0, endtime, starttime, "", "")
+	recent, _ := WT.GridEmissionsData(BA, 0, 0, starttime, endtime, "", "")
 
 	return live, recent
 }
