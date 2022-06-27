@@ -4,9 +4,11 @@ import (
 	"bytes"
 	"encoding/json"
 	"errors"
+	"fmt"
 
 	"io/ioutil"
 	"net/http"
+	"net/http/httputil"
 )
 
 // Request represents the http request header
@@ -54,6 +56,8 @@ func (request *Request) Send() error {
 	}
 	req.URL.RawQuery = query.Encode()
 
+	formatted, _ := (httputil.DumpRequest(req, true))
+	fmt.Println(string(formatted))
 	// Do request
 	resp, err := client.Do(req)
 	if err != nil {

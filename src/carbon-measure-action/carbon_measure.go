@@ -4,9 +4,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
-	iac "main/pkg/infraascode"
 	pa "main/pkg/poweradapter"
-	EM "main/pkg/electricitymap"
+
+	//EM "main/pkg/electricitymap
 	iac "main/pkg/infraascode"
 	"os"
 	"strings"
@@ -20,8 +20,8 @@ func main() {
 	CarbonRateProvider := os.Getenv("CARBON_RATE_PROVIDER") // electricitymap or watttime
 	wattTimeUser := os.Getenv("WATT_TIME_USER")
 	wattTimePass := os.Getenv("WATT_TIME_PASS")
-	var averageKwh int
-	var Totalco2perkwh int
+	var averageKwh float64
+	var Totalco2perkwh float64
 	var count int
 	var qry TypCloudResourceQuery
 
@@ -51,7 +51,7 @@ func main() {
 					qry.Location = D.Location
 					averageKwh = averageKwh + getCarbonIntensity(param)
 
-					Totalco2perkwh = Totalco2perkwh + ((getCarbonIntensity(param) * GetWattage(qry)) / 1000)
+					Totalco2perkwh = Totalco2perkwh + ((getCarbonIntensity(param) * float64(GetWattage(qry))) / 1000)
 				}
 			}
 		}
@@ -66,8 +66,7 @@ func main() {
 	githubNoticeMessage("Successfully ran carbon measure action.")
 }
 
-
-func getCarbonIntensity(param pa.TypCarbonQueryParams) int {
+func getCarbonIntensity(param pa.TypCarbonQueryParams) float64 {
 
 	x := pa.LiveCarbonIntensity(param)
 	if x.LiveCarbonIntensity < 1 {

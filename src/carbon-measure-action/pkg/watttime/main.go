@@ -4,6 +4,7 @@ package watttime
 
 import (
 	"encoding/base64"
+	"fmt"
 	"main/pkg/http"
 	"strconv"
 )
@@ -28,6 +29,7 @@ func Login(username string, password string) error {
 	}
 
 	err := request.Send()
+	fmt.Println(err)
 	if err != nil {
 		return err
 	}

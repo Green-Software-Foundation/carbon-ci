@@ -38,7 +38,7 @@ func LiveCarbonIntensity(params TypCarbonQueryParams) (ci CarbonIntensity) {
 	if strings.ToLower(params.CarbonRateProvider) == "electricitymap" {
 
 		em := EM.New(params.ElectricityMapZoneKey)
-		
+
 		live, _ := em.LiveCarbonIntensity(EM.TypAPIParams{Zone: zone})
 		ci.LiveCarbonIntensity = float64(live.CarbonIntensity)
 		recent, _ := em.RecentCarbonIntensity(EM.TypAPIParams{Zone: zone})
@@ -48,7 +48,6 @@ func LiveCarbonIntensity(params TypCarbonQueryParams) (ci CarbonIntensity) {
 			historyci = append(historyci, RecentCIHistory{value, i.Datetime})
 		}
 		ci.History = historyci
-		
 
 		return
 
