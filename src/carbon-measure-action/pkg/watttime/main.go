@@ -4,7 +4,6 @@ package watttime
 
 import (
 	"encoding/base64"
-	"fmt"
 	"main/pkg/http"
 	"strconv"
 )
@@ -16,7 +15,6 @@ var token string
 // Login obtain an access token, it returns an error if failed.
 func Login(username string, password string) error {
 	header := make(map[string]string)
-
 	header["Authorization"] = "Basic " + base64.StdEncoding.EncodeToString([]byte(username+":"+password))
 
 	var response loginResp
@@ -29,7 +27,6 @@ func Login(username string, password string) error {
 	}
 
 	err := request.Send()
-	fmt.Println(err)
 	if err != nil {
 		return err
 	}
