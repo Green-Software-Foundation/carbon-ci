@@ -1,0 +1,18 @@
+[
+  {
+    "cloudResourceType": "Microsoft.Network/virtualNetworks",
+    "pulumiResourceType": "azure:network/virtualNetwork:VirtualNetwork"
+  },
+  {
+    "cloudResourceType": "Microsoft.Network/virtualNetworks/subnets",
+    "pulumiResourceType": "azure:network/subnet:Subnet"
+  },
+  {
+    "cloudResourceType": "Microsoft.Network/networkInterfaces",
+    "pulumiResourceType": "azure:network/networkInterface:NetworkInterface"
+  },
+  {
+    "cloudResourceType": "Microsoft.Compute/virtualMachines",
+    "pulumiResourceType": "azure:compute/virtualMachine:VirtualMachine"
+  }
+]
