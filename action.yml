@@ -52,6 +52,13 @@ runs:
     - name: Set CARBON_RATE_PROVIDER env variable
       run: echo "CARBON_RATE_PROVIDER=${{inputs.CARBON_RATE_PROVIDER}}" >> $GITHUB_ENV
       shell: bash
+      
+    - name: Set GO111MODULE to on
+      run: go env -w GO111MODULE=on
+      shell: bash
 
-    - run: go run ${{ github.action_path }}/src/carbon-measure-action/carbon_measure.go
+    - name: Cd into directory and run the program
+      run: |
+          cd ${{ github.action_path }}/src/carbon-measure-action
+          go run ${{ github.action_path }}/src/carbon-measure-action/carbon_measure.go ${{ github.action_path }}/src/carbon-measure-action/githubOutput.go
       shell: bash

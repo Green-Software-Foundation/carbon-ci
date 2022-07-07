@@ -1,6 +1,9 @@
 package infraascode
 
-import "fmt"
+import (
+	"fmt"
+	"strings"
+)
 
 func GetIACSummary(q TypIACQuery) []TypSummary {
 	var summary []TypSummary
@@ -9,7 +12,12 @@ func GetIACSummary(q TypIACQuery) []TypSummary {
 		// Summarize ARM JSON file to resource and location
 		// TODO: Need to retrieve Variables and Parameters values inside resource type "Microsoft.Resources/deployments"
 		summary = armSummary(q.Filename)
+		break
+	case "pulumi":
+		files := strings.Split(q.Filename, ",")
+		summary = pulumiSummary(strings.TrimSpace(files[0]), strings.TrimSpace(files[1]))
 	}
+
 	// Print out summarized ARM data
 	PrintSummary(&summary)
 	return summary
