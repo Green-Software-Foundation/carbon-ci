@@ -20,7 +20,7 @@
               go version && go env
         - uses: Green-Software-Foundation/Carbon_CI_Pipeline_Tooling@Dev
           with:
-            IACFile: /data/azuredeploy.json
+            IACFile: $GITHUB_WORKSPACE/data/azuredeploy.json
             IACType: arm
             CloudProvider: azure
             CARBON_RATE_PROVIDER: watttime
