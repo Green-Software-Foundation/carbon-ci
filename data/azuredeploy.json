@@ -59,7 +59,7 @@
             "evictionPolicy": "string",
             "extensionsTimeBudget": "string",
             "hardwareProfile": {
-            "vmSize": "Standard_D2s_v3",
+            "vmSize": "Standard_A2_V2",
             "vmSizeProperties": {
                 "vCPUsAvailable": "int",
                 "vCPUsPerCore": "int"
@@ -130,7 +130,7 @@
                             }
                             },
                             "sku": {
-                            "name": "Standard_D2s_v3",
+                            "name": "Standard_A2_V2",
                             "tier": "Standard"
                             }
                         },
