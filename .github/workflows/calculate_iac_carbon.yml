@@ -18,8 +18,8 @@
           run: |
               go env -w GO111MODULE=on
               go version && go env
-        - id: carbon_output
-          uses: Willmish/Carbon_CI_Pipeline_Tooling@gh-action-comment-output
+        - uses: Willmish/Carbon_CI_Pipeline_Tooling@gh-action-comment-output
+          id: carbon_output
           with:
             IACFile: $GITHUB_WORKSPACE/data/azuredeploy.json
             IACType: arm
@@ -36,5 +36,6 @@
             body: |
               grams_carbon_equivalent_per_kwh = ${{ steps.carbon_output.outputs.grams_carbon_equivalent_per_kwh }}
               grams_emitted_over_24h = ${{ steps.carbon_output.outputs.grams_emitted_over_24h }}
+              Finished = ${{ steps.carbon_output.outputs.finished }}
             reactions: rocket
 
