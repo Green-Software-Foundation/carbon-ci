@@ -64,5 +64,17 @@ runs:
       name: Cd into directory and run the program
       run: |
           cd ${{ github.action_path }}/src/carbon-measure-action
+          echo '::echo::on'
+          echo '::set-output name=action_echo::enabled'
           go run ${{ github.action_path }}/src/carbon-measure-action/carbon_measure.go ${{ github.action_path }}/src/carbon-measure-action/githubOutput.go
+          echo '::echo::off'
       shell: bash
+    - name: Test output
+      run: |
+          echo "Value: "
+          echo ${{ steps.action-output.outputs.grams_carbon_equivalent_per_kwh }}
+          echo " Full thing: "
+          echo ${{ steps.action-output.outputs.grams_emitted_over_24h }}
+      shell: bash
+
+      
