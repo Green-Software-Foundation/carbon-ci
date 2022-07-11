@@ -5,8 +5,6 @@ import (
 	"fmt"
 	"io/ioutil"
 	pa "main/pkg/poweradapter"
-
-	//EM "main/pkg/electricitymap
 	iac "main/pkg/infraascode"
 	"os"
 	"strings"
@@ -67,12 +65,7 @@ func main() {
 }
 
 func getCarbonIntensity(param pa.TypCarbonQueryParams) float64 {
-
 	x := pa.LiveCarbonIntensity(param)
-	if x.LiveCarbonIntensity < 1 {
-		x.LiveCarbonIntensity = 200 //  dummy
-	}
-
 	return x.LiveCarbonIntensity
 }
 
