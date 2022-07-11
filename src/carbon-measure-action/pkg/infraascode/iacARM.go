@@ -11,7 +11,6 @@ var data TypARM
 
 func readJSON(jsonPath string) TypARM {
 	file, _ := ioutil.ReadFile(jsonPath)
-    fmt.Println("Filepath: ", jsonPath)
 	var arm TypARM
 	err := json.Unmarshal([]byte(file), &arm)
 	if err != nil {
@@ -21,7 +20,6 @@ func readJSON(jsonPath string) TypARM {
 }
 
 func armSummary(filename string) []TypSummary {
-    fmt.Println("Reading Json!")
 	data = readJSON(filename)
 	var summary []TypSummary
 	for _, resource := range data.Resources {
