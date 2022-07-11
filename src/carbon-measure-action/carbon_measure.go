@@ -63,7 +63,6 @@ func main() {
 
 	gitHubOutputVariable("set-output name=grams_carbon_equivalent_per_kwh", fmt.Sprint(averageKwh))
 	gitHubOutputVariable("set-output name=grams_emitted_over_24h", fmt.Sprint(Totalco2perkwh))
-	gitHubOutputVariable("set-output name=finished", "yes")
 	githubNoticeMessage("Successfully ran carbon measure action.")
 }
 
