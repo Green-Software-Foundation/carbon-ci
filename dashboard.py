@@ -3,7 +3,10 @@ import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
+import io
 #import os
+
+buffer = io.StringIO()
 
 #if not os.path.exists("C:\\Users\\lydia.catterall\\OneDrive - Avanade\\playground\\Carbon_CI_Pipeline_Tooling\\pics"):
     #os.mkdir("C:\\Users\\lydia.catterall\\OneDrive - Avanade\\playground\\Carbon_CI_Pipeline_Tooling\\pics")
@@ -57,3 +60,10 @@ fig.show()
 #fig.write_image("C:\\Users\\lydia.catterall\\OneDrive - Avanade\\playground\\Carbon_CI_Pipeline_Tooling\\pics/fig1.jpeg")
 
 #fig.to_image(format="png", engine="kaleido")
+#help(go.Figure.write_html)
+#fig.write_html('C:\\Users\\lydia.catterall', full_html=False, include_plotlyjs='cdn')
+
+fig.write_html(buffer, full_html=False, include_plotlyjs='cdn')
+
+#buffer.seek(0)
+#print(buffer.read())

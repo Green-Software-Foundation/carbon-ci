@@ -1,0 +1,10 @@
+name: HTML Preview
+id: html_preview
+on: [pull_request]
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: pavi2410/html-preview-action@v2
+        with:
+          html_file: 'index.html'
