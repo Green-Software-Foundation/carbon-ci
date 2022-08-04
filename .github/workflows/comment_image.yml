@@ -10,4 +10,4 @@ jobs:
           pullRequestOpened: |
             👋 @{{ author }}
             Here is your image:
-            ![This is an image](https://myoctocat.com/assets/images/base-octocat.svg)
+            ![This is an image](https://1000logos.net/wp-content/uploads/2017/06/emblems-Recycle-768x698.jpg)
