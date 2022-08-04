@@ -7,7 +7,7 @@
         "type": "Microsoft.Compute/virtualMachines",
         "apiVersion": "2022-03-01",
         "name": "TestVM",
-        "location": "westus",
+        "location": "eastus",
         "tags": {
             "tagName1": "tagValue1",
             "tagName2": "tagValue2"
@@ -59,7 +59,7 @@
             "evictionPolicy": "string",
             "extensionsTimeBudget": "string",
             "hardwareProfile": {
-            "vmSize": "Standard_A2_V2",
+            "vmSize": "Standard_D2s_v3",
             "vmSizeProperties": {
                 "vCPUsAvailable": "int",
                 "vCPUsPerCore": "int"

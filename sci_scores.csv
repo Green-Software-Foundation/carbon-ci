@@ -1,0 +1,11 @@
+num,average,total,type
+1,10,9,apple
+2,9,8,banana
+3,8,7,banana
+4,7,6,apple
+5,6,5,grape
+6,5,4,grape
+7,4,3,apple
+8,3,2,banana
+9,2,1,grape
+10,1,0,banana

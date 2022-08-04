@@ -4,12 +4,15 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+
+	//"log"
 	pa "main/pkg/poweradapter"
 
 	//EM "main/pkg/electricitymap
 	iac "main/pkg/infraascode"
 	"os"
 	"strings"
+	//"encoding/csv"
 )
 
 func main() {
@@ -64,6 +67,35 @@ func main() {
 	gitHubOutputVariable("grams_carbon_equivalent_per_kwh", fmt.Sprint(averageKwh))
 	gitHubOutputVariable("grams_emitted_over_24h", fmt.Sprint(Totalco2perkwh))
 	githubNoticeMessage("Successfully ran carbon measure action.")
+
+	/*
+		empData := []string{"Name", "City", "Skills"}
+
+		// create a file
+		file, err := os.Open("sci_scores.csv")
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		csvwriter := csv.NewWriter(file)
+
+		csvwriter.Write(empData)
+
+		csvwriter.Flush()
+		file.Close()
+
+
+			defer file.Close()
+
+			// initialize csv writer
+			writer := csv.NewWriter(file)
+
+			defer writer.Flush()
+
+			// write single row
+			extraData := []string{"11", "3", "5"}
+			writer.Write(extraData)
+	*/
 }
 
 func getCarbonIntensity(param pa.TypCarbonQueryParams) float64 {
