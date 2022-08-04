@@ -1,5 +1,4 @@
 name: HTML Preview
-id: html_preview
 on: [pull_request]
 jobs:
   run:
