@@ -64,6 +64,7 @@ func main() {
 	gitHubOutputVariable("grams_carbon_equivalent_per_kwh", fmt.Sprint(averageKwh))
 	gitHubOutputVariable("grams_emitted_over_24h", fmt.Sprint(Totalco2perkwh))
 	githubNoticeMessage("Successfully ran carbon measure action.")
+
 }
 
 func getCarbonIntensity(param pa.TypCarbonQueryParams) float64 {

@@ -1,0 +1,13 @@
+name: Auto Comment
+on: [pull_request]
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: wow-actions/auto-comment@v1
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          pullRequestOpened: |
+            👋 @{{ author }}
+            Here is a placeholder image:
+            ![This is an image](https://1000logos.net/wp-content/uploads/2017/06/emblems-Recycle-768x698.jpg)
