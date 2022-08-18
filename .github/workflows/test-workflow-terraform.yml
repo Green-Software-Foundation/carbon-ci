@@ -1,0 +1,9 @@
+name: Test workflow terraform
+on: workflow_dispatch
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - name: Run the action
+        uses: actions/action@master

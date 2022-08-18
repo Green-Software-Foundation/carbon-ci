@@ -27,7 +27,7 @@ outputs:
 runs:
   using: composite
   steps:
-    - name: Set default value for IACTemplateFile - ARM/Pulumi
+    - name: Set default value for IACTemplateFile - ARM/Pulumi/Terraform
       if: inputs.IACType == 'arm' || inputs.IACType == 'pulumi'
       run: echo "IACTemplateFile=${{inputs.IACFile}}" >> $GITHUB_ENV
       shell: bash
@@ -43,6 +43,18 @@ runs:
       with:
         bicepFilePath: ${{ inputs.IACFile }}
         outputFilePath: ${{ env.ARMTemplateFilename }}
+
+    - uses: hashicorp/setup-terraform@v2
+      if: inputs.IACType == 'terraform'
+
+    - name: Create pretty JSON file from Terraform plan - Terraform
+      if: inputs.IACType == 'terraform'
+      run: |
+        terraform show -json plan.tfplan > intermediate.json
+        $data = Get-Content intermediate.json -Encoding UTF8 | ConvertFrom-Json
+        $data | ConvertTo-Json -depth 100 | Out-File "pretty.json" -Encoding UTF8 -Force
+        echo "IACTemplateFile=pretty.json" >> $GITHUB_ENV
+      shell: pwsh
 
     - name: Set IACType env variable
       run: echo "IACType=${{inputs.IACType}}" >> $GITHUB_ENV
