@@ -6,4 +6,4 @@ jobs:
     steps:
       - uses: actions/checkout@master
       - name: Run the action
-        uses: ./action@master
+        uses: ./action
