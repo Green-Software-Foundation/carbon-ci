@@ -7,3 +7,8 @@ jobs:
       - uses: actions/checkout@master
       - name: Run the action
         uses: ./
+        with:
+          IACType: terraform
+          IACFile: ./tests/inputs/terraform/plan.tfplan
+          CloudProvider: azure
+          CARBON_RATE_PROVIDER: electricitymap
