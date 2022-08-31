@@ -52,7 +52,7 @@ runs:
       run: |
         terraform show -json ${{inputs.IACFile}} > plan.json
         echo "IACTemplateFile=plan.json" >> $GITHUB_ENV
-      shell: pwsh
+      shell: bash
 
     - name: Set IACType env variable
       run: echo "IACType=${{inputs.IACType}}" >> $GITHUB_ENV
