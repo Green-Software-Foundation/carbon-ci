@@ -1,5 +1,5 @@
 name: TODO workflow
-on: [push, pull_request]
+on: workflow_dispatch
 concurrency:
   group: ${{ github.ref }}
   cancel-in-progress: true

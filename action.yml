@@ -47,13 +47,11 @@ runs:
     - uses: hashicorp/setup-terraform@v2
       if: inputs.IACType == 'terraform'
 
-    - name: Create pretty JSON file from Terraform plan - Terraform
+    - name: Create JSON file from Terraform plan - Terraform
       if: inputs.IACType == 'terraform'
       run: |
-        terraform show -json plan.tfplan > intermediate.json
-        $data = Get-Content intermediate.json -Encoding UTF8 | ConvertFrom-Json
-        $data | ConvertTo-Json -depth 100 | Out-File "pretty.json" -Encoding UTF8 -Force
-        echo "IACTemplateFile=pretty.json" >> $GITHUB_ENV
+        terraform show -json ${{inputs.IACFile}} > plan.json
+        echo "IACTemplateFile=plan.json" >> $GITHUB_ENV
       shell: pwsh
 
     - name: Set IACType env variable
