@@ -48,6 +48,7 @@ runs:
       if: inputs.IACType == 'terraform'
       run: |
         terraformDirectory="$(dirname ${{inputs.IACFile}})"
+        echo $terraformDirectory
         cd $terraformDirectory
         terraform show -json ${{inputs.IACFile}} > plan.json
         echo "IACTemplateFile=plan.json" >> $GITHUB_ENV

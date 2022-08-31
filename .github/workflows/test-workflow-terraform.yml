@@ -18,6 +18,6 @@ jobs:
         uses: ./
         with:
           IACType: terraform
-          IACFile: ./tests/inputs/terraform
+          IACFile: ./tests/inputs/terraform/plan.tfplan
           CloudProvider: azure
           CARBON_RATE_PROVIDER: electricitymap
