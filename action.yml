@@ -50,6 +50,8 @@ runs:
     - name: Create JSON file from Terraform plan - Terraform
       if: inputs.IACType == 'terraform'
       run: |
+        cd ${{ github.action_path }}/tests/terraform
+        terraform init -backend=false 
         terraform show -json ${{inputs.IACFile}} > plan.json
         echo "IACTemplateFile=plan.json" >> $GITHUB_ENV
       shell: bash
