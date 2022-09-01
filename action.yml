@@ -29,7 +29,9 @@ runs:
   steps:
     - name: Set default value for IACTemplateFile - ARM/Pulumi/Terraform
       if: inputs.IACType == 'arm' || inputs.IACType == 'pulumi' || inputs.IACType == 'terraform'
-      run: echo "IACTemplateFile=${{inputs.IACFile}}" >> $GITHUB_ENV
+      run: |
+        echo "IACTemplateFile=${{inputs.IACFile}}" >> $GITHUB_ENV
+        cat ${{inputs.IACFile}}
       shell: bash
 
     - name: Set default value for IACTemplateFile - Bicep
