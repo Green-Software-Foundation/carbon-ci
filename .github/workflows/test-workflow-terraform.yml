@@ -10,14 +10,19 @@ jobs:
           terraform_version: 1.2.5
       - uses: actions/checkout@master
       - name: Run terraform init
-        working-directory: ./tests/inputs/terraform
         run: |
+          cd ./tests/inputs/terraform
           terraform init -backend=false
+        shell: bash
+      - name: Run terraform show and save it as json file
+        run: |
+          terraform show -json plan.tfplan
+          terraform show -json plan.tfplan > plan.json
         shell: bash
       - name: Run the action
         uses: ./
         with:
           IACType: terraform
-          IACFile: ./tests/inputs/terraform/plan.tfplan
+          IACFile: ./tests/inputs/terraform/plan.json
           CloudProvider: azure
           CARBON_RATE_PROVIDER: electricitymap
