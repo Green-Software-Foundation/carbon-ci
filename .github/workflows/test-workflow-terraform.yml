@@ -20,6 +20,7 @@ jobs:
           echo *
           terraform show -json plan.tfplan > plan.json
           echo *
+          cat plan.json
         shell: bash
       - name: Run the action
         uses: ./
