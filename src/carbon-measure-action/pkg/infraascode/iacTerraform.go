@@ -155,12 +155,17 @@ func addTfLocToSize(summary *[]TypSummary, resIndex int, sizeIndex int, resource
 }
 
 func readTerraformJSON(jsonPath string) TypTerraform {
-	file, _ := ioutil.ReadFile(jsonPath)
-	var terraform TypTerraform
-	err := json.Unmarshal([]byte(file), &terraform)
-	if err != nil {
-		fmt.Println(err.Error())
+	file, errReadFile := ioutil.ReadFile(jsonPath)
+	if errReadFile != nil {
+		fmt.Println(errReadFile.Error())
 		panic("Cannot read the terraform json.")
+	}
+
+	var terraform TypTerraform
+	errUnmarshalFile := json.Unmarshal([]byte(file), &terraform)
+	if errUnmarshalFile != nil {
+		fmt.Println(errUnmarshalFile.Error())
+		panic("Cannot unmarshal the terraform json.")
 	}
 	return terraform
 }
