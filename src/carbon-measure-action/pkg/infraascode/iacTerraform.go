@@ -164,6 +164,15 @@ func readTerraformJSON(jsonPath string) TypTerraform {
 	var terraform TypTerraform
 	errUnmarshalFile := json.Unmarshal(file, &terraform)
 	if errUnmarshalFile != nil {
+		// Printfs for debug
+		fmt.Printf("Error unmarshaling the terraform json: %v\n", errUnmarshalFile)
+		if e, ok := errUnmarshalFile.(*json.SyntaxError); ok {
+			fmt.Printf("Syntax error at byte offset %d\n", e.Offset)
+		}
+
+		fmt.Printf(`Terraform json as it is read:
+		            %q`, string(file))
+
 		fmt.Println(errUnmarshalFile.Error())
 		panic("Cannot unmarshal the terraform json.")
 	}
