@@ -18,8 +18,8 @@ jobs:
         run: |
           cd ./tests/inputs/terraform
           echo *
-          terraform show -json plan.tfplan
           terraform show -json plan.tfplan > plan.json
+          echo *
         shell: bash
       - name: Run the action
         uses: ./
