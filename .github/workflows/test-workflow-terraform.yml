@@ -16,6 +16,8 @@ jobs:
         shell: bash
       - name: Run terraform show and save it as json file
         run: |
+          cd ./tests/inputs/terraform
+          echo *
           terraform show -json plan.tfplan
           terraform show -json plan.tfplan > plan.json
         shell: bash
