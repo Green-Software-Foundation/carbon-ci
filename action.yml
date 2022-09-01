@@ -56,7 +56,7 @@ runs:
     - name: Create JSON file from Terraform plan - Terraform
       if: inputs.IACType == 'terraform'
       run: |
-        terraform show -json ${{inputs.IACFile}} > plan.json
+        terraform show -json ${{inputs.IACFile}} 
       shell: bash
 
     - name: Save terraform JSON file as IACTemplateFile - Terraform
