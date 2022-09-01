@@ -161,13 +161,8 @@ func readTerraformJSON(jsonPath string) TypTerraform {
 		panic("Cannot read the terraform json.")
 	}
 
-	// Print the content of the file, just for debugging purposes.
-	str := string(file) // convert content to a 'string'
-
-	fmt.Println(str) // print the content as a 'string'
-
 	var terraform TypTerraform
-	errUnmarshalFile := json.Unmarshal([]byte(file), &terraform)
+	errUnmarshalFile := json.Unmarshal(file, &terraform)
 	if errUnmarshalFile != nil {
 		fmt.Println(errUnmarshalFile.Error())
 		panic("Cannot unmarshal the terraform json.")
