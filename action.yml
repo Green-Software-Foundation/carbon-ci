@@ -44,13 +44,24 @@ runs:
         bicepFilePath: ${{ inputs.IACFile }}
         outputFilePath: ${{ env.ARMTemplateFilename }}
 
-    - name: Create JSON file from Terraform plan - Terraform
+    - name: Cd into terraform directory - Terraform
       if: inputs.IACType == 'terraform'
       run: |
         terraformDirectory="$(dirname ${{inputs.IACFile}})"
         echo $terraformDirectory
         cd $terraformDirectory
+        echo *
+      shell: bash
+
+    - name: Create JSON file from Terraform plan - Terraform
+      if: inputs.IACType == 'terraform'
+      run: |
         terraform show -json ${{inputs.IACFile}} > plan.json
+      shell: bash
+
+    - name: Save terraform JSON file as IACTemplateFile - Terraform
+      if: inputs.IACType == 'terraform'
+      run: |
         echo "IACTemplateFile=plan.json" >> $GITHUB_ENV
       shell: bash
 
