@@ -12,7 +12,9 @@ func terraformSummary(filename string) []TypSummary {
 	var summary []TypSummary
 	var tfResources []TypTfResource
 
+	fmt.Println("Reading terraform json")
 	terraformData = readTerraformJSON(filename)
+	fmt.Println("Terraform json read successfully")
 
 	resourceTypeRef := openTfResourceTypeReference()
 
@@ -158,6 +160,7 @@ func readTerraformJSON(jsonPath string) TypTerraform {
 	err := json.Unmarshal([]byte(file), &terraform)
 	if err != nil {
 		fmt.Println(err.Error())
+		panic("Cannot read the terraform json.")
 	}
 	return terraform
 }
