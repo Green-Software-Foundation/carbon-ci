@@ -18,10 +18,10 @@ jobs:
         run: |
           cd ./tests/inputs/terraform
           echo *
-          terraform show -json plan.tfplan > $GITHUB_WORKSPACE/tests/inputs/terraform/plan.json
+          terraform show -json plan.tfplan > $GITHUB_WORKSPACE/tests/inputs/terraform/intermediate-plan.json
           
           # Delete the first line if it contains "[command]...plan.tfplan"
-          sed '1d' $GITHUB_WORKSPACE/tests/inputs/terraform/plan.json | tee $GITHUB_WORKSPACE/tests/inputs/terraform/plan.json
+          sed '1d' $GITHUB_WORKSPACE/tests/inputs/terraform/intermediate-plan.json > $GITHUB_WORKSPACE/tests/inputs/terraform/plan.json
           
           echo *
         shell: bash
