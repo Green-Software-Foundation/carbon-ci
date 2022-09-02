@@ -8,6 +8,7 @@ jobs:
         uses: hashicorp/setup-terraform@v2
         with:
           terraform_version: 1.2.5
+          terraform_wrapper: false
       - uses: actions/checkout@master
       - name: Run terraform init (to load the providers which are used by the terraform show command)
         run: |
