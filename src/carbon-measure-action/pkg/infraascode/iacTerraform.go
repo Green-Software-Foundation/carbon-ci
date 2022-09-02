@@ -171,7 +171,7 @@ func readTerraformJSON(jsonPath string) TypTerraform {
 		}
 
 		fmt.Printf(`Terraform json as it is read:
-		            %q`, string(file))
+		%q\n\n`, string(file))
 
 		fmt.Println(errUnmarshalFile.Error())
 		panic("Cannot unmarshal the terraform json.")
