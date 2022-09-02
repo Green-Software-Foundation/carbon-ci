@@ -21,7 +21,7 @@ jobs:
           terraform show -json plan.tfplan > $GITHUB_WORKSPACE/tests/inputs/terraform/plan.json
           
           # Delete the first line if it contains "[command]...plan.tfplan"
-          sed '1d' $GITHUB_WORKSPACE/tests/inputs/terraform/plan.json > $GITHUB_WORKSPACE/tests/inputs/terraform/plan.json
+          sed '1d' $GITHUB_WORKSPACE/tests/inputs/terraform/plan.json | tee $GITHUB_WORKSPACE/tests/inputs/terraform/plan.json
           
           echo *
         shell: bash
