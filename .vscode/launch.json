@@ -11,7 +11,7 @@
             "request": "launch",
             "mode": "debug",
             "program": "${workspaceRoot}/src/carbon-measure-action",
-            "envFile": "C:/Temp/experiments/gsf-experiments/terraform-test/terraform.env"
+            "envFile": "${workspaceRoot}/tests/inputs/terraform/local/terraform.env"
         }
     ]
 }
