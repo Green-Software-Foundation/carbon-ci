@@ -29,7 +29,12 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: Terraform plan json
-          path: tests/inputs/terraform/plan.json
+          path: tests/inputs/terraform/plan.json    
+      - name: Archive intermediate-plan as a downloadable artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: Terraform intermediate-plan json
+          path: tests/inputs/terraform/intermediate-plan.json
       - name: Run the action
         uses: ./
         with:
