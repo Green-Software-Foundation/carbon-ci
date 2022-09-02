@@ -30,10 +30,10 @@ jobs:
         with:
           name: Terraform plan json
           path: tests/inputs/terraform/plan.json
-#      - name: Run the action
-#        uses: ./
-#        with:
-#          IACType: terraform
-#          IACFile: $GITHUB_WORKSPACE/tests/inputs/terraform/plan.json
-#          CloudProvider: azure
-#          CARBON_RATE_PROVIDER: electricitymap
+      - name: Run the action
+        uses: ./
+        with:
+          IACType: terraform
+          IACFile: $GITHUB_WORKSPACE/tests/inputs/terraform/plan.json
+          CloudProvider: azure
+          CARBON_RATE_PROVIDER: electricitymap
