@@ -25,7 +25,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: Terraform plan json
-          path: $GITHUB_WORKSPACE/tests/inputs/terraform/plan.json
+          path: tests/inputs/terraform/plan.json
       - name: Run the action
         uses: ./
         with:
