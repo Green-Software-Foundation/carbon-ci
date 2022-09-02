@@ -18,9 +18,9 @@ jobs:
         run: |
           cd ./tests/inputs/terraform
           echo *
-          tfJson=(bash $GITHUB_WORKSPACE/tests/inputs/terraform/tfShow.sh)
-          echo $tfJson > $GITHUB_WORKSPACE/tests/inputs/terraform/plan.json
-          echo * 
+          terraform show -json plan.tfplan > $GITHUB_WORKSPACE/tests/inputs/terraform/plan.json
+          echo *
+        shell: bash {0}
       - name: Archive plan.json as a downloadable artifact
         uses: actions/upload-artifact@v3
         with:
