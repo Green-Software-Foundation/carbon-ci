@@ -21,11 +21,12 @@ jobs:
           jsonPlan=$(terraform show -json plan.tfplan)
           # Manipulation of the JSON output from the show commmand above, to remove the [command]...plan.json line at the beginning of the file.
           # Check if the file starts with [command]
+          
           if  [[ $jsonPlan == [command]* ]] ;
           then
             echo "The file starts with [command]"
           fi 
-          
+
           echo "$jsonPlan" > $GITHUB_WORKSPACE/tests/inputs/terraform/plan.json
 
           echo *
