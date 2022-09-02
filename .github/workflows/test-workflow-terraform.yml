@@ -21,7 +21,6 @@ jobs:
           jsonPlan=$(terraform show -json plan.tfplan)
           echo "$jsonPlan" > $GITHUB_WORKSPACE/tests/inputs/terraform/plan.json
           echo *
-        shell: bash
       - name: Archive production artifacts
         uses: actions/upload-artifact@v3
         with:
