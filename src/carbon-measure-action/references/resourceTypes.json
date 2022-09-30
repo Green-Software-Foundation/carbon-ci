@@ -1,18 +1,34 @@
 [
   {
     "cloudResourceType": "Microsoft.Network/virtualNetworks",
-    "pulumiResourceType": "azure:network/virtualNetwork:VirtualNetwork"
+    "pulumiResourceType": "azure:network/virtualNetwork:VirtualNetwork",
+    "terraformResourceType": "azurerm_virtual_network"
   },
   {
     "cloudResourceType": "Microsoft.Network/virtualNetworks/subnets",
-    "pulumiResourceType": "azure:network/subnet:Subnet"
+    "pulumiResourceType": "azure:network/subnet:Subnet",
+    "terraformResourceType": "azurerm_subnet"
   },
   {
     "cloudResourceType": "Microsoft.Network/networkInterfaces",
-    "pulumiResourceType": "azure:network/networkInterface:NetworkInterface"
+    "pulumiResourceType": "azure:network/networkInterface:NetworkInterface",
+    "terraformResourceType": "azurerm_network_interface"    
   },
   {
     "cloudResourceType": "Microsoft.Compute/virtualMachines",
-    "pulumiResourceType": "azure:compute/virtualMachine:VirtualMachine"
+    "pulumiResourceType": "azure:compute/virtualMachine:VirtualMachine",
+    "terraformResourceType": "azurerm_virtual_machine"
+  },
+  {
+    "cloudResourceType": "Microsoft.Compute/virtualMachines",
+    "terraformResourceType": "azurerm_linux_virtual_machine"
+  },
+  {
+    "cloudResourceType": "Microsoft.Compute/virtualMachines",
+    "terraformResourceType": "azurerm_windows_virtual_machine"
+  }, 
+  {
+    "cloudResourceType": "Microsoft.Resources/resourceGroups",
+    "terraformResourceType": "azurerm_resource_group"    
   }
 ]

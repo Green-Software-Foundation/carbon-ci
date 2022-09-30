@@ -16,6 +16,10 @@ func GetIACSummary(q TypIACQuery) []TypSummary {
 	case "pulumi":
 		files := strings.Split(q.Filename, ",")
 		summary = pulumiSummary(strings.TrimSpace(files[0]), strings.TrimSpace(files[1]))
+		break
+	case "terraform":
+		summary = terraformSummary(q.Filename)
+		break
 	}
 
 	// Print out summarized ARM data
