@@ -27,8 +27,8 @@ outputs:
 runs:
   using: composite
   steps:
-    - name: Set default value for IACTemplateFile - ARM/Pulumi
-      if: inputs.IACType == 'arm' || inputs.IACType == 'pulumi'
+    - name: Set default value for IACTemplateFile - ARM/Pulumi/Terraform
+      if: inputs.IACType == 'arm' || inputs.IACType == 'pulumi' || inputs.IACType == 'terraform'
       run: echo "IACTemplateFile=${{inputs.IACFile}}" >> $GITHUB_ENV
       shell: bash
 
