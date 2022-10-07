@@ -24,12 +24,9 @@ func terraformSummary(filename string) []TypSummary {
 		tfResources = append(tfResources, resource)
 	}
 
-	// Then, process the child modules
+	// Then, process the child modules (recursively)
 	for _, childModule := range terraformData.PlannedValues.RootModule.ChildModules {
-		for _, resource := range childModule.Resources {
-			resource.Type = getCloudProviderResourceTypeFromTfResourceType(resource.Type, &resourceTypeRef)
-			tfResources = append(tfResources, resource)
-		}
+		processChildModule(childModule, &tfResources, &resourceTypeRef)
 	}
 
 	// Now, get together all the resources and change the resource type. Then add them to the summary
@@ -40,6 +37,19 @@ func terraformSummary(filename string) []TypSummary {
 	}
 
 	return summary
+}
+
+func processChildModule(childModule *ChildModules, tfResources *[]TypTfResource, ref *[]TypTfResourceTypesReference) {
+	// First, process the resources
+	for _, resource := range childModule.Resources {
+		resource.Type = getCloudProviderResourceTypeFromTfResourceType(resource.Type, ref)
+		*tfResources = append(*tfResources, resource)
+	}
+
+	// Then, process the child modules (recursively)
+	for _, innerChildModule := range childModule.ChildModules {
+		processChildModule(innerChildModule, tfResources, ref)
+	}
 }
 
 func processTfResourceIntoSummary(resource *TypTfResource, summary *[]TypSummary) {
@@ -198,10 +208,13 @@ type TypTerraform struct {
 type TypTfPlannedValues struct {
 	RootModule struct {
 		Resources    []TypTfResource `json:"resources"`
-		ChildModules []struct {
-			Resources []TypTfResource `json:"resources"`
-		} `json:"child_modules"`
+		ChildModules []*ChildModules `json:"child_modules"`
 	} `json:"root_module"`
+}
+
+type ChildModules struct {
+	Resources    []TypTfResource `json:"resources"`
+	ChildModules []*ChildModules `json:"child_modules"`
 }
 
 type TypTfResource struct {
