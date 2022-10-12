@@ -35,8 +35,8 @@
           with:
             issue-number: ${{ github.event.pull_request.number }}
             body: |
-              grams_carbon_equivalent_per_kwh = ${{ steps.carbon_output.outputs.grams_carbon_equivalent_per_kwh }}
-              grams_emitted_over_24h = ${{ steps.carbon_output.outputs.grams_emitted_over_24h }}
+              pounds carbon equivalent per MWh = ${{ steps.carbon_output.outputs.grams_carbon_equivalent_per_kwh }}
+              pounds co2 emitted over 24h = ${{ steps.carbon_output.outputs.grams_emitted_over_24h }}
             reactions: rocket
         
         
