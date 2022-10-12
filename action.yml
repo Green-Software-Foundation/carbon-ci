@@ -66,6 +66,3 @@ runs:
           cd ${{ github.action_path }}/src/carbon-measure-action
           go run ${{ github.action_path }}/src/carbon-measure-action/carbon_measure.go ${{ github.action_path }}/src/carbon-measure-action/githubOutput.go
       shell: bash
-
-
-      
