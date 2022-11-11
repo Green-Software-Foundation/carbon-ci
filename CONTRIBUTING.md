@@ -9,7 +9,9 @@ This project has adopted the [Contributor Covenant Code of Conduct](https://avan
 
 ## Rights to your contributions
 By contributing to this project, you:
-- Agree that you have authored 100% of the content
+- Agree that you have either:
+  - Authored 100% of the content, or;
+  - the appropriate licenses and copyrights are contributed along with any other necessary attribution, following the [Developer Certificate of Origin](https://developercertificate.org/).
 - Agree that you have the necessary rights to the content
 - Agree that you have received the necessary permissions from your employer to make the contributions (if applicable)
 - Agree that the content you contribute may be provided under the Project license(s)
