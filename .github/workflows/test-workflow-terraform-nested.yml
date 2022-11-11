@@ -1,0 +1,36 @@
+name: Test workflow terraform
+on: workflow_dispatch
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 1.2.5
+          terraform_wrapper: false
+      - uses: actions/checkout@master
+      - name: Run terraform init (to load the providers which are used by the terraform show command)
+        run: |
+          cd ./tests/inputs/terraform-nested
+          terraform init -backend=false
+        shell: bash
+      - name: Run terraform show and save it as json file
+        run: |
+          cd ./tests/inputs/terraform-nested
+          echo *
+          terraform show -json plan.tfplan > $GITHUB_WORKSPACE/tests/inputs/terraform-nested/plan.json
+          echo *
+        shell: bash
+      - name: Archive plan.json as a downloadable artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: Terraform plan json
+          path: tests/inputs/terraform-nested/plan.json
+      - name: Run the action
+        uses: ./
+        with:
+          IACType: terraform
+          IACFile: $GITHUB_WORKSPACE/tests/inputs/terraform-nested/plan.json
+          CloudProvider: azure
+          CARBON_RATE_PROVIDER: electricitymap
