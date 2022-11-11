@@ -1,4 +1,4 @@
-name: Test workflow terraform
+name: Test workflow terraform-nested
 on: workflow_dispatch
 jobs:
   build:
