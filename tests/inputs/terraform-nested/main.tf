@@ -16,7 +16,7 @@ provider "azurerm" {
 
 locals {
   prefix   = "gsf"
-  location = "eastus"
+  location = "westus"
   username = "mruser"
   password = "mrpswrd1234!"
   
