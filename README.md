@@ -81,4 +81,4 @@ CDLA-Permissive-1.0
 
 ## Help
 
-helpdesk@greensoftware.io
+carbon-ci@greensoftware.foundation  
