@@ -15,9 +15,9 @@ The GitHub Action invoking the program can be found in [/.github/workflows/calcu
 In this demo, the Action points to the Dev branch of the main repository, available at [https://github.com/Green-Software-Foundation/carbon-ci/tree/Dev](https://github.com/Green-Software-Foundation/carbon-ci/tree/Dev).
 
 The action looks at the [infra-as-code](https://learn.microsoft.com/en-us/devops/deliver/what-is-infrastructure-as-code) [ARM template file](https://learn.microsoft.com/en-us/azure/azure-resource-manager/templates/),
-located in [/data/webappdeploy.json](/data/webappdeploy.json), which is an example code of a Resource Group containing a webapp and an Azure VM.
+located in [/data/azuredeploy.json](/data/azuredeploy.json), which is an example code of a Resource Group containing a webapp and an Azure VM.
 > NOTE: At the time of making this demo, the Carbon CI Pipeline Project looked at a limited number of Azure components (some VMs). This may have changed by now,
-> reach out to the Green Software Foundation (You can find the currently appointed chair of the project [here](https://github.com/Green-Software-Foundation/Carbon_CI_Pipeline_Tooling#appointments)).
+> reach out to the Green Software Foundation (You can find the currently appointed chair of the project [here](https://github.com/Green-Software-Foundation/carbon-ci#appointments)).
 
 ## Set up guide
 
@@ -27,8 +27,7 @@ In order to run this demo, you will need:
 - GitHub account
 - [WattTime Pro License](https://www.watttime.org/get-the-data/data-plans/) or [ElectricityMaps Key active in the regions of the demo deployment](https://api-portal.electricitymaps.com/)
 
-If you do not have a WattTime Pro License nor an ElectricityMaps Key, contact Open Technology team at Avanade at ospo@avanade.com .
-
+If you do not have a WattTime Pro License nor an ElectricityMaps Key.
 ## 1. Set up GitHub Repository and GitHub Secrets
 
 - You need a GitHub repository to run the demo in, see the [official Github Documentation](https://docs.github.com/en/get-started/quickstart/create-a-repo) for the steps.
@@ -45,7 +44,7 @@ In short: In your repository, navigate to `Settings>Secrets and variables>Action
 ## 2. Upload Demo files and create a new branch
 
 You will need to copy 2 files over: [/.github/workflows/calculate_iac_carbon.yml](/.github/workflows/calculate_iac_carbon.yml) to the corresponding directory in your repository
-and [/data/webappdeploy.json](/data/webappdeploy.json). **Make sure to create the missing directories if they are missing from your repository! (`.github/workflows` and `data`)**
+and [/data/azuredeploy.json](/data/azuredeploy.json). **Make sure to create the missing directories if they are missing from your repository! (`.github/workflows` and `data`)**
 
 
 **NOTE: By default, the GitHub action is setup to use WattTime as the Carbon Intensity Data Source. To use ElectricityMaps instead, see section 2b before continuing. Otherwise go to the next step**
@@ -58,8 +57,7 @@ You can name it `test-branch`.
 ### 2b. Setting up ElectricityMaps as the Carbon Intensity Data Source for the GitHub Action
 
 Open the [/.github/workflows/calculate_iac_carbon.yml](/.github/workflows/calculate_iac_carbon.yml) file in your repository and edit line 26: 
-https://github.com/ava-innersource/greensoftware-demo/blob/76fd2c4c3b04cbcfda7d2f878d24f65b5d28e334/.github/workflows/calculate_iac_carbon.yml#L26
-
+https://github.com/Willmish/Carbon_CI_Pipeline_Tooling/blob/292dc33f74953127011032dee69eddcff2733937/.github/workflows/calculate_iac_carbon.yml#L26
 Change the value set to `CARBON_RATE_PROVIDER` from `watttime` to `electricitymap`. Commit the changes and you are all set!
 
 ## 3. Test the demo
