@@ -2,10 +2,26 @@
 
 This project welcomes contributions and suggestions. By contributing, you confirm that you have the right to, and actually do, grant us the rights to use your contribution. More information below.
 
+We are looking for all types of assistance, from documenation generation, strategy and roadmap input, and as many developers and infrastructure experts as we can. We need GO developers o, so if you're looking to learn, this is a great palce to start.
+
 Please feel free to contribute code, ideas, improvements, and patches - we've added some general guidelines and information below, and you can propose changes to this document in a pull request.
 
 This project has adopted the [Contributor Covenant Code of Conduct](https://avanade.github.io/code-of-conduct/).
 
+## Current opportunites
+
+We currently need help with:
+  - Strategy and roadmap prioritisation
+  - Integrating the GSF IF project with our existing data source
+  - Helping to find or dexpand our data set beyond Azure
+  - Considersations around code energy use, e.g. Python vs Go
+  - Front end design - designing the user experience within GitHub
+  - Infrastucture as code - more integrations into infrastructure as code platforms
+  - Documentation
+  - Presentation and shareable materials
+
+## How to get started
+Introduce yourself in the [discussion page](https://github.com/Green-Software-Foundation/carbon-ci/discussions) of out repo, and let us know where you think you can help. Join our bi-weekly connection on zoom, and join us on slack. 
 
 ## Rights to your contributions
 By contributing to this project, you:
